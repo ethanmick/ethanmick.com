@@ -1,8 +1,8 @@
 import 'reflect-metadata'
-import { getConnection, createConnection } from 'typeorm'
-import { Post } from './post'
+import { createConnection, getConnection } from 'typeorm'
 import { Link } from './link'
 import { MagicRank } from './magic_rank'
+import { Post } from './post'
 import { Star } from './star'
 import { Tweet } from './tweet'
 
@@ -15,8 +15,8 @@ createConnection({
 })
 
 export const connection = getConnection
-export * from './post'
 export * from './link'
 export * from './magic_rank'
+export * from './post'
 export * from './star'
 export * from './tweet'
