@@ -11,6 +11,10 @@ article.post pre {
   @apply mb-8;
 }
 
+article.post pre {
+  @apply overflow-auto;
+}
+
 article.post code {
   @apply px-2;
   background: #e5eff5;
