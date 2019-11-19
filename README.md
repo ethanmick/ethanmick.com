@@ -2,16 +2,14 @@ My website isn't working for me. Here's what I wnat my website to dooo:
 
 1. A place for my multiple projects/facets
 2. A place for my content from other websites
-  Twitter/GitHub stars/gitlab stars/reddit posts
-  I want control over it though, only kinda show the good stuff
+   Twitter/GitHub stars/gitlab stars/reddit posts
+   I want control over it though, only kinda show the good stuff
 3. I can write longer form posts
 4. Track _links_ that I want to read, or have read. I don't want a post about them, I kinda just want
-a linked list. Something to track that I've read it, thought it was interesting, and moved on.
+   a linked list. Something to track that I've read it, thought it was interesting, and moved on.
 5. Pictures from games/minecraft.
 6. Books I've read, same sort of thing.
 7. A little more minimalistic.
-
-
 
 Okay, so i want to read something on my phone/ipad, and post the link, OR save it for later.
 Fire off a request.
@@ -24,34 +22,40 @@ And content written could be from a static file and generated.
 
 I don't really write on the go, so that's not a problem.
 
-
 # URL structure
 
 / root
 /:type/unique-slug Post
-
 
 There are two keys
 
 1. Category. Magic, D&D, Life, SE, Game dev, etc.
 2. Type, is this a blog post, tweet, star, etc.
 
-The user can probably filter on either, although I'll mostly 
+The user can probably filter on either, although I'll mostly
 be filtering on category.
 
 Categories could also have their own sub domains.
 
-
 `mtg|magic.ethanmick.com`
 `dnd.ethanmick.com`, etc
 
-
-
 # Data Model
+
 Posts
 Links
 Tweets
 Stars
+
+TYPEORM_CONNECTION=postgres \
+TYPEORM_URL=postgres://postgres:test@localhost:5432/postgres \
+GITHUB_AUTH=tokenfromgithubhere \
+GITHUB_USERNAME=yourgithubusername \
+TWITTER_AUTH_CONSUMER_KEY=authkey \
+TWITTER_AUTH_CONSUMER_SECRET=secret \
+TWITTER_AUTH_ACCESS_TOKEN_KEY=token \
+TWITTER_AUTH_ACCESS_TOKEN_SECRET=tokensecret \
+yarn dev
 
 # TypeScript Next.js example
 

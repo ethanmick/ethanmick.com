@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-blue-500 p-12;
+article.post {
+  @apply text-lg leading-relaxed;
+}
+
+article.post p,
+article.post pre {
+  @apply mb-8;
+}
+
+article.post code {
+  @apply px-2;
+  background: #e5eff5;
+  border-radius: 3px;
+}
+
+article.post ol {
+  @apply list-decimal pl-4;
+}
+
+article.post li {
+  @apply mb-4;
 }
