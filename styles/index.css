@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@responsive {
+  .fa-1x {
+    font-size: 1em;
+  }
+  .fa-2x {
+    font-size: 2em;
+  }
+}
+
 article.post {
   @apply text-lg leading-relaxed;
 }

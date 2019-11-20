@@ -1,7 +1,7 @@
 import { Post } from '../../components'
 
-I recently wanted to create a Gif from some burst images and already had FFmpeg
-installed on my Mac. Surely the audacious tool can create a Gif from the
+I recently wanted to create a GIF from some burst images and already had FFmpeg
+installed on my Mac. Surely the audacious tool can create a GIF from the
 images. Turns out, it can!
 
 This was done using FFmpeg `3.1.2`, although any `3.x` version should work.
@@ -11,7 +11,7 @@ Capture_, found the images, and imported them all to a new folder.
 
 Now, when imported straight from the iPhone, the names will be
 something like: IMG_3244.JPG. It's important that these are in the correct
-order you want your Gif to be in. It's also important that there are no breaks
+order you want your GIF to be in. It's also important that there are no breaks
 in the sequence. If there are, you need to rename the images so that the
 numbers don't have any gaps in them. (So if you have IMG_3244.JPG,
 IMG_3245.JPG, and IMG_3247.JPG, rename the last one to IMG_3246.JPG).
@@ -28,7 +28,7 @@ There are two things you may need to change:
 1. The `IMG_%4d.JPG` maps to your image names, where the `4` is how many digits there are. If your images are named `IMG_534.JPG`, you'd want `%3d`.
 2. The `-start_number 3244` maps to the first image number you have, so you'll want to change that.
 
-There you go! You now have a Gif named `out.gif` that you can share with your friends.
+There you go! You now have a GIF named `out.gif` that you can share with your friends.
 
 export default ({ children }) => (
   <Post>

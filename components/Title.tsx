@@ -5,7 +5,7 @@ export interface TitleProps {
 }
 
 export const Title = ({ className }: TitleProps) => (
-  <div className={className ? className : 'p-40'}>
+  <div className={className ? className : 'py-40'}>
     <h1 className="text-4xl text-center">Ethan Mick</h1>
   </div>
 )

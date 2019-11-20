@@ -17,8 +17,8 @@ export const Card = (props: any) => (
 
 export const StarCard = (star: Star) => (
   <div className="flex">
-    <div>
-      <i className="fa-2x fad fa-star p-4" />
+    <div className="p-4">
+      <i className="fa-2x fad fa-star text-green-500 fa-fw" />
     </div>
     <div className="flex flex-col">
       <div className="flex items-baseline">
@@ -42,8 +42,8 @@ export const StarCard = (star: Star) => (
 
 export const LinkCard = (link: LinkModel) => (
   <div className="flex">
-    <div>
-      <i className="text-indigo-500 fa-2x fad fa-link p-4" />
+    <div className="p-4">
+      <i className="text-indigo-500 fa-2x fad fa-link fa-fw" />
     </div>
     <div className="flex flex-col">
       <div className="flex items-baseline">
@@ -73,12 +73,14 @@ export const LinkCard = (link: LinkModel) => (
 
 export const PostCard = ({ title, slug, excerpt, createdAt }: Post) => (
   <div className="flex">
-    <div>
-      <i className="fad fa-rss fa-2x p-4"></i>
+    <div className="p-4">
+      <i className="fad fa-rss fa-2x text-orange-500 fa-fw" />
     </div>
     <div className="flex flex-col">
-      <div className="">{title}</div>
-      <div className="">{excerpt}</div>
+      <Link href={`/post/${slug}`}>
+        <a className="font-bold text-blue-500 hover:underline">{title}</a>
+      </Link>
+      <div className="text-xs">{excerpt}</div>
       <Link href={`/post/${slug}`}>
         <a className="text-xs hover:underline">
           {moment(createdAt).format('MMM Do, YYYY')}
@@ -90,11 +92,11 @@ export const PostCard = ({ title, slug, excerpt, createdAt }: Post) => (
 
 export const MagicRankCard = (rank: MagicRank) => (
   <div className="flex">
-    <div>
+    <div className="p-4">
       <img
         src="/public/images/mtg-logo.png"
         alt="MTG Arena"
-        className="w-16 h-16 p-4"
+        style={{ width: '40px', height: '40px' }}
       />
     </div>
     <div className="flex flex-col">
