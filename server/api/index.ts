@@ -1,9 +1,17 @@
 import Mercury from '@postlight/mercury-parser'
 import express, { Request, Response } from 'express'
 import { reverse, sortBy } from 'lodash'
+import { auth } from '../config'
 import { connection, Link, MagicRank, Post, Star, Tweet } from '../models'
-const multer = require('multer')
-const upload = multer({ dest: '/tmp' })
+
+const checkAuth = (req: Request<any>, _: Response, next: any) => {
+  const { authorization = '' } = req.headers
+  const [, token] = authorization.split(' ')
+  if (token === auth.token) {
+    return next()
+  }
+  throw new Error('unauthorized')
+}
 
 const r = express.Router()
 r.use(express.json())
@@ -51,7 +59,7 @@ r.get('/tweet/:id', findEntityByClass(Tweet))
 
 r.get('/rank/:id', findEntityByClass(MagicRank))
 
-r.post('/upload/link', async (req: Request<any>, res: Response) => {
+r.post('/upload/link', checkAuth, async (req: Request<any>, res: Response) => {
   const { link } = req.body
   try {
     const parsed = await Mercury.parse(link)
@@ -69,18 +77,6 @@ r.post('/upload/link', async (req: Request<any>, res: Response) => {
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
-})
-
-r.post('/upload2', (req: any, res: Response) => {
-  console.log('UPLOAD ', req.body)
-  res.json({})
-})
-
-r.post('/upload', upload.single('data'), (req: Request<any>, res: Response) => {
-  console.log('UPLOAD ', req.headers)
-  console.log('UPLOAD', req.body)
-
-  res.json({})
 })
 
 export const api = r

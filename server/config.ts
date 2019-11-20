@@ -11,3 +11,7 @@ export const twitter = {
     access_token_secret: process.env.TWITTER_AUTH_ACCESS_TOKEN_SECRET || ''
   }
 }
+
+export const auth = {
+  token: process.env.AUTH_TOKEN
+}
