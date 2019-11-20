@@ -17,8 +17,8 @@ export const Card = (props: any) => (
 
 export const StarCard = (star: Star) => (
   <div className="flex">
-    <div className="p-4">
-      <i className="fa-2x fad fa-star text-green-500 fa-fw" />
+    <div className="px-2 md:px-4 mt-1">
+      <i className="fa-1x md:fa-2x fad fa-star text-green-500 fa-fw" />
     </div>
     <div className="flex flex-col">
       <div className="flex items-baseline">
@@ -42,13 +42,13 @@ export const StarCard = (star: Star) => (
 
 export const LinkCard = (link: LinkModel) => (
   <div className="flex">
-    <div className="p-4">
-      <i className="text-indigo-500 fa-2x fad fa-link fa-fw" />
+    <div className="px-2 md:px-4 mt-1">
+      <i className="fa-1x md:fa-2x text-indigo-500 fad fa-link fa-fw" />
     </div>
     <div className="flex flex-col">
-      <div className="flex items-baseline">
+      <span className="">
         <a
-          className="font-bold text-blue-500 hover:underline"
+          className="mr-2 font-bold text-blue-500 hover:underline"
           href={link.link}
           target="_blank"
         >
@@ -57,11 +57,11 @@ export const LinkCard = (link: LinkModel) => (
         <a
           href={link.domain}
           target="_blank"
-          className="ml-2 text-gray-600 text-xs hover:underline"
+          className="text-gray-600 text-xs hover:underline"
         >
           ({link.domain})
         </a>
-      </div>
+      </span>
       <Link href={`/link/${link.id}`}>
         <a className="text-xs hover:underline">
           {moment(link.createdAt).format('MMM Do, YYYY')}
@@ -73,8 +73,8 @@ export const LinkCard = (link: LinkModel) => (
 
 export const PostCard = ({ title, slug, excerpt, createdAt }: Post) => (
   <div className="flex">
-    <div className="p-4">
-      <i className="fad fa-rss fa-2x text-orange-500 fa-fw" />
+    <div className="px-2 md:px-4 mt-1">
+      <i className="fa-1x md:fa-2x fad fa-rss text-orange-500 fa-fw" />
     </div>
     <div className="flex flex-col">
       <Link href={`/post/${slug}`}>
@@ -92,11 +92,11 @@ export const PostCard = ({ title, slug, excerpt, createdAt }: Post) => (
 
 export const MagicRankCard = (rank: MagicRank) => (
   <div className="flex">
-    <div className="p-4">
+    <div className="px-2 md:px-4 mt-1">
       <img
+        className="icon-1x md:icon-2x"
         src="/public/images/mtg-logo.png"
         alt="MTG Arena"
-        style={{ width: '40px', height: '40px' }}
       />
     </div>
     <div className="flex flex-col">

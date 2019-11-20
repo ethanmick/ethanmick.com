@@ -12,10 +12,10 @@ export default class Home extends React.Component<any, any> {
   render() {
     const { feed } = this.props
     return (
-      <div className="container mx-auto max-w-3xl px-4">
+      <div className="container mx-auto max-w-3xl px-2">
         <Title />
         {feed.map((item: any, i: number) => (
-          <Card key={i} {...item} className="mb-6" />
+          <Card key={i} {...item} className="mb-6 md:mb-10" />
         ))}
         <Footer />
       </div>

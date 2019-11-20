@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import * as React from 'react'
 
 export interface TitleProps {
@@ -6,6 +7,10 @@ export interface TitleProps {
 
 export const Title = ({ className }: TitleProps) => (
   <div className={className ? className : 'py-40'}>
-    <h1 className="text-4xl text-center">Ethan Mick</h1>
+    <Link href="/">
+      <a className="hover:underline">
+        <h1 className="text-4xl text-center">Ethan Mick</h1>
+      </a>
+    </Link>
   </div>
 )

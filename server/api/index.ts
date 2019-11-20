@@ -31,6 +31,26 @@ r.get('/feed', async (req: Request<any>, res: Response) => {
   )
 })
 
+const findEntityByClass = (klass: any) => async (
+  req: Request<any>,
+  res: Response
+) => {
+  try {
+    const found = await klass.findOne(req.params.id)
+    return res.json(found)
+  } catch (err) {
+    res.status(500).json({ error: err })
+  }
+}
+
+r.get('/link/:id', findEntityByClass(Link))
+
+r.get('/star/:id', findEntityByClass(Star))
+
+r.get('/tweet/:id', findEntityByClass(Tweet))
+
+r.get('/rank/:id', findEntityByClass(MagicRank))
+
 r.post('/upload/link', async (req: Request<any>, res: Response) => {
   const { link } = req.body
   try {

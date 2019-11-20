@@ -40,19 +40,31 @@ export const TweetText = ({ text, entities }: TweetTextProps) => {
     ),
     v => v.indices[0]
   )
+  let key = 0
   let start = 0
   let vals: any = queue.map(entity => {
     const oldstart = start
     start = entity.indices[1]
     return [
-      text.substring(oldstart, entity.indices[0]),
-      <a className="text-blue-500 hover:underline" href={urlForEntity(entity)}>
+      <span className="whitespace-pre-wrap" key={key++}>
+        {text.substring(oldstart, entity.indices[0])}
+      </span>,
+      <a
+        key={key++}
+        className="text-blue-500 hover:underline"
+        href={urlForEntity(entity)}
+        target="_blank"
+      >
         {text.substring(entity.indices[0], entity.indices[1])}
       </a>
     ]
   })
   vals = flatten(vals)
-  vals.push(text.substring(start))
+  vals.push(
+    <span className="whitespace-pre-wrap" key={key++}>
+      {text.substring(start)}
+    </span>
+  )
 
   return <>{vals}</>
 }
@@ -61,8 +73,11 @@ export const TweetCard = (tweet: Tweet) => {
   let { text, entities } = tweet
   return (
     <div className="flex">
-      <div className="p-4">
-        <i className="fab fa-twitter fa-2x" style={{ color: '#1DA1F2' }} />
+      <div className="px-2 md:px-4 mt-1">
+        <i
+          className="fa-1x md:fa-2x fab fa-twitter"
+          style={{ color: '#1DA1F2' }}
+        />
       </div>
       <div>
         <div className="tweetbody">
