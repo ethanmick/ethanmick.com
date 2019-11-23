@@ -1,11 +1,19 @@
 import fetch from 'isomorphic-unfetch'
+import { map, reverse, sortBy } from 'lodash'
 import * as React from 'react'
 import { Card, Footer, Title } from '../components'
+
+function importAll(r: any) {
+  return r.keys().map(r)
+}
+
+const blog = importAll((require as any).context('./post', false, /.mdx$/))
 
 export default class Home extends React.Component<any, any> {
   static async getInitialProps() {
     const res = await fetch('http://localhost:3000/api/feed')
-    const feed = await res.json()
+    let feed = await res.json()
+    feed = reverse(sortBy([...feed, ...map(blog, 'meta')], 'createdAt'))
     return { feed }
   }
 

@@ -1,24 +1,19 @@
 import { MDXProvider } from '@mdx-js/react'
-import { Head } from 'next/document'
+import Head from 'next/head'
 import React from 'react'
 import { Footer } from './Footer'
 import PostCode from './PostCode'
 import { Title } from './Title'
-
-export interface PostProps {
-  children: any
-  meta: any
-}
 
 const components = {
   pre: (props: any) => <div {...props} />,
   code: PostCode
 }
 
-export const Post = ({ children, meta }: PostProps) => (
-  <>
+export default (meta: any) => ({ children }: any) => (
+  <MDXProvider components={components}>
     <Head>
-      <title>{meta.title}</title>
+      <title>{`${meta.title} | Ethan Mick`}</title>
     </Head>
     <div className="container mx-auto max-w-3xl px-4">
       <Title className="p-16" />
@@ -27,5 +22,5 @@ export const Post = ({ children, meta }: PostProps) => (
       </MDXProvider>
       <Footer />
     </div>
-  </>
+  </MDXProvider>
 )

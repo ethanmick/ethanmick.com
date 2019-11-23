@@ -1,7 +1,7 @@
 import moment from 'moment'
 import Link from 'next/link'
 import * as React from 'react'
-import { Link as LinkModel, MagicRank, Post, Star } from '../server/models'
+import { Link as LinkModel, MagicRank, Star } from '../server/models'
 import { Types } from '../utils/types'
 import { TweetCard } from './TweetCard'
 
@@ -71,7 +71,7 @@ export const LinkCard = (link: LinkModel) => (
   </div>
 )
 
-export const PostCard = ({ title, slug, excerpt, createdAt }: Post) => (
+export const PostCard = ({ title, slug, excerpt, createdAt }: any) => (
   <div className="flex">
     <div className="px-2 md:px-4 mt-1">
       <i className="fa-1x md:fa-2x fad fa-rss text-orange-500 fa-fw" />
