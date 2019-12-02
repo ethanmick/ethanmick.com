@@ -11,7 +11,7 @@ createConnection({
   database: process.env.TYPEORM_DATABASE,
   entities: [Link, MagicRank, Star, Tweet],
   logging: false,
-  extra: process.env.TYPEORM_DRIVER_EXTRA
+  ssl: true
 })
 
 export const connection = getConnection
