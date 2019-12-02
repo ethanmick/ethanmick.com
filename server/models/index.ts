@@ -10,7 +10,8 @@ createConnection({
   url: process.env.TYPEORM_URL,
   database: process.env.TYPEORM_DATABASE,
   entities: [Link, MagicRank, Star, Tweet],
-  logging: false
+  logging: false,
+  extra: process.env.TYPEORM_DRIVER_EXTRA
 })
 
 export const connection = getConnection
