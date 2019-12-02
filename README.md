@@ -1,3 +1,5 @@
+# ethanmick.com #
+
 My website isn't working for me. Here's what I wnat my website to dooo:
 
 1. A place for my multiple projects/facets
