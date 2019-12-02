@@ -5,10 +5,7 @@
     "outDir": "dist",
     "target": "es2017",
     "isolatedModules": false,
-    "noEmit": false,
-    "strictPropertyInitialization": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "noEmit": false
   },
   "include": ["server/**/*.ts", "types/**/*.ts"]
 }

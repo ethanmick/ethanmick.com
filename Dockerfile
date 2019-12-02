@@ -14,6 +14,7 @@ COPY yarn.lock .
 RUN yarn
 
 # Bundle app source
+COPY .babelrc .babelrc
 COPY components components
 COPY next-env.d.ts next-env.d.ts
 COPY next.config.js .
