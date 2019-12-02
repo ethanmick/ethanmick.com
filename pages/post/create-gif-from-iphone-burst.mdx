@@ -1,4 +1,4 @@
-import { Post } from '../../components'
+import withPost from '../../components/with-post'
 
 export const meta = {
   type: 'POST',
@@ -8,6 +8,8 @@ export const meta = {
   excerpt: 'I recently wanted to create a GIF from some burst images and already had FFmpeg installed on my Mac. Surely the audacious tool can create a GIF from the images. Turns out, it can!',
   createdAt: '2018-05-16T21:04:04.997Z'
 }
+
+export default withPost({...meta})
 
 I recently wanted to create a GIF from some burst images and already had FFmpeg
 installed on my Mac. Surely the audacious tool can create a GIF from the
@@ -38,9 +40,3 @@ There are two things you may need to change:
 2. The `-start_number 3244` maps to the first image number you have, so you'll want to change that.
 
 There you go! You now have a GIF named `out.gif` that you can share with your friends.
-
-export default ({ children }) => (
-  <Post>
-    {children}
-  </Post>
-)

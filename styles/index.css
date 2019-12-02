@@ -47,3 +47,7 @@ article.post ol {
 article.post li {
   @apply mb-4;
 }
+
+article.post img {
+  @apply mb-4;
+}

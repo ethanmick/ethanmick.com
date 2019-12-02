@@ -1,0 +1,58 @@
+import withPost from '../../components/with-post'
+
+export const meta = {
+  type: 'POST',
+  title: 'Converting M4V to MP4 and WEBM with FFmpeg',
+  author: 'Ethan Mick',
+  slug: 'converting-m4v-to-mp4-and-webm-with-ffmpeg',
+  excerpt: '',
+  createdAt: '2019-11-23T08:00:00.000Z'
+}
+
+export default withPost({ ...meta })
+
+Newer versions of FFmpeg are awesome. To make sure you have all the
+goodies for HTML 5 video (for OS X):
+
+```bash
+brew install ffmpeg --with-libvpx --with-libvorbis
+```
+
+or if you already had it installed:
+
+```bash
+brew reinstall ffmpeg --with-libvpx --with-libvorbis
+```
+
+Then, to convert a video to .mp4:
+
+```bash
+ffmpeg -i input.m4v out.mp4
+```
+
+or WebM:
+
+```bash
+ffmpeg -i input.m4v output.webm
+```
+
+So easy!
+
+Of course, I had a lot of videos I wanted to convert. So I wrote up a
+little bash script.
+
+    # convert.sh
+    for i in *.m4v;
+      do name=`echo $i | cut -d'.' -f1`;
+      echo $name;
+      ffmpeg -ss 00:00:05 -i "$i" -frames:v 1 "./output/$name.png"
+      ffmpeg -i "$i" "./output/$name.mp4";
+      ffmpeg -i "$i" "./output/$name.webm";
+    done
+
+This requires there to be an *output* folder in the directory for the
+script to place the result in. This will not only convert every file to
+MP4 and WebM, but it also makes an image of the video at second 5. Why
+5? Because sometimes the videos were black for the first few seconds, so
+I had to go into them a little bit. This can be great for using the new
+`<video>` element in HTML, and having a Poster image.

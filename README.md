@@ -61,6 +61,15 @@ yarn dev
 
 This is a really simple project that show the usage of Next.js with TypeScript.
 
+## Setup
+
+1. new server
+2. setup postgres
+3. add schema
+4. install nginx
+5. how are we running this?
+6. DOCKER??
+
 ## How to use it?
 
 ### Using `create-next-app`

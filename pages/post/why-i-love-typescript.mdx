@@ -1,0 +1,116 @@
+import withPost from '../../components/with-post'
+
+export const meta = {
+  type: 'POST',
+  title: 'Why I Love TypeScript',
+  author: 'Ethan Mick',
+  slug: 'why-i-love-typescript',
+  excerpt: 'TypeScript adds incredibly useful features to JavaScript with a powerful compiler, interfaces, enums, decorators, and more. With great community support and fantastic releases, TypeScript should be your go to for writing complex JavaScript.',
+  createdAt: '2019-11-22T08:00:00.000Z'
+}
+
+export default withPost({ ...meta })
+
+I must admit, I am not a JavaScript purist. My first experiences of
+Node.js was at my previous job, CloudMine, where we had several
+microservices written in [CoffeeScript](https://coffeescript.org/). I'm
+not sure why CoffeeScript had been chosen to write the microservices
+instead of plain JavaScript. Maybe it was syntactically similar to Ruby,
+which the rest of the platform was written in. Maybe 2010 JavaScript was
+too rough around the edges for them. Whatever the reason, it's what I
+started coded Node in.
+
+And you know? I didn't hate it. When I had to write some *regular*
+JavaScript, it felt so barbaric. This was back in 2012, mind you, long
+before ECMAScript 2015. CoffeeScript had the syntactic sugar to clean up
+the rough edges of JS; arrow functions, default parameters, conditional
+assignment, classes, "everything is an expression". It was great.
+
+I was happily coding my microservices in CoffeeScript while I heard
+rumblings of the future of JavaScript. A new standard was coming, one
+that addressed a lot of the issues with the current language. Classes,
+arrow functions binding `this`, default parameters, `...rest` args, and
+even more. It took some time for the features to make it into
+JavaScript, but once they did, it was clear that the future had arrived.
+
+There were two final nails in the coffin for my CoffeeScript love. The
+first was tooling; as ES6 became more popular the tools were updated to
+support it. Linting, testing, code formatting, integrations, and more --
+they were all updated to support the latest goodness in ES6. As
+CoffeeScript's popularity wained, the community did too. This provided
+even more impetus to switch.
+
+Secondly, the primary author of CoffeeScript took their time in deciding
+what to do with CoffeeScript\'s future.
+
+![CoffeeScript Code
+Frequency](/content/images/2019/10/image.png)
+
+Contributions and updates to CoffeeScript tapered off, until 2017, when
+a new primary maintainer stepped forward and started updating
+CoffeeScript to 2.0. Before then, there was much discussion on what to
+do with CoffeeScript and how to move forward. In a world where
+CoffeeScript was supposed to compile down to ES3, something *every*
+browser could use, why would you have it compile down to ES6? But if ES6
+has the tooling to now compile down too, why use CoffeeScript? It was a
+language stuck in the past, unable to move forward.
+
+So I left.
+
+Andddd.... walked right into TypeScript. Look, it wasn't my fault, the
+new project was going to be in Angular 2 and there barely was
+*documentation* for how to use Angular in JavaScript. It felt like
+TypeScript or bust. And hey, I'm not stranger to *languages that look
+like JavaScript*, so sign me up.
+
+Angular 2+ was a beast to learn itself (and the topic of another blog
+post), and TypeScript could mostly fade into the background, only using
+the type system to inject values. But over time there were some standout
+benefits to TypeScript over pure JavaScript, and why I love it so much.
+
+Compiler
+--------
+
+Having a compiler is really nice. By conforming code to concrete types
+the compiler can catch a whole slew of bugs that might be present in the
+JavaScript but just aren\'t triggering. Importantly, the compiler is
+very good: you don't need to give it that much help for it to know the
+right thing. You also don't need to turn it off that much. When
+starting projects from scratch I always use `strict` mode and put in
+effort to have types for all my objects. It allows me to catch many
+errors before runtime, saving time and effort.
+
+Language Features
+-----------------
+
+TypeScript adds several nice additions on top of JavaScript:
+
+1.  **Interfaces:** Allows you to define the shape of something with
+    needing to concretely define a class. This is a great way to
+    describe JSON responses from the server.
+2.  **Enums:** A nice way to describe a type without resorting to
+    strings or integers.
+3.  **Decorators:** These annotations can be used to create powerful new
+    features with minimal effort. Projects like
+    [TypeORM](https://github.com/typeorm/typeorm) make extensive use of
+    these.
+
+Tooling and Community
+---------------------
+
+A language is only as good as its community, and TypeScript has
+continued to foster an excellent community with great support.
+
+-   [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)
+    stepped in and provided a place for types for many projects that
+    didn\'t support types themselves. This made TypeScript much more
+    approachable and usable.
+-   [Prettier](https://prettier.io/) support!
+-   [Linting](https://palantir.github.io/tslint/)!
+-   Testing with [Jest](https://jestjs.io/docs/en/getting-started).
+
+I'm optimistic about the future of TypeScript and hope it continues to
+grow. As the community grows it means even more support for the
+language, and it's exciting to see projects adopt it such as
+[Next.js](https://github.com/zeit/next.js). I'll continue preaching the
+virtues of TypeScript as well!
