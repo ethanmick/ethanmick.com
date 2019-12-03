@@ -15,3 +15,11 @@ export const twitter = {
 export const auth = {
   token: process.env.AUTH_TOKEN
 }
+
+export const database = {
+  type: process.env.TYPEORM_CONNECTION || '',
+  url: process.env.TYPEORM_URL || '',
+  database: process.env.TYPEORM_DATABASE || '',
+  logging: process.env.TYPEORM_LOGGING === 'true',
+  ssl: process.env.TYPEORM_SSL === 'true'
+}

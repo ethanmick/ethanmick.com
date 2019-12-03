@@ -5,6 +5,9 @@ const withMDX = require('@next/mdx')({
 
 module.exports = withCSS(
   withMDX({
-    pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx']
+    pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+    publicRuntimeConfig: {
+      API_ROOT: process.env.API_ROOT
+    }
   })
 )
