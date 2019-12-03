@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-unfetch'
 import { map, reverse, sortBy } from 'lodash'
 import getConfig from 'next/config'
+import Head from 'next/head'
 import * as React from 'react'
 import { Card, Footer, Title } from '../components'
 const { publicRuntimeConfig } = getConfig()
@@ -23,6 +24,9 @@ export default class Home extends React.Component<any, any> {
     const { feed } = this.props
     return (
       <div className="container mx-auto max-w-3xl px-2">
+        <Head>
+          <meta name="Description" content="Personal blog for Ethan Mick." />
+        </Head>
         <Title />
         {feed.map((item: any, i: number) => (
           <Card key={i} {...item} className="mb-6 md:mb-10" />
