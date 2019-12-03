@@ -26,6 +26,7 @@ export const StarCard = (star: Star) => (
           className="text-blue-500 hover:underline"
           href={`https://github.com/${star.fullName}`}
           target="_blank"
+          rel="noopener"
         >
           {star.owner} / <span className="font-bold">{star.name}</span>
         </a>

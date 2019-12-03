@@ -54,6 +54,7 @@ export const TweetText = ({ text, entities }: TweetTextProps) => {
         className="text-blue-500 hover:underline"
         href={urlForEntity(entity)}
         target="_blank"
+        rel="noopener"
       >
         {text.substring(entity.indices[0], entity.indices[1])}
       </a>
