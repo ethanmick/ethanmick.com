@@ -2,7 +2,7 @@ import { NextPageContext } from 'next'
 import React from 'react'
 import { Footer, MagicRankCard, Title } from '../../../components'
 import { MagicRank } from '../../../server/models'
-import { json } from '../../utils/api'
+import { json } from '../../../utils/api'
 
 interface MagicRankPageProps {
   rank: MagicRank
