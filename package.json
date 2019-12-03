@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "nodemon",
-    "build": "next build && tsc --project tsconfig.server.json && cp -R public dist",
-    "start": "node dist/server/index.js",
+    "build": "NODE_ENV=production next build && tsc --project tsconfig.server.json && cp -R public dist",
+    "start": "NODE_ENV=production node dist/server/index.js",
     "type-check": "tsc"
   },
   "dependencies": {

@@ -8,6 +8,9 @@ module.exports = withCSS(
     pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
     publicRuntimeConfig: {
       API_ROOT: process.env.API_ROOT
+    },
+    devIndicators: {
+      autoPrerender: false
     }
   })
 )
