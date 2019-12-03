@@ -1,6 +1,6 @@
-# ethanmick.com #
+# ethanmick.com
 
-My website isn't working for me. Here's what I wnat my website to dooo:
+My website isn't working for me. Here's what I wnat my website to do:
 
 1. A place for my multiple projects/facets
 2. A place for my content from other websites
