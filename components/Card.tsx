@@ -32,7 +32,7 @@ export const StarCard = (star: Star) => (
         </a>
       </div>
       <div className="text-xs">{star.description}</div>
-      <Link href={`/star/${star.id}`} as={`/star/${star.id}`}>
+      <Link href={`/star?id=${star.id}`} as={`/star/${star.id}`}>
         <a className="text-xs hover:underline">
           {moment(star.createdAt).format('MMM Do, YYYY')}
         </a>
