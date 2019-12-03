@@ -26,8 +26,31 @@ article.post {
 }
 
 article.post p,
-article.post pre {
+article.post pre,
+article.post h1,
+article.post h2,
+article.post h3,
+article.post h4,
+article.post h5,
+article.post h6,
+article.post img {
   @apply mb-8;
+}
+
+article.post h1 {
+  @apply text-3xl;
+}
+
+article.post h2 {
+  @apply text-2xl;
+}
+
+article.post h3 {
+  @apply text-xl;
+}
+
+article.post h4 {
+  @apply font-bold;
 }
 
 article.post pre {
@@ -40,14 +63,26 @@ article.post code {
   border-radius: 3px;
 }
 
+article.post a {
+  @apply text-blue-600;
+}
+
+article.post a:hover {
+  @apply underline;
+}
+
+article.post a:visited {
+  @apply text-indigo-600;
+}
+
 article.post ol {
   @apply list-decimal pl-4;
 }
 
-article.post li {
-  @apply mb-4;
+article.post ul {
+  @apply list-disc pl-4;
 }
 
-article.post img {
+article.post li {
   @apply mb-4;
 }
