@@ -18,4 +18,4 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USERNAME }}
           key: ${{ secrets.REMOTE_KEY }}
-          script: deploy.sh
+          script: ./deploy.sh
