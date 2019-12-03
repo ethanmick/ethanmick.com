@@ -1,8 +1,8 @@
-import fetch from 'isomorphic-unfetch'
 import { NextPageContext } from 'next'
 import React from 'react'
 import { Footer, StarCard, Title } from '../../components'
 import { Star } from '../../server/models'
+import { json } from '../../utils/api'
 
 interface StarPageProps {
   star: Star
@@ -22,8 +22,7 @@ StarPage.getInitialProps = async ({
   query
 }: NextPageContext): Promise<StarPageProps> => {
   const { id } = query
-  const res = await fetch(`http://localhost:3000/api/star/${id}`)
-  const star = await res.json()
+  const star = await json(`star/${id}`)
   return { star }
 }
 

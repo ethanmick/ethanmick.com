@@ -1,8 +1,8 @@
-import fetch from 'isomorphic-unfetch'
 import { NextPageContext } from 'next'
 import React from 'react'
 import { Footer, MagicRankCard, Title } from '../../../components'
 import { MagicRank } from '../../../server/models'
+import { json } from '../../utils/api'
 
 interface MagicRankPageProps {
   rank: MagicRank
@@ -22,8 +22,7 @@ MagicRankPage.getInitialProps = async ({
   query
 }: NextPageContext): Promise<MagicRankPageProps> => {
   const { id } = query
-  const res = await fetch(`http://localhost:3000/api/rank/${id}`)
-  const rank = await res.json()
+  const rank = await json(`rank/${id}`)
   return { rank }
 }
 

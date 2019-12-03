@@ -1,8 +1,8 @@
-import fetch from 'isomorphic-unfetch'
 import { NextPageContext } from 'next'
 import React from 'react'
 import { Footer, Title, TweetCard } from '../../components'
 import { Tweet } from '../../server/models'
+import { json } from '../../utils/api'
 
 interface TweetPageProps {
   tweet: Tweet
@@ -22,8 +22,7 @@ TweetPage.getInitialProps = async ({
   query
 }: NextPageContext): Promise<TweetPageProps> => {
   const { id } = query
-  const res = await fetch(`http://localhost:3000/api/tweet/${id}`)
-  const tweet = await res.json()
+  const tweet = await json(`tweet/${id}`)
   return { tweet }
 }
 

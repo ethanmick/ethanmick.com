@@ -1,10 +1,8 @@
-import fetch from 'isomorphic-unfetch'
 import { map, reverse, sortBy } from 'lodash'
-import getConfig from 'next/config'
 import Head from 'next/head'
 import * as React from 'react'
 import { Card, Footer, Title } from '../components'
-const { publicRuntimeConfig } = getConfig()
+import { json } from '../utils/api'
 
 function importAll(r: any) {
   return r.keys().map(r)
@@ -14,9 +12,8 @@ const blog = importAll((require as any).context('./post', false, /.mdx$/))
 
 export default class Home extends React.Component<any, any> {
   static async getInitialProps() {
-    const res = await fetch(`${publicRuntimeConfig.API_ROOT}/feed`)
-    let feed = await res.json()
-    feed = reverse(sortBy([...feed, ...map(blog, 'meta')], 'createdAt'))
+    const data = await json('feed')
+    const feed = reverse(sortBy([...data, ...map(blog, 'meta')], 'createdAt'))
     return { feed }
   }
 

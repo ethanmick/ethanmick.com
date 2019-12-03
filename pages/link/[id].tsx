@@ -1,8 +1,8 @@
-import fetch from 'isomorphic-unfetch'
 import { NextPageContext } from 'next'
 import React from 'react'
 import { Footer, LinkCard, Title } from '../../components'
 import { Link } from '../../server/models'
+import { json } from '../../utils/api'
 
 interface LinkPageProps {
   link: Link
@@ -22,8 +22,7 @@ LinkPage.getInitialProps = async ({
   query
 }: NextPageContext): Promise<LinkPageProps> => {
   const { id } = query
-  const res = await fetch(`http://localhost:3000/api/link/${id}`)
-  const link = await res.json()
+  const link = await json(`link/${id}`)
   return { link }
 }
 
