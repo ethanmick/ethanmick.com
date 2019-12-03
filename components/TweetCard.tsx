@@ -84,7 +84,7 @@ export const TweetCard = (tweet: Tweet) => {
         <div className="tweetbody">
           <TweetText text={text} entities={entities} />
         </div>
-        <Link href={`/tweet/${tweet.id}`}>
+        <Link href={`/tweet/[id]`} as={`/tweet/${tweet.id}`}>
           <a className="text-xs hover:underline">
             {moment(tweet.createdAt).format('MMM Do, YYYY')}
           </a>

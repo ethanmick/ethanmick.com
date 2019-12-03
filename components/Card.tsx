@@ -63,7 +63,7 @@ export const LinkCard = (link: LinkModel) => (
           ({link.domain})
         </a>
       </span>
-      <Link href={`/link/${link.id}`}>
+      <Link href={`/link/[id]`} as={`/link/${link.id}`}>
         <a className="text-xs hover:underline">
           {moment(link.createdAt).format('MMM Do, YYYY')}
         </a>
@@ -112,7 +112,7 @@ export const MagicRankCard = (rank: MagicRank) => {
             className="ml-2 w-8 h-8"
           />
         </div>
-        <Link href={`/mtg/rank/${rank.id}`}>
+        <Link href={`/mtg/rank/[id]`} as={`/mtg/rank/${rank.id}`}>
           <a className="text-xs hover:underline">
             {moment(rank.createdAt).format('MMM Do, YYYY')}
           </a>
