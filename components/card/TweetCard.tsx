@@ -10,7 +10,7 @@ import {
   Tweet,
   UrlEntity,
   UserEntity
-} from '../server/models'
+} from '../../server/models'
 
 interface TweetTextProps {
   entities: Entities
