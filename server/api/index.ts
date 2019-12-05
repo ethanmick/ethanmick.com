@@ -1,9 +1,8 @@
 import Mercury from '@postlight/mercury-parser'
 import express, { Request, Response } from 'express'
 import { reverse, sortBy } from 'lodash'
-import { Picture } from 'server/models/picture'
 import { auth } from '../config'
-import { Comment, Link, MagicRank, Star, Tweet } from '../models'
+import { Comment, Link, MagicRank, Picture, Star, Tweet } from '../models'
 
 const checkAuth = (req: Request<any>, _: Response, next: any) => {
   const { authorization = '' } = req.headers
@@ -79,5 +78,23 @@ r.post('/upload/link', checkAuth, async (req: Request<any>, res: Response) => {
     res.status(500).json({ error: err.message })
   }
 })
+
+// pass through to s3?
+r.post(
+  '/upload/picture',
+  checkAuth,
+  async (req: Request<any>, res: Response) => {
+    const data = req.body
+    try {
+      const pic = new Picture()
+      pic.src = ['url']
+      pic.createdAt = new Date()
+      await pic.save()
+      res.json(pic)
+    } catch (err) {
+      res.status(500).json({ error: err.message })
+    }
+  }
+)
 
 export const api = r

@@ -1,6 +1,6 @@
 export * from './Card'
-export * from './ImageCard'
 export * from './LinkCard'
+export * from './PictureCard'
 export * from './PostCard'
 export * from './StarCard'
 export * from './TweetCard'
