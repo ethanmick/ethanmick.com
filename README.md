@@ -3,10 +3,11 @@
     <img src="https://raw.githubusercontent.com/ethanmick/ethanmick.com/master/public/favicon.png">
   </a>
 </p>
-
-<a aria-label="Ethan Mick" href="https://ethanmick.com">
-  <h3 class="text-center">https://ethanmick.com</h3>
-</a>
+<h3>
+  <a aria-label="ethanmick.com" href="https://ethanmick.com">
+    https://ethanmick.com
+  </a>
+</h3>
 My website isn't working for me. Here's what I wnat my website to do:
 
 1. A place for my multiple projects/facets
