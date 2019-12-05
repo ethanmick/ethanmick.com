@@ -63,14 +63,17 @@ article.post code {
   border-radius: 3px;
 }
 
+.comment a,
 article.post a {
   @apply text-blue-600;
 }
 
+.comment a:hover,
 article.post a:hover {
   @apply underline;
 }
 
+.comment a:visited,
 article.post a:visited {
   @apply text-indigo-600;
 }
@@ -85,4 +88,37 @@ article.post ul {
 
 article.post li {
   @apply mb-4;
+}
+
+/* MicroBlog Posts */
+.comment h1,
+.comment h2,
+.comment h3,
+.comment h4,
+.comment h5,
+.comment p,
+.comment ul,
+.comment ol {
+  @apply mb-2;
+}
+
+.comment h1 {
+  @apply text-2xl;
+}
+
+.comment h2 {
+  @apply text-xl;
+}
+
+.comment ul,
+.comment ol {
+  @apply pl-4;
+}
+
+.comment ul li {
+  @apply list-disc;
+}
+
+.comment ol li {
+  @apply list-decimal;
 }
