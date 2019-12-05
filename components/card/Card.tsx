@@ -20,7 +20,7 @@ export const asCard = ({ icon, title, body, footer }: CardProps) => {
     <div className="flex">
       <div className="px-2 md:px-4 mt-1">{icon}</div>
       <div className="flex flex-col">
-        <div className="flex items-baseline text-xl">{title}</div>
+        {title && <div className="flex items-baseline text-xl">{title}</div>}
         {body}
         {footer}
       </div>
