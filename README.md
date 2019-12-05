@@ -2,11 +2,11 @@
   <a aria-label="Ethan Mick" href="https://ethanmick.com">
     <img src="https://raw.githubusercontent.com/ethanmick/ethanmick.com/master/public/favicon.png">
   </a>
-  <a aria-label="Ethan Mick" href="https://ethanmick.com">
-    <h3>https://ethanmick.com</h3>
-  </a>
 </p>
 
+<a aria-label="Ethan Mick" href="https://ethanmick.com">
+  <h3 class="text-center">https://ethanmick.com</h3>
+</a>
 My website isn't working for me. Here's what I wnat my website to do:
 
 1. A place for my multiple projects/facets
