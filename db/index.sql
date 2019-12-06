@@ -11,15 +11,6 @@ create table comments (
   updated_at timestamp without time zone
 );
 
-create table pictures (
-  id serial not null primary key,
-  -- Array of src urls ['image.jpg']
-  src jsonb not null,
-  -- Model Objects
-  created_at timestamp without time zone not null default now(),
-  updated_at timestamp without time zone
-);
-
 create table links (
   id serial not null primary key,
   link text not null,
@@ -37,6 +28,15 @@ create table links (
 create table magic_ranks (
   id serial not null primary key,
   rank text not null,
+  -- Model Objects
+  created_at timestamp without time zone not null default now(),
+  updated_at timestamp without time zone
+);
+
+create table pictures (
+  id serial not null primary key,
+  -- Array of src urls ['image.jpg']
+  src jsonb not null,
   -- Model Objects
   created_at timestamp without time zone not null default now(),
   updated_at timestamp without time zone
