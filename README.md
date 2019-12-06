@@ -25,6 +25,8 @@ I'm using [Next.js](https://nextjs.org/). Next.js has a lot of great features ou
 My website captures content from several aspects of my life and centralizes it.
 
 - Blog Posts
+- Micro blog posts
+- Pictures
 - GitHub Stars
 - Tweets
 - Links to interesting websites
