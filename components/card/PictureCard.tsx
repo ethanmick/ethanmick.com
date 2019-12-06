@@ -6,8 +6,8 @@ export const PictureCard = (picture: Picture) => {
   const icon = <CardIcon icon="fad fa-camera" color="text-teal-400" />
   const body = (
     <div>
-      {picture.src.map(src => (
-        <img src={src} className="rounded shadow" />
+      {picture.src.map((src: string, key: number) => (
+        <img src={src} key={key} className="rounded shadow" />
       ))}
     </div>
   )

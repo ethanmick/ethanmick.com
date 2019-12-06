@@ -59,6 +59,8 @@ r.get('/rank/:id', findEntityByClass(MagicRank))
 
 r.get('/comment/:id', findEntityByClass(Comment))
 
+r.get('/picture/:id', findEntityByClass(Picture))
+
 r.post('/upload/link', checkAuth, async (req: Request<any>, res: Response) => {
   const { link } = req.body
   try {
@@ -78,23 +80,5 @@ r.post('/upload/link', checkAuth, async (req: Request<any>, res: Response) => {
     res.status(500).json({ error: err.message })
   }
 })
-
-// pass through to s3?
-r.post(
-  '/upload/picture',
-  checkAuth,
-  async (req: Request<any>, res: Response) => {
-    const data = req.body
-    try {
-      const pic = new Picture()
-      pic.src = ['url']
-      pic.createdAt = new Date()
-      await pic.save()
-      res.json(pic)
-    } catch (err) {
-      res.status(500).json({ error: err.message })
-    }
-  }
-)
 
 export const api = r
