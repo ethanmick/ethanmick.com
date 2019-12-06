@@ -2,7 +2,7 @@ import Mercury from '@postlight/mercury-parser'
 import express, { Request, Response } from 'express'
 import { reverse, sortBy } from 'lodash'
 import { auth } from '../config'
-import { Link, MagicRank, Star, Tweet } from '../models'
+import { Comment, Link, MagicRank, Picture, Star, Tweet } from '../models'
 
 const checkAuth = (req: Request<any>, _: Response, next: any) => {
   const { authorization = '' } = req.headers
@@ -24,9 +24,16 @@ r.get('/feed', async (req: Request<any>, res: Response) => {
   const ranks = await MagicRank.findForFeed()
   const tweets = await Tweet.findForFeed()
   const links = await Link.findForFeed()
+  const comments = await Comment.findForFeed()
+  const pictures = await Picture.findForFeed()
 
   res.json(
-    reverse(sortBy([...stars, ...ranks, ...tweets, ...links], 'createdAt'))
+    reverse(
+      sortBy(
+        [...stars, ...ranks, ...tweets, ...links, ...comments, ...pictures],
+        'createdAt'
+      )
+    )
   )
 })
 
@@ -49,6 +56,10 @@ r.get('/star/:id', findEntityByClass(Star))
 r.get('/tweet/:id', findEntityByClass(Tweet))
 
 r.get('/rank/:id', findEntityByClass(MagicRank))
+
+r.get('/comment/:id', findEntityByClass(Comment))
+
+r.get('/picture/:id', findEntityByClass(Picture))
 
 r.post('/upload/link', checkAuth, async (req: Request<any>, res: Response) => {
   const { link } = req.body

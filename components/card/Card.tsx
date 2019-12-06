@@ -2,8 +2,10 @@ import moment from 'moment'
 import Link from 'next/link'
 import * as React from 'react'
 import { Types } from '../../utils/types'
+import { CommentCard } from './CommentCard'
 import { LinkCard } from './LinkCard'
 import { MagicRankCard } from './MagicRankCard'
+import { PictureCard } from './PictureCard'
 import { PostCard } from './PostCard'
 import { StarCard } from './StarCard'
 import { TweetCard } from './TweetCard'
@@ -58,5 +60,7 @@ export const Card = (props: any) => (
     {props.type == Types.Post && <PostCard {...props} />}
     {props.type == Types.Tweet && <TweetCard {...props} />}
     {props.type == Types.MagicRank && <MagicRankCard {...props} />}
+    {props.type == Types.Comment && <CommentCard {...props} />}
+    {props.type == Types.Picture && <PictureCard {...props} />}
   </div>
 )

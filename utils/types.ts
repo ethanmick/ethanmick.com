@@ -5,5 +5,7 @@ export enum Types {
   Link = 'LINK',
   Post = 'POST',
   Tweet = 'TWEET',
-  MagicRank = 'MAGIC_RANK'
+  MagicRank = 'MAGIC_RANK',
+  Comment = 'COMMENT',
+  Picture = 'PICTURE'
 }
