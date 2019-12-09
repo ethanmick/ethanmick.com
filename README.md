@@ -123,4 +123,5 @@ TWITTER_AUTH_ACCESS_TOKEN_KEY=token
 TWITTER_AUTH_ACCESS_TOKEN_SECRET=tokensecret
 AUTH_TOKEN=tokenforsecureaccess
 API_ROOT=http://localhost:3000/api
+ROOT_URL=http://localhost:3000
 ```
