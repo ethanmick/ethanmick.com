@@ -10,11 +10,10 @@ interface LinkPageProps {
 }
 
 const LinkPage = ({ link }: LinkPageProps) => {
-  const titl = title(link.title)
   return (
     <div className="container mx-auto max-w-3xl px-4">
       <NextSeo
-        title={titl}
+        title={title(link.title)}
         openGraph={{
           url: url(`/link/${link.id}`)
         }}
