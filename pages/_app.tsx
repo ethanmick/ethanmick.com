@@ -1,25 +1,27 @@
+import { DefaultSeo } from 'next-seo'
 import App from 'next/app'
-import Head from 'next/head'
 import React from 'react'
 import '../styles/index.css'
 
 class MyApp extends App {
-  static async getInitialProps({ Component, ctx }: any) {
-    let pageProps = {}
-
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx)
-    }
-
-    return { pageProps }
-  }
   render() {
     const { Component, pageProps } = this.props
     return (
       <>
-        <Head>
-          <title>Ethan Mick</title>
-        </Head>
+        <DefaultSeo
+          title="Ethan Mick"
+          description="Personal blog of Ethan Mick"
+          canonical="https://ethanmick.com"
+          openGraph={{
+            type: 'website',
+            locale: 'en_US',
+            url: 'https://ethanmick.com/',
+            site_name: 'Ethan Mick'
+          }}
+          twitter={{
+            handle: '@Ethan_Mick'
+          }}
+        />
         <Component {...pageProps} />
       </>
     )

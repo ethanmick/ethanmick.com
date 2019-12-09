@@ -1,8 +1,9 @@
 import { NextPageContext } from 'next'
+import { NextSeo } from 'next-seo'
 import React from 'react'
 import { Footer, MagicRankCard, Title } from '../../../components'
 import { MagicRank } from '../../../server/models'
-import { json } from '../../../utils/api'
+import { json, title, url } from '../../../utils'
 
 interface MagicRankPageProps {
   rank: MagicRank
@@ -11,6 +12,12 @@ interface MagicRankPageProps {
 const MagicRankPage = ({ rank }: MagicRankPageProps) => {
   return (
     <div className="container mx-auto max-w-3xl px-4">
+      <NextSeo
+        title={title(`Achieved Rank ${rank.rank}`)}
+        openGraph={{
+          url: url(`/mtg/rank/${rank.id}`)
+        }}
+      />
       <Title className="p-16" />
       <MagicRankCard {...(rank as any)} />
       <Footer />
