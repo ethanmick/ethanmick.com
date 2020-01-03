@@ -7,13 +7,18 @@ import {
 } from 'typeorm'
 import { Types } from '../../utils/types'
 
+export interface PictureSource {
+  src: string
+  caption?: string
+}
+
 @Entity('pictures')
 export class Picture extends BaseEntity {
   @PrimaryColumn()
   id: number
 
   @Column({ type: 'jsonb' })
-  src: string[]
+  src: PictureSource[]
 
   @Column({ name: 'created_at' })
   createdAt: Date

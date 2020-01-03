@@ -16,7 +16,7 @@ const PicturePage = ({ picture }: PicturePageProps) => {
         title={title('Picture')}
         openGraph={{
           url: url(`/picture/${picture.id}`),
-          images: picture.src.map(url => ({
+          images: picture.src.map(({ src: url }) => ({
             url
           }))
         }}
