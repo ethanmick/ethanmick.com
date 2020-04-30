@@ -2,6 +2,7 @@ import express from 'express'
 import next from 'next'
 import { api } from './api'
 import { checkStars } from './github'
+import log from './log'
 import { connection } from './models'
 import { checkTweets } from './twitter'
 
@@ -11,22 +12,43 @@ const app = next({ dev })
 const handle = app.getRequestHandler()
 const TIMER_DURATION = 120000 // 2 minutes
 
-app.prepare().then(() => {
-  connection()
-  const server = express()
+const wrap = (msg: string, fn: () => any) => async () => {
+  try {
+    await fn()
+  } catch (err) {
+    // err is an array from the Twitter client for idiotic reasons
+    // We mostly don't care about all the errors, just the first is fine
+    if (Array.isArray(err)) {
+      err = err[0]
+    }
+    log.error(`${msg}: ${err.message}`)
+  }
+}
 
-  setInterval(checkStars, TIMER_DURATION)
-  setInterval(checkTweets, TIMER_DURATION)
+const main = async () => {
+  log.info('Starting up...')
+  try {
+    await app.prepare()
+    await connection()
 
-  server.use('/public', express.static('public'))
-  server.use('/api', api)
+    setInterval(wrap('error fetching stars', checkStars), TIMER_DURATION)
+    setInterval(wrap('error getting tweets', checkTweets), TIMER_DURATION)
 
-  server.all('*', (req, res) => {
-    return handle(req, res)
-  })
+    const server = express()
+    server.use('/public', express.static('public'))
+    server.use('/api', api)
 
-  server.listen(port, (err: Error) => {
-    if (err) throw err
-    console.log(`> Ready on http://localhost:${port}`)
-  })
-})
+    server.all('*', (req, res) => {
+      return handle(req, res)
+    })
+
+    // TODO: Promisify later
+    server.listen(port, (err: Error) => {
+      if (err) throw err
+      log.info(`Ready on http://localhost:${port}`)
+    })
+  } catch (err) {
+    log.error(`Error starting server ${err.message}`)
+  }
+}
+main()
