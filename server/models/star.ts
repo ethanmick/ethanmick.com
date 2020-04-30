@@ -47,8 +47,9 @@ export class Star extends BaseEntity {
 
   static async findForFeed(limit = 50) {
     const found = await this.createQueryBuilder('star')
+      .orderBy('created_at', 'DESC')
       .limit(limit)
       .getMany()
-    return found.map(d => ({ ...d, type: Types.Star }))
+    return found.map((d) => ({ ...d, type: Types.Star }))
   }
 }
