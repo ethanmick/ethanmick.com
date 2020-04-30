@@ -29,7 +29,8 @@
     "react-dom": "16.12.0",
     "reflect-metadata": "0.1.13",
     "twitter": "1.7.1",
-    "typeorm": "0.2.22"
+    "typeorm": "0.2.22",
+    "winston": "3.2.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "7.7.4",

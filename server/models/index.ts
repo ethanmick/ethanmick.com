@@ -11,7 +11,10 @@ import { Tweet } from './tweet'
 createConnection({
   ...database,
   entities: [Comment, Link, MagicRank, Star, Tweet, Picture]
-} as any)
+} as any).catch((err) => {
+  console.log('Error connecting to database:', err)
+  process.exit(1)
+})
 
 export const connection = getConnection
 export * from './comment'

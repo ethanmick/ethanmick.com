@@ -16,10 +16,7 @@ const checkAuth = (req: Request<any>, _: Response, next: any) => {
 const r = express.Router()
 r.use(express.json())
 
-r.get('/feed', async (req: Request<any>, res: Response) => {
-  const { q: query } = req.query
-  console.log(query)
-
+r.get('/feed', async (_: Request<any>, res: Response) => {
   const stars = await Star.findForFeed()
   const ranks = await MagicRank.findForFeed()
   const tweets = await Tweet.findForFeed()
