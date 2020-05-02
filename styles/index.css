@@ -90,6 +90,17 @@ article.post li {
   @apply mb-4;
 }
 
+article blockquote {
+  padding-left: 0.75rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-left: 3px solid rgba(15, 5, 15, 0.07);
+}
+
+pre.prism-code span.token {
+  font-style: normal !important;
+}
+
 /* MicroBlog Posts */
 .comment h1,
 .comment h2,

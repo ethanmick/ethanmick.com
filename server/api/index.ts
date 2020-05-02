@@ -4,7 +4,7 @@ import { reverse, sortBy } from 'lodash'
 import { auth } from '../config'
 import { Comment, Link, MagicRank, Picture, Star, Tweet } from '../models'
 
-const checkAuth = (req: Request<any>, _: Response, next: any) => {
+const checkAuth = (req: Request, _: Response, next: any) => {
   const { authorization = '' } = req.headers
   const [, token] = authorization.split(' ')
   if (token === auth.token) {
