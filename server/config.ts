@@ -21,5 +21,10 @@ export const database = {
   url: process.env.TYPEORM_URL || '',
   database: process.env.TYPEORM_DATABASE || '',
   logging: process.env.TYPEORM_LOGGING === 'true',
-  ssl: process.env.TYPEORM_SSL === 'true'
+  ssl:
+    process.env.TYPEORM_SSL === 'true'
+      ? {
+          rejectUnauthorized: process.env.TYPEORM_REJECT_UNAUTHORIZED === 'true'
+        }
+      : false
 }
