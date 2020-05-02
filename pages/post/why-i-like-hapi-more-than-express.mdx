@@ -31,45 +31,48 @@ work involves JSON API's so that will be my focus.
 
 #### Hapi
 
-    const Hapi = require('hapi')
+```js
+const Hapi = require('hapi')
 
-    const port = process.env.PORT || 8080  
-    const server = new Hapi.Server()
+const port = process.env.PORT || 8080  
+const server = new Hapi.Server()
 
-    server.connection({ port: port })
+server.connection({ port: port })
 
-    server.route({  
-        method: 'POST',
-        path: '/hello',
-        handler: (req, reply) => {
-            reply({ hello: req.payload.name })
-        }
-    })
+server.route({  
+  method: 'POST',
+  path: '/hello',
+  handler: (req, reply) => {
+    reply({ hello: req.payload.name })
+  }
+})
 
-    server.start( (err) => {  
-        console.log('Server running at:', server.info.uri, err ? err : '');
-    })
+server.start( (err) => {  
+  console.log('Server running at:', server.info.uri, err ? err : '');
+})
+```
 
 #### Express
 
-    const express = require('express')  
-    const bodyParser = require('body-parser')
+```js
+const express = require('express')  
+const bodyParser = require('body-parser')
 
-    const port = process.env.PORT || 8080  
-    const app = express()
+const port = process.env.PORT || 8080  
+const app = express()
 
-    app.use(bodyParser.urlencoded({ extended: true }))  
-    app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))  
+app.use(bodyParser.json())
 
-    const router = express.Router()
+const router = express.Router()
 
-    router.post('/hello', (req, res) => {  
-        res.json({ hello: req.body.name })
-    })
+router.post('/hello', (req, res) => {  
+  res.json({ hello: req.body.name })
+})
 
-    app.use(router)
-
-    app.listen(port)  
+app.use(router)
+app.listen(port)  
+```
 
 Easier Setup
 ------------
@@ -91,28 +94,34 @@ Better Error Handling
 
 Let's start our Hapi Server:
 
-    $ npm start
+```bash
+$ npm start
 
-    > hapi-ethanmick@1.0.0 start /Users/ethan/Documents/ethanmick/hapi-vs-express/hapi
-    > node --es_staging index.js
+> hapi-ethanmick@1.0.0 start /Users/ethan/Documents/ethanmick/hapi-vs-express/hapi
+> node --es_staging index.js
 
-    Server running at: http://Ethan-Micks-MacBook-Pro.local:8080  
+Server running at: http://Ethan-Micks-MacBook-Pro.local:8080  
+```
 
 Awesome.
 
 Let's start another one! (In a new shell):
 
-    $ npm start  
+```bash
+$ npm start  
 
-    > hapi-ethanmick@1.0.0 start /Users/ethan/Documents/ethanmick/hapi-vs-express/hapi
-    > node --es_staging index.js
+> hapi-ethanmick@1.0.0 start /Users/ethan/Documents/ethanmick/hapi-vs-express/hapi
+> node --es_staging index.js
 
-    Server running at: http://Ethan-Micks-MacBook-Pro.local:8080 { [Error: listen EADDRINUSE 0.0.0.0:8080]  
-      code: 'EADDRINUSE',
-      errno: 'EADDRINUSE',
-      syscall: 'listen',
-      address: '0.0.0.0',
-      port: 8080 }
+Server running at: http://Ethan-Micks-MacBook-Pro.local:8080
+{ [Error: listen EADDRINUSE 0.0.0.0:8080]  
+  code: 'EADDRINUSE',
+  errno: 'EADDRINUSE',
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 8080
+}
+```
 
 How kind! It uses the `err` object in the callback to inform me of an
 issue with starting the server.
@@ -368,12 +377,12 @@ breaking changes.
 They supported IO.js from the very beginning and when Node 4 came out
 they released [Hapi 10](https://github.com/hapijs/hapi/issues/2764):
 
-**hapi v10.0.0 contains no breaking changes. It is published to indicate
-the transition from node v0.10 to node v4.0. Moving to v10.0.0 only
-requires upgrading your node version to the latest v4. Future releases
-of the hapi v10 branch will include internal changes to take advantage
-of the new features available in node v4 and those will break under node
-v0.10.**
+> hapi v10.0.0 contains no breaking changes. It is published to indicate
+> the transition from node v0.10 to node v4.0. Moving to v10.0.0 only
+> requires upgrading your node version to the latest v4. Future releases
+> of the hapi v10 branch will include internal changes to take advantage
+> of the new features available in node v4 and those will break under node
+> v0.10.
 
 I love the versioning, and their unabashed movement toward a better API.
 On the other side, you have Express, which released it's latest major

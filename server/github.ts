@@ -1,4 +1,4 @@
-import Octokit from '@octokit/rest'
+import { Octokit } from '@octokit/rest'
 import moment from 'moment'
 import { github } from './config'
 import { Star } from './models'
