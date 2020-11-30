@@ -48,7 +48,11 @@ const findEntityByClass = (klass: any) => async (
 
 r.get('/link/:id', findEntityByClass(Link))
 r.get('/links', async (_, res: Response) => {
-  const links = await Link.find()
+  const links = await Link.find({
+    order: {
+      createdAt: 'ASC'
+    }
+  })
   return res.json(links)
 })
 
