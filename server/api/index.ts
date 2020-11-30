@@ -50,7 +50,7 @@ r.get('/link/:id', findEntityByClass(Link))
 r.get('/links', async (_, res: Response) => {
   const links = await Link.find({
     order: {
-      createdAt: 'ASC'
+      createdAt: 'DESC'
     }
   })
   return res.json(links)
