@@ -29,7 +29,7 @@
     "react-dom": "16.13.1",
     "reflect-metadata": "0.1.13",
     "twitter": "1.7.1",
-    "typeorm": "0.2.24",
+    "typeorm": "0.2.25",
     "winston": "3.2.1"
   },
   "devDependencies": {
