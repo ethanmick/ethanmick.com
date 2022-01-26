@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
-import { asCard, CardFooter, CardIcon } from './Card'
+import { asCard, CardFooter, CardIcon } from './card'
 
 export interface PostCardProps {
   title: string

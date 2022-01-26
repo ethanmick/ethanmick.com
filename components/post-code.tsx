@@ -1,4 +1,3 @@
-import { trim } from 'lodash'
 import Highlight, { defaultProps } from 'prism-react-renderer'
 import theme from 'prism-react-renderer/themes/palenight'
 import React from 'react'
@@ -9,7 +8,7 @@ export default ({ children, className }: any) => {
     <Highlight
       {...defaultProps}
       theme={theme}
-      code={trim(children)}
+      code={children.trim()}
       language={language}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (

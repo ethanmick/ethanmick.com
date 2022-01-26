@@ -1,9 +1,8 @@
 import { MDXProvider } from '@mdx-js/react'
 import { Head } from 'next/document'
-import React from 'react'
-import { Footer } from './Footer'
-import PostCode from './PostCode'
-import { Title } from './Title'
+import { Footer } from './footer'
+import PostCode from './post-code'
+import { Title } from './title'
 
 export interface PostProps {
   children: any
