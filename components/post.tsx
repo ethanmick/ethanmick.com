@@ -1,6 +1,6 @@
 import { MDXProvider } from '@mdx-js/react'
 import { Layout } from './layout'
-import { Code } from './mdx/'
+import { Code } from './mdx'
 import { Title } from './title'
 
 export interface PostProps {
