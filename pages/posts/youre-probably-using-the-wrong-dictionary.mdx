@@ -1,0 +1,28 @@
+import { Post } from '../../components/post'
+
+export const meta = {
+  type: 'POST',
+  title: "You're Probably Using the Wrong Dictionary",
+  author: 'Ethan Mick',
+  slug: 'youre-probably-using-the-wrong-dictionary',
+  excerpt: '',
+  createdAt: '2016-01-01T08:00:00.000Z',
+}
+
+export default ({ children }) => <Post {...meta}>{children}</Post>
+
+I had some trouble hunting this down, but it has been discussed on
+Hacker News [before](https://news.ycombinator.com/item?id=7772557), and
+I really loved it.
+
+> A book where you can enter "sport" and end up with "a diversion of the
+> field" --- this is in fact the opposite of what I'd known a dictionary
+> to be. This is a book that transmutes plain words into language that's
+> finer and more vivid and sometimes more rare. No wonder McPhee wrote
+> with it by his side. No wonder he looked up words he knew, versus words
+> he didn't, in a ratio of "at least ninety-nine to one."
+
+There are excellent directions at the end of the post for setting it up
+on your Mac. I completely recommend it.
+
+http://jsomers.net/blog/dictionary

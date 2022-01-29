@@ -1,0 +1,16 @@
+import { Post } from '../../components/post'
+
+export const meta = {
+  type: 'POST',
+  title: 'Convert Plist to JSON',
+  author: 'Ethan Mick',
+  slug: 'convert-plist-to-json',
+  excerpt: '',
+  createdAt: '2017-03-03T08:00:00.000Z',
+}
+
+export default ({ children }) => <Post {...meta}>{children}</Post>
+
+As long as you have Xcode installed, you can simply do:
+
+    plutil -convert json data.plist -o data.json

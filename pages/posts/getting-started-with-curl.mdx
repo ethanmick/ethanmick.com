@@ -1,0 +1,144 @@
+import { Post } from '../../components/post'
+
+export const meta = {
+  type: 'POST',
+  title: 'Getting Started with cURL',
+  author: 'Ethan Mick',
+  slug: 'getting-started-with-curl',
+  excerpt: '',
+  createdAt: '2018-02-02T21:04:04.997Z',
+}
+
+export default ({ children }) => <Post {...meta}>{children}</Post>
+
+cURL is an incredibly powerful tool when working on the web, but getting
+started (and being useful) with it can take some time. I'm going to
+walk through what I do with cURL 95% of the time.
+
+At its very basic, cURL makes requests to URL's. Normally you want to
+interact with those URL's in someway.
+
+```bash
+curl www.google.com
+```
+
+By default, cURL makes an HTTP GET request, so that will fetch the HTML
+from www.google.com. Awesome!
+
+Spitting it out in the terminal isn't so useful, so let's save it to a
+file:
+
+```
+curl -o google.html www.google.com
+```
+
+Looking at `google.html` will show you the same contents as before. This
+is especially useful when you want to save a JSON response.
+
+Great! Well, interacting with HTML is pretty boring, most of what I do
+is interacting with API's. cURL is a great way for quickly testing your
+PHP script, your JSON endpoint, or what that API actually returns.
+
+I worked at [CloudMine](https://cloudmine.me/) and we had a decent [JSON
+API](https://cloudmine.me/docs/api), so I'll use that just as an
+example. Just keep in mind that the URL isn't important here, but
+rather the curl options.
+
+By default, curl makes GET requests, so let's GET some data!
+
+    curl https://api.cloudmine.me/v1/app/928a78ffd73e4ff78383d1d4c06dd5a7/text?keys=all
+
+Woh! What?
+
+```
+{"errors":["API Key invalid"]}
+```
+
+Oh, CloudMine expects an API Key to be sent as well. As an additional
+header? Sure, no problem:
+
+    curl https://api.cloudmine.me/v1/app/928a78ffd73e4ff78383d1d4c06dd5a7/text \
+    -H X-CloudMine-ApiKey:e90ef1aeaadd48de93b45038ed592a06
+
+Response:  
+`{"success":{},"errors":{}}`
+
+Excellent! Sending the correct header worked. But the response is rather
+vague, I'm not sure if it worked and found no data, or it didn't work
+and didn't return an error. Let's examine the headers on the reply:
+
+    curl https://api.cloudmine.me/v1/app/928a78ffd73e4ff78383d1d4c06dd5a7/text \
+    -H X-CloudMine-ApiKey:e90ef1aeaadd48de93b45038ed592a06 -i
+
+Response:
+
+    HTTP/1.1 200 OK
+    Date: Sat, 20 Dec 2014 17:31:10 GMT
+    Content-Type: application/json; charset=utf-8
+    Transfer-Encoding: chunked
+    Status: 200 OK
+    X-Request-Id: a9fbdaec-3b3c-4b11-92d8-5af2e9f01e8e
+    Cache-Control: max-age=0, private, must-revalidate
+    X-Runtime: 0.020247
+    X-Rack-Cache: miss
+    Access-Control-Allow-Origin: *
+    Access-Control-Expose-Headers: X-Request-Id
+
+    {"success":{},"errors":{}}
+
+Adding `-i` will return all the headers on the response. If you _only_
+want the headers, you can use `-I`.
+
+Excellent. But the URL I want to hit is actually an endpoint for
+consuming data. I want to _send_ information. Let's make a POST
+request!
+
+    curl -X POST https://api.cloudmine.me/v1/app/928a78ffd73e4ff78383d1d4c06dd5a7/text \
+    -H X-CloudMine-ApiKey:e90ef1aeaadd48de93b45038ed592a06 -i
+
+    {"errors":[{"code":400,"message":"Invalid payload"}]}
+
+Oops, we forgot to send data. To send information, we use `-d`.
+
+    curl -X POST https://api.cloudmine.me/v1/app/928a78ffd73e4ff78383d1d4c06dd5a7/text \
+    -d '{"myrandomkey":{"name":"ethan"}}' \
+    -H X-CloudMine-ApiKey:e90ef1aeaadd48de93b45038ed592a06 \
+    -H "content-type:application/json"
+
+Response:
+
+    {"success":{"myrandomkey":"created"},"errors":{}}
+
+CloudMine expects the Content-Type to be explicitly stated, so we add
+that as a header too. Other common ones are `application/xml` and
+`application/x-www-form-urlencoded`
+
+Cool. Well, I don't like that object, so let's delete it.
+
+    curl -X DELETE "https://api.cloudmine.me/v1/app/928a78ffd73e4ff78383d1d4c06dd5a7/data?keys=myrandomkey" \
+    -H X-CloudMine-ApiKey:e90ef1aeaadd48de93b45038ed592a06
+
+Response:
+
+    {"success":{"myrandomkey":"deleted"},"errors":{}}
+
+Welp, there it goes.
+
+That's 95% of what I do with cURL. Some other useful options to know
+are:
+
+`-d @./path/to/file` Will send the information in the file as the body
+of the request. Great when POSTing large amounts of data.
+
+`-L` The request will follow any redirects it gets. Useful for when
+site's redirect you from `url/` to `url`.
+
+`-u username:password` Useful for going through HTTP Basic
+authentication.
+
+`-v` Makes the request verbose, which you should always do when
+submitting a cURL request and response to a support person.
+
+Lastly, sometimes your terminal will do funky things with the URL to
+escape it. If you don't like this, just put the text in quotes. cURL
+will respect it either way.

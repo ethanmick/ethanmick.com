@@ -1,0 +1,44 @@
+import { Post } from '../../components/post'
+
+export const meta = {
+  type: 'POST',
+  title: "Decrypt all PDF's in a Directory",
+  author: 'Ethan Mick',
+  slug: 'decrypt-all-pdfs-in-a-directory',
+  excerpt: '',
+  createdAt: '2017-04-01T08:00:00.000Z',
+}
+
+export default ({ children }) => <Post {...meta}>{children}</Post>
+
+I recently had to decrypt a bunch of PDF's. I knew the password, but
+didn't want to do them one at a time. Luckily, some quick scripting did
+the trick.
+
+    brew update && brew install qpdf
+
+Fire up your favorite text editor (I named the file `decrypt.sh`):
+
+    #!/bin/bash
+
+    DECRYPTED_FOLDER="decrypted"
+    mkdir $DECRYPTED_FOLDER
+
+    for f in *.pdf
+    do
+        qpdf --decrypt --password="$1" "$f" "$DECRYPTED_FOLDER/$f"
+    done
+
+Give it some power: `chmod +x decrypt.sh`
+
+Make sure the script is in the same directory as the PDF's you want to
+convert. It'll make a new directory called "decrypted" and dump the
+PDF's into it.
+
+    ./decrypt.sh pdfPasswordHere
+
+For example:
+
+    ./decrypt.sh awesomesauce
+
+Enjoy decrypting!
