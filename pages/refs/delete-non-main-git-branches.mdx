@@ -1,4 +1,4 @@
-import { Ref } from '../../components'
+import { Tip, Ref } from '../../components'
 
 export const meta = {
   slug: 'delete-non-main-git-branches',
@@ -13,10 +13,17 @@ export const meta = {
 export default ({ children }) => <Ref {...meta}>{children}</Ref>
 
 I like to keep a tidy git repo, so every once in a while when I come to a good
-stopping point I clean up my local branches. This doesn't check if the branch
-has been merged into `main` or not, so be careful you don't have any work lying
-around in them.
+stopping point I clean up my local branches. This one liner does not check the
+merge status, so be careful! You can change the branch names if you have other
+important branches to exclude.
 
 ```bash
 git branch | egrep -v "(^\*|master|main|dev)" | xargs git branch -D # cleanup git branches
 ```
+
+That's all!
+
+<Tip>
+  The `#` at the end is a bash comment. It allows you to search for this command
+  in your history using keywords!
+</Tip>
