@@ -1,13 +1,13 @@
 import { AcademicCapIcon, CodeIcon } from '@heroicons/react/outline'
-import { Footer, Header } from 'components'
+import { Footer, Header, Widont } from 'components'
 
 export default function HomePage() {
   return (
     <>
       <Header />
       <div className="hero h-[calc(100vh - theme('spacing.12'))] flex flex-col items-center justify-center text-center">
-        <h1 className="mb-8 text-4xl font-semibold md:text-6xl">
-          I design, code, and ship web apps
+        <h1 className="mb-8 px-4 text-4xl font-semibold md:text-6xl">
+          <Widont>I design, code, and ship web apps</Widont>
         </h1>
         <h2 className="text-2xl font-light md:text-4xl">
           From <span className="text-indigo-500">small business</span> to{' '}
@@ -15,7 +15,7 @@ export default function HomePage() {
         </h2>
       </div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-        <section className="pb-48">
+        <section className="pb-24 md:pb-48">
           <AcademicCapIcon className="my-4 h-16 w-16 rounded-full border border-indigo-200 p-2 text-indigo-500" />
           <h3 className="mb-6 text-2xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
             Teaching Software Engineering
