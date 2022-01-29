@@ -1,0 +1,27 @@
+import { Post } from '../../components/post'
+
+export const meta = {
+  type: 'POST',
+  title: "Debugging Node's spawn ENOENT",
+  author: 'Ethan Mick',
+  slug: 'debugging-nodes-spawn-enoent',
+  excerpt: '',
+  createdAt: '2017-03-10T08:00:00.000Z',
+}
+
+export default ({ children }) => <Post {...meta}>{children}</Post>
+
+Just figured out a bug that was really annoying. I was running a shell
+command from Node, and it was working fine in some cases, but failed for
+my new test with the cryptic error:
+
+    spawn /bin/sh ENOENT
+
+That was it. But of course `/bin/sh` exists, so what's going on?
+
+Turns out, this error means _something_ doesn't exist, not `/bin/sh`.
+It turns out that the `cwd` I was setting the command to was incorrect,
+and in fact, didn't exist.
+
+So when this occurs, check to see what variables are undefined when you
+don't expect them to be.

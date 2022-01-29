@@ -1,0 +1,27 @@
+import { Ref } from '../../components'
+
+export const meta = {
+  title: 'How to Get a Typescript Enum from a String',
+}
+
+export default ({ children }) => <Ref {...meta}>{children}</Ref>
+
+Enums in TypeScript are very helpful for defining a set of values. To turn a
+string into an enum, you need to cast it so TypeScript understands the string
+you have provided exists in the Enum.
+
+To do this, you can do the following:
+
+```ts
+enum Animal {
+  Cat,
+  Dog,
+  Mouse,
+}
+
+const name = 'Cat'
+const animal: Animal = Animal[name as keyof typeof Animal]
+```
+
+This works on all modern versions of TypeScript. Here, `Name` is being cast to a
+value existing within `Animal`.

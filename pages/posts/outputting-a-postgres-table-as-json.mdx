@@ -1,0 +1,25 @@
+import { Post } from '../../components/post'
+
+export const meta = {
+  type: 'POST',
+  title: 'Outputting a Postgres Table as JSON',
+  author: 'Ethan Mick',
+  slug: 'outputting-a-postgres-table-as-json',
+  excerpt: '',
+  createdAt: '2018-10-10T08:00:00.000Z',
+}
+
+export default ({ children }) => <Post {...meta}>{children}</Post>
+
+I have a Postgres table and I want to output its contents as JSON so I
+can have a `.json` file for some tests. Turns out, this is pretty easy.
+Let's say the table name is `users`:
+
+    select array_to_json(array_agg(row_to_json(t)))
+    from (
+      SELECT * FROM users
+    ) t
+
+And done. That will output the entire `users` table (everything that
+matches the `SELECT` query) to a JSON array that you can just drop into
+a file.

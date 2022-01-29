@@ -1,9 +1,7 @@
 import { MDXProvider } from '@mdx-js/react'
-import { Head } from 'next/document'
-import React from 'react'
-import { Footer } from './Footer'
-import PostCode from './PostCode'
-import { Title } from './Title'
+import { Layout } from './layout'
+import { Code } from './mdx/'
+import { Title } from './title'
 
 export interface PostProps {
   children: any
@@ -12,20 +10,16 @@ export interface PostProps {
 
 const components = {
   pre: (props: any) => <div {...props} />,
-  code: PostCode
+  code: Code,
 }
 
-export const Post = ({ children, meta }: PostProps) => (
+export const Post = ({ children }: PostProps) => (
   <>
-    <Head>
-      <title>{meta.title}</title>
-    </Head>
-    <div className="container mx-auto max-w-3xl px-4">
+    <Layout>
       <Title className="p-16" />
       <MDXProvider components={components}>
         <article className="post">{children}</article>
       </MDXProvider>
-      <Footer />
-    </div>
+    </Layout>
   </>
 )

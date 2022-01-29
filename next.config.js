@@ -1,14 +1,22 @@
 const withMDX = require('@next/mdx')({
-  extension: /\.mdx?$/
+  extension: /\.mdx?$/,
 })
 
 module.exports = withMDX({
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
-  publicRuntimeConfig: {
-    API_ROOT: process.env.API_ROOT,
-    ROOT_URL: process.env.ROOT_URL || 'https://ethanmick.com'
+  swcMinify: true,
+  async redirects() {
+    return [
+      {
+        source: '/post',
+        destination: '/posts',
+        permanent: true,
+      },
+      {
+        source: '/post/:path*',
+        destination: '/posts/:path*',
+        permanent: true,
+      },
+    ]
   },
-  devIndicators: {
-    autoPrerender: false
-  }
 })

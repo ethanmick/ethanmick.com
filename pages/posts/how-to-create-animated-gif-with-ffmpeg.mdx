@@ -1,0 +1,30 @@
+import { Post } from '../../components/post'
+
+export const meta = {
+  type: 'POST',
+  title: 'How To Create Animated GIFs With FFmpeg',
+  author: 'Ethan Mick',
+  slug: 'how-to-create-animated-gif-with-ffmpeg',
+  excerpt:
+    'There are times when sharing a GIF is easier, more convenient, and faster than sharing a video file. FFmpeg is the perfect tool to quickly convert the video into a quality GIF.',
+  createdAt: '2020-04-01T08:00:00.000Z',
+}
+
+export default ({ children }) => <Post {...meta}>{children}</Post>
+
+There are times when sharing a GIF is easier and more convenient than sharing
+a video file. With the right compression it often will be smaller too. You
+can easily use FFmpeg to convert a video file to a gif.
+
+    ffmpeg -i input.mp4 -vf "fps=15,scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 output.gif
+
+- `fps` sets the frame rate. I found about 15 to give a quality gif while keeping a small size.
+- `scale` will resize the output to the pixels wide and automatically determine the height while preserving the aspect ratio. 720 had good quality.
+  - `lanczos` is the scaling algorithm
+- `split` has everything done in one command.
+- `loop` determines how the GIF loops.
+  - 0 is infinite looping
+  - -1 is no looping
+  - 1 will loop once, so it would play twice.
+
+And that's it!
