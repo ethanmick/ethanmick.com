@@ -7,14 +7,13 @@ import React, { useEffect } from 'react'
 import '../styles/globals.css'
 
 Router.events.on('routeChangeComplete', () => {
-  console.log('routeChangeComplete')
   Fathom.trackPageview()
 })
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     Fathom.load('JVRRQIEZ', {
-      includedDomains: ['*.ethanmick.com'],
+      includedDomains: ['ethanmick.com'],
       url: 'https://reassuring-champ.ethanmick.com/script.js',
     })
   }, [])
