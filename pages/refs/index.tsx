@@ -1,5 +1,5 @@
 import { Layout } from 'components'
-import { getAllRefsMeta, RefMeta } from 'lib'
+import { getAllRefsMeta, RefMeta } from 'lib/server'
 import Link from 'next/link'
 
 type Props = {

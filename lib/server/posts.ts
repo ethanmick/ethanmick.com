@@ -18,7 +18,7 @@ export const getPostSlugs = async (): Promise<string[]> => {
 }
 
 export const getPostMetaBySlug = async (slug: string): Promise<Meta> => {
-  const { meta } = await import(`../pages/posts/${slug}`)
+  const { meta } = await import(`../../pages/posts/${slug}`)
   return meta
 }
 
