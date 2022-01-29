@@ -1,11 +1,12 @@
 import { MDXProvider } from '@mdx-js/react'
-import { Layout } from './layout'
+import { Footer } from './footer'
+import { Header } from './header'
 import { Code } from './mdx'
-import { Title } from './title'
+import { Widont } from './widont'
 
 export interface PostProps {
-  children: any
-  meta: any
+  children: React.ReactNode
+  title: string
 }
 
 const components = {
@@ -13,13 +14,17 @@ const components = {
   code: Code,
 }
 
-export const Post = ({ children }: PostProps) => (
+export const Post = ({ children, title }: PostProps) => (
   <>
-    <Layout>
-      <Title className="p-16" />
+    <Header />
+    <main className="container prose mx-auto max-w-3xl px-4 pt-16 lg:prose-lg">
+      <h1 className="text-center">
+        <Widont>{title}</Widont>
+      </h1>
       <MDXProvider components={components}>
-        <article className="post">{children}</article>
+        <article>{children}</article>
       </MDXProvider>
-    </Layout>
+      <Footer />
+    </main>
   </>
 )

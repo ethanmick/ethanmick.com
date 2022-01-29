@@ -9,7 +9,7 @@ export const meta = {
   createdAt: '2017-01-01T08:00:00.000Z',
 }
 
-export default ({ children }) => <Post meta={meta} />
+export default ({ children }) => <Post {...meta}>{children}</Post>
 
 I just finished reading [Elon Musk: Tesla, SpaceX, and the Quest for a
 Fantastic Future](http://amzn.to/1NDH1m5) by Ashlee Vance.

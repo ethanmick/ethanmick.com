@@ -1,7 +1,7 @@
 import { promises as fs } from 'node:fs'
 import { join } from 'path'
 
-export type Meta = {
+export type PostMeta = {
   type: string
   title: string
   author: string
@@ -17,12 +17,12 @@ export const getPostSlugs = async (): Promise<string[]> => {
   return paths.filter((p) => p !== 'index.tsx')
 }
 
-export const getPostMetaBySlug = async (slug: string): Promise<Meta> => {
+export const getPostMetaBySlug = async (slug: string): Promise<PostMeta> => {
   const { meta } = await import(`../../pages/posts/${slug}`)
   return meta
 }
 
-export const getAllPosts = async (): Promise<Meta[]> => {
+export const getAllPosts = async (): Promise<PostMeta[]> => {
   const slugs = await getPostSlugs()
   const posts = await Promise.all(slugs.map(getPostMetaBySlug))
   return posts
