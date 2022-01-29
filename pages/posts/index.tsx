@@ -1,5 +1,5 @@
 import { Layout } from 'components'
-import { getAllPosts, Meta } from 'lib/posts'
+import { getAllPosts, Meta } from 'lib/server'
 import Link from 'next/link'
 
 type Props = {

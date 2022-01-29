@@ -14,7 +14,7 @@ export const getRefSlugs = async (): Promise<string[]> => {
 }
 
 export const getRefMetaBySlug = async (slug: string): Promise<RefMeta> => {
-  const { meta } = await import(`../pages/refs/${slug}`)
+  const { meta } = await import(`../../pages/refs/${slug}`)
   return { ...meta, slug: slug.replace(/\.mdx$/, '') }
 }
 
