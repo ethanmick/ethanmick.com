@@ -24,13 +24,11 @@ export const Header = () => (
       </Link>
       <nav>
         {navigation.map((link) => (
-          <a
-            key={link.name}
-            href={link.href}
-            className="ml-8 text-base font-medium text-black hover:text-gray-800 hover:underline"
-          >
-            {link.name}
-          </a>
+          <Link href={link.href} key={link.name}>
+            <a className="ml-8 text-base font-medium text-black hover:text-gray-800 hover:underline">
+              {link.name}
+            </a>
+          </Link>
         ))}
       </nav>
     </div>

@@ -7,6 +7,7 @@ import React, { useEffect } from 'react'
 import '../styles/globals.css'
 
 Router.events.on('routeChangeComplete', () => {
+  console.log('routeChangeComplete')
   Fathom.trackPageview()
 })
 
