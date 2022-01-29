@@ -1,0 +1,16 @@
+import { Ref } from '../../components'
+
+export const meta = {
+  title: 'How to Delete All Non Main Git Branches',
+}
+
+export default ({ children }) => <Ref {...meta}>{children}</Ref>
+
+I like to keep a tidy git repo, so every once in a while when I come to a good
+stopping point I clean up my local branches. This doesn't check if the branch
+has been merged into `main` or not, so be careful you don't have any work lying
+around in them.
+
+```bash
+git branch | egrep -v "(^\*|master|main|dev)" | xargs git branch -D # cleanup git branches
+```
