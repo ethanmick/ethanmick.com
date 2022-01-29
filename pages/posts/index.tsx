@@ -1,9 +1,9 @@
 import { Layout } from 'components'
-import { getAllPosts, Meta } from 'lib/server'
+import { getAllPosts, PostMeta } from 'lib/server'
 import Link from 'next/link'
 
 type Props = {
-  metas: Meta[]
+  metas: PostMeta[]
 }
 
 export default function PostPage({ metas }: Props) {
