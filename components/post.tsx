@@ -24,7 +24,7 @@ export const Post = ({ children, title }: PostProps) => (
       <MDXProvider components={components}>
         <article>{children}</article>
       </MDXProvider>
-      <Footer />
     </main>
+    <Footer />
   </>
 )
