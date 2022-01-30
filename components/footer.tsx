@@ -13,7 +13,7 @@ const LinkedIn = (props: React.SVGProps<SVGSVGElement>) => (
 )
 
 export const Footer = () => (
-  <footer className="grid grid-cols-1 py-12 px-4 text-gray-600 md:grid-cols-3">
+  <footer className="mx-auto grid max-w-7xl grid-cols-1 py-12 px-4 text-gray-600 md:grid-cols-3">
     <div className="row-start-2 row-end-2 flex items-center justify-center py-12 text-center md:col-start-2 md:col-end-2 md:row-start-1 md:row-end-1 md:py-0">
       &#169; Ethan Mick {new Date().getFullYear()}
     </div>
