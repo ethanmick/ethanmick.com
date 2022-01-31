@@ -55,8 +55,8 @@ export const Ref = ({
         <MDXProvider components={components}>
           <article className="">{children}</article>
         </MDXProvider>
-        <Footer />
       </main>
+      <Footer />
     </>
   )
 }
