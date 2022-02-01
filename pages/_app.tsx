@@ -13,6 +13,7 @@ Router.events.on('routeChangeComplete', () => {
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     Fathom.load('JVRRQIEZ', {
+      canonical: false,
       includedDomains: ['ethanmick.com'],
       url: 'https://reassuring-champ.ethanmick.com/script.js',
     })
