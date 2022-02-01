@@ -1,3 +1,5 @@
+import { Routes } from 'lib'
+import Link from 'next/link'
 import React from 'react'
 
 const Twitter = (props: React.SVGProps<SVGSVGElement>) => (
@@ -12,27 +14,56 @@ const LinkedIn = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 )
 
+const content = [
+  {
+    name: 'Posts',
+    href: Routes.Posts,
+  },
+  {
+    name: 'References',
+    href: Routes.Refs,
+  },
+]
+
+const social = [
+  {
+    name: 'Twitter',
+    href: 'https://twitter.com/ethan_mick',
+  },
+  {
+    name: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/ethan-mick-28264731',
+  },
+]
+
 export const Footer = () => (
-  <footer className="grid grid-cols-1 py-12 px-4 text-gray-600 md:grid-cols-3">
-    <div className="row-start-2 row-end-2 flex items-center justify-center py-12 text-center md:col-start-2 md:col-end-2 md:row-start-1 md:row-end-1 md:py-0">
-      &#169; Ethan Mick {new Date().getFullYear()}
-    </div>
-    <div className="col-start-1 col-end-1 flex flex-col items-center md:col-start-3 md:col-end-3 md:items-end">
-      <div className="mb-4">
-        <a
-          className="flex items-center"
-          href="https://twitter.com/intent/follow?screen_name=ethan_mick"
-        >
-          <Twitter className="mr-4 h-8 w-8 fill-[#1DA1F2]" /> @Ethan_Mick
-        </a>
+  <footer className="text-sm">
+    <div className="mx-auto grid max-w-7xl grid-cols-1 gap-y-8 py-12 px-4 text-gray-600 sm:grid-cols-2">
+      <div className="col-start-1 col-end-1">
+        <h2 className="font-semibold text-slate-900">Content</h2>
+        <ul className="mt-3 space-y-2">
+          {content.map(({ name, href }) => (
+            <li key={href}>
+              <Link href={href}>
+                <a className="hover:text-slate-900 dark:hover:text-slate-300">
+                  {name}
+                </a>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
-      <div>
-        <a
-          className="flex items-center"
-          href="www.linkedin.com/in/ethan-mick-28264731"
-        >
-          <LinkedIn className="mr-4 h-8 w-8 fill-[#0077B5]" /> Ethan Mick
-        </a>
+      <div className="sm:text-right">
+        <h2 className="font-semibold text-slate-900">Social</h2>
+        <ul className="mt-3 space-y-2">
+          {social.map(({ name, href }) => (
+            <li key={href}>
+              <a href={href} className="hover:text-slate-900">
+                {name}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   </footer>
