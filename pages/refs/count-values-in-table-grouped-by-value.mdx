@@ -1,0 +1,37 @@
+import { Tip, Ref } from '../../components'
+
+export const meta = {
+  slug: 'count-values-in-table-grouped-by-value',
+  title: 'Count Values in SQL Table Grouped by Value',
+  description:
+    'Using SQL, lookup how often a value occurs, grouped by those values.',
+  image: {
+    url: 'images/group_by.sql.png',
+  },
+}
+
+export default ({ children }) => <Ref {...meta}>{children}</Ref>
+
+A very useful SQL query is looking up how often a value occurs, grouped by those
+values. For example, in a table of pets, how often does each kind of pet occur?
+
+Here, you want to count the pets _grouped by_ the type:
+
+```sql
+-- table: create table pets (type text, name text, pet_type text);
+select count(pet_type) AS count,
+pet_type
+from pets
+where user_id is not null
+group by pet_type
+order by count desc;
+```
+
+The result looks like this:
+
+```sql
+count  pet_type
+1233   "dog"
+327	   "cat"
+59     "bird"
+```
