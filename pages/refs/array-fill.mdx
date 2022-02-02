@@ -1,0 +1,70 @@
+import { Ref } from '../../components'
+
+export const meta = {
+  slug: 'array-fill',
+  title: 'Array: fill()',
+  description:
+    'The functional for loop. Read a quick overview of the Array.prototype.fill() method and how you can start using it.',
+  image: {
+    url: 'images/Array.prototype.fill.png',
+  },
+}
+
+export default ({ children }) => <Ref {...meta}>{children}</Ref>
+
+The Array `Array.prototype.fill()` changes all elements in an array from `start`
+to `end` to a **static** `value` and returns the modified array.
+
+## Syntax
+
+```ts
+fill(value)
+fill(value, start)
+fill(value, start, end)
+
+// TyepScript definition
+fill(value: T, start?: number, end?: number): this;
+```
+
+Note that this method mutates the original array!
+
+This array method is most useful for initializing an array to `n` length, and
+then iterating over it. I use it as a more functional **for** loop, a syntax more
+useful in React.
+
+## Examples
+
+```tsx
+// Loop 5 times doing something unrelated, instead of using a `for` loop
+new Array(5).fill(0).forEach(() => {
+  // do something
+})
+
+// Loop 5 times doing something with the index
+new Array(5).fill(void 0).forEach((_, index) => {
+  // do something
+})
+
+// In React, map the index to an element
+<>
+  {
+    new Array(5).fill(null).map((_, index) => (
+      <div key={index}>{index}</div>
+    ))
+  }
+</>
+```
+
+If the `value` being used is an object it is passed by reference. If you use an
+object as the value it will all reference the same object, and changes will be
+reflected in all:
+
+```ts
+const deck = new Array(52).fill({ suit: '', value: '' })
+deck[0].suit = 'Hearts'
+
+// Unexpected!!
+console.log(deck[1].suit) // 'Hearts'
+```
+
+This may result in some undesired behavior.

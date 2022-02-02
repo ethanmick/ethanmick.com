@@ -13,11 +13,13 @@ Router.events.on('routeChangeComplete', () => {
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     Fathom.load('JVRRQIEZ', {
-      canonical: false,
       includedDomains: ['ethanmick.com'],
       url: 'https://reassuring-champ.ethanmick.com/script.js',
     })
   }, [])
+
+  new Array(5).fill(void 0)
+
   return (
     <>
       <Head>
@@ -26,7 +28,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <DefaultSeo
         title="Ethan Mick"
         description="Personal blog of Ethan Mick"
-        canonical="https://ethanmick.com"
         openGraph={{
           type: 'website',
           locale: 'en_US',
