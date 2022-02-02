@@ -1,0 +1,56 @@
+import { Ref } from '../../components'
+
+export const meta = {
+  slug: 'use-an-enum-as-object-key-in-typescript',
+  title: 'Use an Enum as Object Key in TypeScript',
+  description:
+    'Use an enum as an object key in TypeScript to keep your objects well defined.',
+  image: {
+    url: 'images/enum-keys.ts.png',
+  },
+}
+
+export default ({ children }) => <Ref {...meta}>{children}</Ref>
+
+Objects are a fast and convenient data type in JavaScript. You often want to put
+a restriction on what keys can be used. You can use TypeScript enums in two ways
+to define the keys in an object.
+
+Using the `in` nomenclature:
+
+```ts
+enum Animal {
+  Bird,
+  Cat,
+  Dog,
+}
+
+type AnimalCount = { [key in Animal]: number }
+
+const animals: AnimalCount = {
+  [Animal.Bird]: 1,
+  [Animal.Cat]: 3,
+  [Animal.Dog]: 5,
+}
+```
+
+The other syntax creates a slightly different object:
+
+```ts
+enum Animal {
+  Bird,
+  Cat,
+  Dog,
+}
+
+type AnimalCount = { [key in keyof typeof Animal]: number }
+
+const animals: AnimalCount = {
+  Bird: 1,
+  Cat: 3,
+  Dog: 5,
+}
+```
+
+The keys are limited by the enum keys, but you can't use `[Animal.Bird]` as a
+key.
