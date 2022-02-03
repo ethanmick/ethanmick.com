@@ -30,7 +30,8 @@ Note that this method mutates the original array!
 
 This array method is most useful for initializing an array to `n` length, and
 then iterating over it. I use it as a more functional **for** loop, a syntax more
-useful in React.
+useful in React. If you only use the `Array(5)` syntax, you wlll an array you
+cannot iterate over.
 
 ## Examples
 
@@ -55,6 +56,16 @@ new Array(5).fill(void 0).forEach((_, index) => {
 </>
 ```
 
+An alternative syntax for filling an array to iterate over is also:
+
+```ts
+const arr = [...Array(5)]
+
+// which is the same as:
+
+const arr = Array(5).fill(undefined)
+```
+
 If the `value` being used is an object it is passed by reference. If you use an
 object as the value it will all reference the same object, and changes will be
 reflected in all:
@@ -68,3 +79,16 @@ console.log(deck[1].suit) // 'Hearts'
 ```
 
 This may result in some undesired behavior.
+
+## Rewriting Imperative Code to Functional
+
+When writing functional code, `fill` can be used to rewrite `for` loops:
+
+```ts
+for (let i = 0; i < 10; i++) {
+  callSomeFunction()
+}
+
+// Can be changed to:
+Array(10).fill(0).forEach(callSomeFunction)
+```
