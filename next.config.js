@@ -17,6 +17,11 @@ module.exports = withMDX({
         destination: '/posts/:path*',
         permanent: true,
       },
+      {
+        source: '/getting-started-with-curl',
+        destination: '/posts/getting-started-with-curl/',
+        permanent: true,
+      },
     ]
   },
 })
