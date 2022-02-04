@@ -1,0 +1,47 @@
+import { Ref } from '../../components'
+
+export const meta = {
+  slug: 'array-every',
+  title: 'Using Array.every()',
+  description:
+    'Write simple and functional code to test the values in an array.',
+  image: {
+    url: 'images/array.prototype.every.png',
+  },
+}
+
+export default ({ children }) => <Ref {...meta}>{children}</Ref>
+
+The method `Array.prototype.every()` evaluates all elements in an array to see
+if they pass the test given by the provided function. If the array has no values
+the method returns `true`.
+
+This is very useful when reducing an array to a boolean.
+
+```ts
+every((element) => {})
+every((element, index) => {})
+every((element, index, array) => {})
+
+// TypeScript
+every(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): boolean;
+```
+
+A common use of `reduce` and `filter` is to get a subset of items and then check
+if a condition is met. Instead, `every` can be used to check that condition
+directly.
+
+```ts
+// Before
+const foo: boolean = [1, 2, 3].filter((n) => n > 2).length > 0
+// Or
+let foo: boolean = false
+for (const n of [1, 2, 3]) {
+  if (n > 2) {
+    foo = false
+  }
+}
+
+// After
+const foo: boolean = [1, 2, 3].every((n) => n > 2)
+```
