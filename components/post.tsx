@@ -1,4 +1,5 @@
 import { MDXProvider } from '@mdx-js/react'
+import { EmailSignup } from './email-signup'
 import { Footer } from './footer'
 import { Header } from './header'
 import { Code } from './mdx'
@@ -18,12 +19,15 @@ export const Post = ({ children, title }: PostProps) => (
   <>
     <Header />
     <main className="container prose mx-auto max-w-3xl px-4 pt-16 lg:prose-lg">
-      <h1 className="text-center">
-        <Widont>{title}</Widont>
-      </h1>
-      <MDXProvider components={components}>
-        <article>{children}</article>
-      </MDXProvider>
+      <article className="prose mb-40 lg:prose-lg">
+        <MDXProvider components={components}>
+          <h1 className="text-center">
+            <Widont>{title}</Widont>
+          </h1>
+          {children}
+        </MDXProvider>
+      </article>
+      <EmailSignup />
     </main>
     <Footer />
   </>
