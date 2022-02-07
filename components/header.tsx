@@ -14,7 +14,7 @@ const navigation = [
   {
     name: 'About',
     href: Routes.About,
-    className: 'hidden sm:inline',
+    className: 'hidden',
   },
 ]
 
