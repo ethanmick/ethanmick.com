@@ -19,7 +19,7 @@ export const Post = ({ children, title }: PostProps) => (
   <>
     <Header />
     <main className="container prose mx-auto max-w-3xl px-4 pt-16 lg:prose-lg">
-      <article className="prose mb-40 lg:prose-lg">
+      <article className="prose mb-40 prose-a:text-blue-600 lg:prose-lg">
         <MDXProvider components={components}>
           <h1 className="text-center">
             <Widont>{title}</Widont>
