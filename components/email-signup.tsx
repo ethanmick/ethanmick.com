@@ -39,7 +39,7 @@ export const EmailSignup = () => {
           <>
             <form
               onSubmit={onSubmit}
-              className="relative mx-auto mb-2 w-[30rem]"
+              className="relative mx-auto mb-2 max-w-[30rem]"
             >
               <input
                 aria-label="Email"
