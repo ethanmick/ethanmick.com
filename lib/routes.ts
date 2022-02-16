@@ -3,4 +3,8 @@ export enum Routes {
   Home = '/',
   Posts = '/posts',
   Refs = '/refs',
+
+  // React
+  React = '/react',
+  ReactIntroduction = '/react/introduction',
 }

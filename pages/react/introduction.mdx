@@ -1,0 +1,102 @@
+import { Layout, ChapterFooter } from '../../components/react'
+
+export const meta = {
+  order: 0,
+  title: 'Introduction to React',
+  author: 'Ethan Mick',
+  slug: 'introduction',
+  excerpt: '',
+  createdAt: '2017-01-01T08:00:00.000Z',
+}
+
+export default ({ children }) => <Layout {...meta}>{children}</Layout>
+
+React is one of the most powerful concepts in modern application development.
+React is more than a library; it's a way to think about organizing your data and
+building your app.
+
+**Learning React will make you a more effective engineer.**
+
+Building in React is more than writing correct code. You can create components
+and manage state in any framework. When React clicks **you start thinking in
+React**. It's a simple yet powerful mental model.
+
+This guide will get you to the point where you think in React. You will be
+able to:
+
+- Break your application down to modular components.
+- Manage state, even when it gets complex.
+- Understand how to use modern React features.
+
+React can be used to build simple widgets or entire products like Facebook.
+**React scales**. Learning and applying these concepts allow you
+to leverage your skills as an engineer better and build products faster.
+
+React is composable and the early building blocks connect in an elegant way to
+build more complicated systems. Spend the time to get the basics down, and the
+rest of React will fall into place for you. You can always send me a message if
+you don't understand something. 🙂
+
+## React changes, and so does this guide
+
+React is continuously updating and adding new APIs and best practices. These
+changes are often small but have a massive impact on the entire ecosystem. For
+example, the introduction of hooks radically changed coding in React.
+
+**This guide is eternally up to date with the best practices in React.**
+
+You can pass it to a friend and know it will walk them through React best
+practices as they currently stand. Check the [changelog](./changelog) if you are
+ever curious!
+
+It's also opinionated. I've been running React in production for years, and
+there are things to avoid and things to encourage. This guide will call these
+out and give my reasoning for them.
+
+Starting with: **write React in TypeScript.**
+
+One of my biggest opinions is that every React project should be written in
+TypeScript. TypeScript provides a better and faster development experience. It
+works elegantly with React's APIs of state and property management. You can
+follow this guide without using TypeScript, but I'm saying it now, **you are
+missing out.**
+
+TypeScript or not, React runs on JavaScript, and as such some of the, erm,
+quirks of the JavaScript language shine through. I'll point out when this is the
+case and you can [follow the turtles
+down](https://en.wikipedia.org/wiki/Turtles_all_the_way_down) as deep as you
+want to go.
+
+## **Before getting started**
+
+Learning React requires some basic knowledge in several areas. It does not need
+to be deep knowledge, but React should not be the very first thing you try to
+learn on your programming journey.
+
+To make the most of this guide, you should have a basic understanding of:
+
+1. Editing code with an editor you are comfortable using.
+2. How a terminal works and executing basic commands.
+3. Basic JavaScript. If you know any other language like Python, Ruby, Go, that
+   should be sufficient. JavaScript is just another language and it's easy to
+   learn.
+4. Basic HTML such as anchor, image, and div tags.
+5. Basic CSS, which will make the user experience of your app.
+
+If you know any other language such as Python, Ruby, or Go, that should be
+sufficient. JavaScript is just another language and it's easy to learn.
+
+TypeScript knowledge is _not_ required, although recommended. TypeScript is a
+superset of JavaScript and so knowing JavaScript is more important.
+
+That's it! If you are comfortable Googling for answers you can start this guide
+and see how far you get. Feel free to take a step away and learn one of the
+foundation technologies better. In general, if you've worked on any website
+before, you should be good to go.
+
+Ready to take the first step toward becoming a more effective and productive
+engineer?
+
+Let's learn React!
+
+<ChapterFooter next={{ title: 'Getting Started' }} />
