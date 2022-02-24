@@ -1,3 +1,4 @@
+import 'asciinema-player/dist/bundle/asciinema-player.css'
 import * as Fathom from 'fathom-client'
 import { DefaultSeo } from 'next-seo'
 import type { AppProps } from 'next/app'

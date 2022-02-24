@@ -5,3 +5,7 @@
 .hero {
   height: calc(100vh - 10rem);
 }
+
+.asciinema-player svg.icon {
+  @apply mx-auto;
+}
