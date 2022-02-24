@@ -1,3 +1,4 @@
+export * from './asciinema'
 export * from './email-signup'
 export * from './footer'
 export * from './header'
