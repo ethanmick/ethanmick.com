@@ -1,4 +1,4 @@
-import { Layout, ChapterFooter } from '../../components/react'
+import { Layout, ChapterFooter, Callout } from '../../components/react'
 import { AsciinemaPlayer } from '../../components'
 import { Routes } from '../../lib'
 
@@ -167,11 +167,11 @@ Congrats!
 This comes with live reloading, so you can go into a file, change it, and see
 the changes.
 
-<aside>
+<Callout>
   🐢 Software Engineering is about making changes and validating them as quickly
-  as possible. If you're spending your time *waiting* for something, ask
+  as possible. If you're spending your time <em>waiting</em> for something, ask
   yourself, "is there a faster way?"
-</aside>
+</Callout>
 
 ## Demystifying the magic
 
@@ -218,7 +218,7 @@ different):
   "@types/node": "16.11.22",
   "@types/react": "17.0.39",
   "@types/react-dom": "17.0.11",
-  "typescript": "4.5.5",
+  "typescript": "4.5.5"
 }
 ```
 
@@ -249,7 +249,7 @@ scaffolding requires `react-scripts`, which run the scripts listed in the
 For the dev dependencies, they are either testing dependencies or used by
 TypeScript.
 
-<aside>🐢 Fun Fact: React and React DOM used to be the same library!</aside>
+<Callout>🐢 Fun Fact: React and React DOM used to be the same library!</Callout>
 
 ### `README.md`
 
@@ -285,8 +285,7 @@ There is one file I want to dive into:
 ### `index.html`
 
 This is mostly normal markup, but there are two things you should note. If this
-is your first look at HTML, (**[HyperText Markup**
-**Language**](https://developer.mozilla.org/en-US/docs/Web/HTML)), it is the
+is your first look at HTML, (**[HyperText Markup Language](https://developer.mozilla.org/en-US/docs/Web/HTML)**), it is the
 language of defining content on the web. The first thing to note is:
 
 ```html
@@ -309,11 +308,11 @@ Please delete the entire file and replace it with:
 
 (For the sharp eyes, this is on line 31 of the file).
 
-<aside>
-  🐢 The `div` part of this isn't important. React looks **any** tag up with
-  that id. And the specific tag isn't important either. This works too: `
-  <x id="root" />` What does `x` mean? Nothing!
-</aside>
+<Callout>
+  🐢 The <strong>div</strong> part of this isn't important. React looks{' '}
+  <strong>any</strong> tag up with that id. And the specific tag isn't important
+  either.
+</Callout>
 
 Save the file. Stop and restart the development server.
 
@@ -403,8 +402,6 @@ function App() {
 export default App
 ```
 
-This:
-
 - `function` defines a JavaScript function, with the name `App`.
 - This function takes no parameters, so `()` is the function signature. It then
   has the contents of the function inside the `{ }` brackets.
@@ -416,11 +413,11 @@ This:
 - It's a `default` export, which means it is imported with the syntax:
   `import NameHere from './file'`.
 
-<aside>
+<Callout>
   🐢 You no longer need to `import React from 'react'` in your files with React
   17. Details here:
   [https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)
-</aside>
+</Callout>
 
 And that's the file! You can trim it down some more with ES 6 syntax:
 
@@ -442,11 +439,11 @@ When you trim this down, it will look like this:
 
 (Not very exciting yet. But simple!)
 
-<aside>
+<Callout>
   🐢 Your linter may not like that single line. I know. It **isn't** good code.
   But it's short and simple, and you can explain every character. You will build
   it back up and understand the steps along the way.
-</aside>
+</Callout>
 
 Moving on.
 
