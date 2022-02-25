@@ -1,5 +1,5 @@
 import { Layout, ChapterFooter, Callout } from '../../components/react'
-import { AsciinemaPlayer } from '../../components'
+import { AsciinemaPlayer, Browser } from '../../components'
 import { Routes } from '../../lib'
 
 export const meta = {
@@ -162,7 +162,11 @@ This will start the development server, compile the react app, and open a tab in
 your preferred browser on port `3000`. You should see your app up and running!
 Congrats!
 
-![App running locally](/images/react/getting-started-app-running.png)
+<Browser
+  url="localhost:3000"
+  src="https://s3.amazonaws.com/code-cdn.ethanmick.com/react/getting-started/initial-run/index.html"
+  title="Initial React App"
+/>
 
 This comes with live reloading, so you can go into a file, change it, and see
 the changes.
@@ -435,7 +439,11 @@ wrap it with the `<> ... </>`.
 
 When you trim this down, it will look like this:
 
-![Slimmed down app running locally](/images/react/getting-started-app-slim.png)
+<Browser
+  url="localhost:3000"
+  src="https://s3.amazonaws.com/code-cdn.ethanmick.com/react/getting-started/final/index.html"
+  title="Final React App"
+/>
 
 (Not very exciting yet. But simple!)
 

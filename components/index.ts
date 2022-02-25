@@ -1,4 +1,5 @@
 export * from './asciinema'
+export * from './browser'
 export * from './email-signup'
 export * from './footer'
 export * from './header'
