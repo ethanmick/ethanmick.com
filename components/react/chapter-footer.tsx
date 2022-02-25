@@ -13,11 +13,11 @@ type Props = {
 }
 
 export const ChapterFooter = ({ next, previous }: Props) => (
-  <div className="grid grid-cols-1 md:grid-cols-3">
+  <div className="grid grid-cols-1 grid-rows-2 md:grid-cols-2 md:grid-rows-1">
     {previous && (
       <Link href={previous.href || ''}>
         <a className="flex items-center">
-          <ChevronLeftIcon className="ml-2 h-6 w-6 min-w-fit" />
+          <ChevronLeftIcon className="ml-2 h-6 w-6" />
           {previous.title}
         </a>
       </Link>
@@ -26,15 +26,15 @@ export const ChapterFooter = ({ next, previous }: Props) => (
       <Link href={next.href || ''}>
         <a className="flex items-center">
           {next.title}
-          <ChevronRightIcon className="h-6 w-6 min-w-fit" />
+          <ChevronRightIcon className="h-6 w-6" />
         </a>
       </Link>
     )}
     {next && !next.href && (
-      <div className="col-start-3 text-right">
-        <span className="flex justify-end text-right">
+      <div className="text-right md:col-start-2">
+        <span className="flex items-center justify-end text-right">
           {next.title}
-          <ChevronRightIcon className="h-6 w-6 min-w-fit" />{' '}
+          <ChevronRightIcon className="h-6 w-6" />{' '}
         </span>
         <span className="text-sm">
           Coming Soon. Subscribe below for updates!

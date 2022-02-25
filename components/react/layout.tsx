@@ -23,8 +23,8 @@ export const Layout = ({ children, title }: PostProps) => (
     <Header />
     <main className="container prose mx-auto max-w-3xl px-4 pt-16 prose-a:text-blue-600 lg:prose-lg">
       <Link href={Routes.React}>
-        <a className="flex flex-initial shrink items-center p-2">
-          <ChevronLeftIcon className="h-6 w-6 min-w-fit" />
+        <a className="justify-left flex items-center p-2">
+          <ChevronLeftIcon className="w-6k h-6" />
           Back to guide home
         </a>
       </Link>
