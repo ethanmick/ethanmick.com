@@ -28,7 +28,7 @@ export const Layout = ({ children, title }: PostProps) => (
           Back to guide home
         </a>
       </Link>
-      <article className="prose mb-40 lg:prose-lg">
+      <article className="prose mx-auto mb-40 lg:prose-lg">
         <MDXProvider components={components}>
           <h1 className="pt-8 text-center">
             <Widont>{title}</Widont>
