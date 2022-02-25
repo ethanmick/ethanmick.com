@@ -29,14 +29,14 @@ type Props = {
 
 export const Browser = ({ src, title, url }: Props) => {
   return (
-    <div className="overflow-hidden rounded-lg border">
-      <div className="grid grid-cols-6 border-b py-2">
+    <div className="relative overflow-hidden rounded-lg border">
+      <div className="grid grid-cols-4 border-b py-2 md:grid-cols-6">
         <div className="flex items-center justify-center">
           <WindowButton color="red" />
           <WindowButton color="yellow" className="ml-2" />
           <WindowButton color="green" className="ml-2" />
         </div>
-        <div className="col-span-4 rounded-full border text-center text-sm leading-8 text-slate-500">
+        <div className="col-span-2 col-start-2 rounded-full border text-center text-sm leading-8 text-slate-500 md:col-span-4">
           {url}
         </div>
       </div>
