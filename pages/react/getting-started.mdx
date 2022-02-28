@@ -1,5 +1,6 @@
 import { Layout, ChapterFooter, Callout } from '../../components/react'
 import { AsciinemaPlayer, Browser } from '../../components'
+import { CodeFile } from '../../components/mdx'
 import { Routes } from '../../lib'
 
 export const meta = {
@@ -207,8 +208,8 @@ in the `dependencies` key. Most of them should be in `devDependencies` instead.
 You can safely change them to this (version numbers might be slightly
 different):
 
-```json
-"dependencies": {
+<CodeFile language="json" file="package.json">
+  {`"dependencies": {
   "react": "17.0.2",
   "react-dom": "17.0.2",
   "react-scripts": "5.0.0",
@@ -223,8 +224,8 @@ different):
   "@types/react": "17.0.39",
   "@types/react-dom": "17.0.11",
   "typescript": "4.5.5"
-}
-```
+}`}
+</CodeFile>
 
 If you changed it, run:
 
@@ -330,7 +331,8 @@ It should look exactly the same. If you want to add back some of the code you
 removed you can do so. If you don't know what any of it means, you can look it
 up as you add it back! A basic `index.html` with the important parts looks like:
 
-```bash
+<CodeFile language="html" file="index.html">
+  {`
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -343,7 +345,8 @@ up as you add it back! A basic `index.html` with the important parts looks like:
     <div id="root"></div>
   </body>
 </html>
-```
+`}
+</CodeFile>
 
 ### `src`
 
@@ -356,13 +359,15 @@ This file contains the tests for the `App.tsx` file. This uses the fantastic
 `[@testing-library/react](https://testing-library.com/docs/react-testing-library/intro/)`
 library to test React.
 
-```tsx
+<CodeFile language="tsx" file="App.test.tsx">
+  {`
 test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
-```
+  render(<App />)
+  const linkElement = screen.getByText(/learn react/i)
+  expect(linkElement).toBeInTheDocument()
+})
+  `}
+</CodeFile>
 
 How this works is:
 
@@ -398,13 +403,14 @@ everything you are writing.
 
 Clear out the file for the following:
 
-```tsx
+<CodeFile language="tsx" file="App.tsx">
+  {`
 function App() {
   return <>Hello World</>
-}
-
+}\n
 export default App
-```
+`}
+</CodeFile>
 
 - `function` defines a JavaScript function, with the name `App`.
 - This function takes no parameters, so `()` is the function signature. It then
@@ -427,9 +433,11 @@ export default App
 
 And that's the file! You can trim it down some more with ES 6 syntax:
 
-```tsx
+<CodeFile language="tsx" file="App.tsx">
+  {`
 export default () => <>Hello World</>
-```
+`}
+</CodeFile>
 
 This is as small and simple as it can get. It exports a default function that
 has **no** name. That function is a component, and it returns the JSX element of
@@ -461,14 +469,16 @@ Moving on.
 
 This file contains the root of your application. It is what starts React.
 
-```tsx
+<CodeFile language="tsx" file="index.tsx">
+  {`
 ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
   document.getElementById('root')
-);
-```
+)
+`}
+</CodeFile>
 
 It is the entry point, where React renders your application inside a Strict Mode
 boundary. Strict mode is a development aid and doesn't render anything in the
@@ -477,12 +487,13 @@ docs](https://reactjs.org/docs/strict-mode.html).
 
 By removing the unnecessary code, you can trim this down to:
 
-```tsx
+<CodeFile language="tsx" file="index.tsx">
+  {`
 import ReactDOM from 'react-dom'
-import App from './App'
-
+import App from './App'\n
 ReactDOM.render(<App />, document.getElementById('root'))
-```
+`}
+</CodeFile>
 
 This is the only code _needed_, including imports. Remember the `index.html`
 edited earlier? It was trimmed down entirely to just have `id="root"` . The
@@ -546,10 +557,12 @@ takes longer.
 
 Go back to `App.tsx` and change the content to:
 
-```tsx
+<CodeFile language="tsx" file="App.tsx">
+  {`
 const App = () => <>Hello World</>
 export default App
-```
+`}
+</CodeFile>
 
 Now the React dev tools should show:
 
@@ -596,12 +609,14 @@ npm install --save prettier
 
 My `.prettierrc.json` file:
 
-```tsx
+<CodeFile language="json" file=".prettierrc.json">
+  {`
 {
   "singleQuote": true,
   "semi": false
 }
-```
+`}
+</CodeFile>
 
 ## From code to DOM
 

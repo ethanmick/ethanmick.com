@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { EmailSignup } from '../email-signup'
 import { Footer } from '../footer'
 import { Header } from '../header'
-import { Code } from '../mdx'
+import { Code, CodeFile } from '../mdx'
 import { Widont } from '../widont'
 
 export interface PostProps {
@@ -16,6 +16,7 @@ export interface PostProps {
 const components = {
   pre: (props: any) => <div {...props} />,
   code: Code,
+  CodeFile,
 }
 
 export const Layout = ({ children, title }: PostProps) => (
