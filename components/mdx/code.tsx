@@ -4,10 +4,10 @@ import { pSBC } from 'lib'
 import Highlight, { defaultProps, Language } from 'prism-react-renderer'
 import theme from 'prism-react-renderer/themes/palenight'
 
-type CodeProps = {
-  children: string
-  className?: string
-}
+type CodeProps = React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLElement>,
+  HTMLElement
+>
 
 export const Code = ({ children, className }: CodeProps) => {
   // We don't have every language, but the fallback is just no syntax
@@ -20,7 +20,7 @@ export const Code = ({ children, className }: CodeProps) => {
     <Highlight
       {...defaultProps}
       theme={theme}
-      code={children.trim()}
+      code={(children as string).trim()}
       language={language}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (

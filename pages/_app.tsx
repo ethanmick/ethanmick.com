@@ -1,4 +1,6 @@
+import { MDXProvider } from '@mdx-js/react'
 import 'asciinema-player/dist/bundle/asciinema-player.css'
+import { Code } from 'components/mdx'
 import * as Fathom from 'fathom-client'
 import { DefaultSeo } from 'next-seo'
 import type { AppProps } from 'next/app'
@@ -6,6 +8,13 @@ import Head from 'next/head'
 import { Router } from 'next/router'
 import React, { useEffect } from 'react'
 import '../styles/globals.css'
+
+const components = {
+  pre: ({ children: child }: any) => {
+    const { children, className } = child.props
+    return <Code className={className}>{children}</Code>
+  },
+}
 
 Router.events.on('routeChangeComplete', () => {
   Fathom.trackPageview()
@@ -39,7 +48,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           handle: '@Ethan_Mick',
         }}
       />
-      <Component {...pageProps} />
+      <MDXProvider components={components}>
+        <Component {...pageProps} />
+      </MDXProvider>
     </>
   )
 }

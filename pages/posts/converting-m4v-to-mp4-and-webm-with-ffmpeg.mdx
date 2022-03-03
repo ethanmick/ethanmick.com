@@ -41,14 +41,16 @@ So easy!
 Of course, I had a lot of videos I wanted to convert. So I wrote up a
 little bash script.
 
-    # convert.sh
-    for i in *.m4v;
-      do name=`echo $i | cut -d'.' -f1`;
-      echo $name;
-      ffmpeg -ss 00:00:05 -i "$i" -frames:v 1 "./output/$name.png"
-      ffmpeg -i "$i" "./output/$name.mp4";
-      ffmpeg -i "$i" "./output/$name.webm";
-    done
+```bash
+# convert.sh
+for i in *.m4v;
+  do name=`echo $i | cut -d'.' -f1`;
+  echo $name;
+  ffmpeg -ss 00:00:05 -i "$i" -frames:v 1 "./output/$name.png"
+  ffmpeg -i "$i" "./output/$name.mp4";
+  ffmpeg -i "$i" "./output/$name.webm";
+done
+```
 
 This requires there to be an _output_ folder in the directory for the
 script to place the result in. This will not only convert every file to
