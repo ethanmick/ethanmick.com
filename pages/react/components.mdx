@@ -1,0 +1,633 @@
+import { Layout, ChapterFooter, Callout } from '../../components/react'
+import { AsciinemaPlayer, Browser } from '../../components'
+import { CodeFile } from '../../components/mdx'
+import { Routes } from '../../lib'
+
+export const meta = {
+  order: 1,
+  title: 'Components',
+  author: 'Ethan Mick',
+  slug: 'components',
+  excerpt: '',
+  createdAt: '2022-03-04T08:00:00.000Z',
+}
+
+export default ({ children }) => <Layout {...meta}>{children}</Layout>
+
+In the last section, you started your project with `create-react-app` and then
+slimmed it down to the basics. You should understand what each file does. React
+isn't magic.
+
+In this section, it's time to start building up from that foundation. The most
+basic of sites, Hello World, will become a powerful to-do app. To do that, you
+need to start making new components.
+
+Components are the main building block of React.
+
+A **component** is a `function` which returns **JSX**.
+
+That's it! The scope of components can be big or small. There is a good middle
+ground where components contain some logic and markup.
+
+Your entire project will be built around these components.
+
+Let's get started!
+
+## So, what is JSX
+
+JSX stands for JavaScript (JS) Extension (X). It's an extension to the language
+itself and adds the ability to write **markup** in JavaScript files.
+
+Because JSX is an extension, a browser cannot execute it directly. You cannot
+run a `.jsx` file in the browser. All `.jsx` files need to be compiled down to
+regular JavaScript for the browser. This is why starting a React project is not
+as simple as writing some HTML and JavaScript. You need to introduce a _build_
+step.
+
+The build step is also the reason why writing React with TypeScript is
+beneficial. TypeScript also needs to compile down to JavaScript. Because React
+_already_ requires a build step, writing in TypeScript doesn't introduce an
+unnecessary step. The step is already required.
+
+When writing TypeScript JSX, the file extension is `.tsx`. Some project setups
+will complain if you write JSX in a regular `.ts` file. Make sure the file
+extension is correct if you have issues.
+
+It's useful to think of JSX as being much closer to JavaScript with some markup
+as opposed to HTML with JavaScript. Done correctly, the file is mostly
+JavaScript with markup sprinkled in.
+
+JSX couples together the user interface with the _logic_ that goes with it.
+
+This coupling may be considered bad. It may be foreign if you've heard of
+model-view-controller. React takes the stance that it's a natural part of
+building user interfaces. You can disagree, but that's how it works.
+
+Therefore, if React couples together the view and logic, how do you separate
+things? What are the boundaries?
+
+React promotes _logical_ separation. You separate things apart by concern and
+responsibility. What a chunk of code _does._ Logical pieces of the user
+interface will form the components.
+
+<Callout>
+  🐢 Other frameworks (looking at you, Angular), separate things by technology
+  as well.
+</Callout>
+
+### TypeScript and JSX
+
+TypeScript goes a good job of showing how the JSX runtime looks in code. When
+working in JSX files you can explore the TypeScript definitions:
+
+```ts
+declare global { // Declaring this as globally available
+  namespace JSX { // JSX!
+	  interface Element // Defining an interface, React will implement this
+      interface IntrinsicElements { // Redefines HTML, in JSX
+        // HTML
+        a: React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>;
+        div: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+        p: React.DetailedHTMLProps<React.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>;
+        /// All the rest of the HTML elements
+      }
+   }
+}
+```
+
+TypeScript defines the JSX namespace. JSX is a generic standard, and different
+runtimes can implement it in different ways. React is one such runtime. JSX
+defines the syntax but it is not specific to React.
+
+[Vue](https://vuejs.org/), for example, has the ability to to support JSX
+expressions:
+
+```tsx
+const vnode = <div>hello</div>
+```
+
+Valid Vue code! There are some differences between how Vue works and React, but
+that's the power of the JSX runtime. It allows libraries to implement the
+extension as they want, with differences.
+
+### Quirks
+
+The React runtime implements JSX with a few quirks of JavaScript coming through.
+Not all, but some.
+
+The first is that there are some keywords you can't use in your markup, the
+biggest two being `class` and `for`.
+
+```tsx
+const node = <p class="text-large">My text.</p>
+```
+
+The above code is not valid React JSX. `class` here is treated as the _keyword_
+class*.* And as such, you need to use `className` instead: For those who write a
+lot of HTML, that might be a bummer.
+
+```tsx
+const node = <p className="text-large">My text.</p>
+```
+
+Your IDE autocomplete should autocomplete `className` over `class` to make your
+life easy.
+
+Same for the HTML `for`, as in:
+
+```tsx
+<div>
+  <label for="cheese">Do you like cheese?</label>
+  <input type="checkbox" name="cheese" id="cheese">
+</div>
+```
+
+Here, `for` here is the keyword, like a `for loop`. You need to use:
+
+```tsx
+<label htmlFor="cheese">Do you like cheese?</label>
+```
+
+These are some of the quirks that shine through in React's JSX. Not all
+libraries implement JSX in the same way. When switching projects you might see
+some differences.
+
+### JSX - Write HTML in JavaScript
+
+That's what JSX is. An extension to _JavaScript_ that different libraries can
+implement. It allows the syntax of HTML and JavaScript to be written together.
+React implements the JSX interface. At runtime, these elements are turned into
+DOM and rendered by the browser.
+
+<Callout>
+  🐢 Do you need to write React with JSX? The answer is no, you don't need to.
+  But you should. See here:{' '}
+  <a href="https://reactjs.org/docs/react-without-jsx.html">
+    https://reactjs.org/docs/react-without-jsx.html
+  </a>
+</Callout>
+
+Anyways, back to _fun_ React.
+
+### Write in JSX; think in Components
+
+A component is a function that returns JSX. That's it! That JSX can be your
+entire application, or as small as a single fragment that contains no rendered
+DOM.
+
+In general, it's good to organize your application around components that make
+sense. Since each component is just a function, they are very easy to create and
+use. Components make sense for shared pieces of functionality. They can also be
+used to structure your code better. At the end of the day, it's up to you (and
+your team) on where it makes the most sense to draw these boundaries.
+
+<Callout>
+  🧑‍💻 I will make suggestions on component structure and where to break things
+  apart. Feel free to change things around though!
+</Callout>
+
+## Building components
+
+More components are good.
+
+**Components are very lightweight.**
+
+The more the merrier! This might be different from your experience in other
+frameworks. In other frameworks, a new component creates several files and links
+modules together. This friction results in components being **larger**, since
+creating any single new component is more **effort**.
+
+In React, components don't need to be in different files. Many times that should
+not be the case. A component should be as _visible_ as it needs to be. If a
+component is a helper and only used in one place, keep all that logic in the
+same file.
+
+Components don't need to be shared. Breaking apart the code into components can
+be done to make it easier to maintain and read.
+
+Keep in mind that moving your components around is also trivially easy. Since
+it's just a function, just move the component to a new file and update any
+imports. Most editors will do this refactoring for you.
+
+Be careful not to abstract things too far though; there's a balance. Components
+that don't have any responsibility themselves aren't helpful.
+
+Alright, it's time to start building out the basics of your **to-do**
+application. The focus will be the component structure, followed by some design
+cleanup.
+
+## Adding some to-dos
+
+You're going to create some new components which capture the logical sections of
+the app. You got this!
+
+The simplest to-do app can:
+
+- Add a to-do
+- View the to-dos
+- Mark a to-do as completed
+
+To start, this will focus on _viewing_ the to-dos.
+
+### The list of to-dos
+
+It's easy to start here because you can mock the data. Mocking allows you to
+focus on building the correct components. A later section will build adding your
+own to-dos.
+
+To start, define the structure of the data. If a “to-do list” is a list of
+to-dos... what is a **to-do?** What information needs to be saved? The most
+basic is the `text` of the to-do. You can add other properties if you'd like. I
+like to start simple.
+
+Because you are using TypeScript, you can create an `interface` for this
+structure of data. TypeScript uses this to ensure the objects that are passed
+around have the required data.
+
+Near the top of your `App.tsx` file:
+
+```tsx
+interface Todo {
+  text: string
+}
+```
+
+Here, we define a `Todo` as an **object** with one key, `text` that is type
+`string`. In JavaScript, an object that _implements_ this interface would
+be:
+
+```js
+{
+  text: 'My first to do!'
+}
+```
+
+By defining the interface the compiler _ensures_ the objects have the required
+properties. This means typos and missing properties will stop the app from
+compiling. Catching errors at compile time is faster than catching them at
+runtime and easier to debug. If you've ever had frustrating errors because you
+mistyped a property, TypeScript will save you from that pain.
+
+Modeling the data of your application is important. React is the library to take
+your data and display it, but you need to define all this data yourself. A worse
+alternative to consider: if a to-do is _just_ a single string, it would be
+possible to model it as a list of strings.
+
+```json
+["My first to do!", "Another one"]
+```
+
+While valid, it does not allow for _other_ properties to be added. Thinking
+ahead, you might want to add due dates, priority, tags, lists, and other
+features. Using an object to hold the to-do information makes adding future
+properties easier. **You don't need to change the data structure**. Objects in
+JavaScript are also very easy to work with; there is not much downside to using
+them.
+
+Another thought would be to use a `class` to define our to do:
+
+```tsx
+class Todo {
+  public text: string
+  constructor(text: string) {
+    this.text = text
+  }
+}
+```
+
+This is valid too, but **don't** do it. When defining a `class` the code must
+_instantiate_ that class. You need to do:
+
+```tsx
+const todo = new Todo('My first to do!')
+```
+
+This causes problems in several places:
+
+- Loading data from a network is harder since the data needs to be turned into class objects.
+- Copying data is harder since the copy also needs to be a class object
+- Saving and loading data is harder since these also need to be class objects
+- Classes promote class methods, instead of functional programming
+
+In short, never use classes. Using an `interface` defines the _shape_ of the
+data, and does not require a literal class.
+
+## Basic To-dos
+
+Change out the `App.tsx` component to be the following:
+
+```tsx
+const App = () => (
+  <ul>
+    <li>Learn React</li>
+    <li>Learn TypeScript</li>
+    <li>Go outside </li>
+  </ul>
+)
+```
+
+And this should look like:
+
+![React rendering a list of todos](/images/react/react-components-todos.png)
+
+Hurray! You've added 3 to-dos to your app! You're basically writing HTML at this
+point, there is nothing special happening in React. You can see this by
+_inspecting_ the browser DOM:
+
+![The todo dom](/images/react/react-components-dom.png)
+
+The result is exactly what we wrote in the file. The App component is rendered
+as DOM, and the HTML elements are written out. Very simple.
+
+However, this isn't using React to its fullest potential. When written in this
+way, you won't be able to _dynamically_ change the to-dos. HTML is static, but
+React will let you trivially make it dynamic.
+
+<Callout>
+  🐢 This is why using React to write a static site might be overkill. If
+  nothing is dynamic, the power of React isn't really being used.
+</Callout>
+
+You're going to rewrite this component, but in a smarter way.
+
+## Again, but with more React
+
+First, you should remove duplication. The DOM has three list items, and in the
+future, many more. How many more? **N** more. Any number zero or greater. A
+to-do list can have as many items as it wants.
+
+Because of that, you won't be able to write them all out by hand. Not to mention
+you want to add new ones in the app. You need to list the items dynamically.
+
+If you write the to-dos in the markup, `<li>my todo</li>`, then the markup
+becomes the data structure. That is the only place that to-do is represented.
+But that makes it very hard to work with. DOM should _show_ the data. JavaScript
+should represent and manipulate the data. You want to define your to-dos in
+JavaScript and s*how* them in the DOM.
+
+To do that, near the top of the file, below the `interface Todo {...}`, write:
+
+```tsx
+const todos: Todo[] = [
+  { text: 'Learn React' },
+  { text: 'Learn TypeScript' },
+  { text: 'Go outside' },
+]
+```
+
+This defines a constant (`const`) named `todos`, which is an array of `Todo`s
+(`Todo[]`). The value of that constant is the three `Todo`s in the array.
+
+Now you need to _render_ this data in the app. You want to take the regular
+JavaScript and show it to the user.
+
+Looks tricky, but you can do it with some simple logic. You want to display
+these to the user, in the browser. To do that you need to take each to-do in the
+array and change it to an HTML element. Since this is a list, the `li` element
+is a good option. It is a [list
+item](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/li).
+
+So, for each `Todo` in the array, turn it into a `<li>`.
+
+Imperatively, it reads like this:
+
+```tsx
+const App = () => {
+  // Create a new array to hold the <li> elements
+  const liElements: JSX.Element[] = []
+  // for each todo
+  for (const todo of todos) {
+    // Add the <li> to the array, with the text of the todo
+    liElements.push(<li>{todo.text}</li>)
+  }
+
+  // return the list with the liElements inside
+  return <ul>{liElements}</ul>
+}
+```
+
+It should look exactly the same as it did before.
+
+### Rendering JavaScript values
+
+In JSX, if you want to _evaluate_ a JavaScript expression, you use the syntax
+`{ }`. This will evaluate the JavaScript between the brackets and render the
+returned value.
+
+For example, you could replace your `App` component with this:
+
+```tsx
+const App = () => <>{'Hello ' + (1 + 1)}</>
+```
+
+Which would display `Hello 2` in the browser. Not _all_ things evaluated can
+render.
+
+**Can Render**
+
+- ReactElement (Component)
+- string
+- number
+- boolean
+- null (renders nothing)
+- undefined (renders nothing)
+- Arrays containing the above
+
+**Cannot Render**
+
+- Functions
+- Symbols
+- Objects
+
+React will throw an error if you try to render something invalid.
+
+### A closer look at the code
+
+On the line:
+
+```tsx
+liElements.push(<li>{todo.text}</li>)
+```
+
+If you remove the `{ }` brackets to have:
+
+```tsx
+liElements.push(<li>todo.text</li>)
+```
+
+Then the literal text `todo.text` is what will show in the browser. You don't
+want the literal string “todo.text”, you want the `text` property on the `todo`
+object. So the `{ }` brackets will _evaluate_ that as JavaScript and return the
+value.
+
+## Again, but with _more_ React
+
+The above code with the `for loop` will let you dynamically render to-dos, but
+it's not written as modern _React_. The code above is imperative, and React
+wants a more declarative approach; functional.
+
+<Callout>
+  🐢 Every library, framework, and language will have favored approaches.
+  React's is to be functional and declarative. It allows for elegant and simple
+  code. If this is foreign to you, I highly recommend you continue with it. It
+  may take a while before it "clicks".
+</Callout>
+
+The same explanation from above:
+
+> You want to display these to the user, in the browser. To do that you need to
+> take each to-do in the array and change it to an HTML element.
+
+When you want to change each element of an array to another “thing” you should
+use the `[Array.prototype.map](http://Array.prototype.map)` method. This is one
+of the most useful methods in React. It will take each `Todo` and _map_ it to
+the result of a function. In our case, we'll change it to JSX:
+
+```tsx
+const App = () => (
+  <ul>
+    {todos.map((todo) => (
+      <li>{todo.text}</li>
+    ))}
+  </ul>
+)
+```
+
+This more _Reactful_ approach is as elegant as it gets. The array of `todos` is
+_mapped_ to the result of a function. This uses the ES 6 arrow function. The JSX
+inside the `( )` is automatically returned with the arrow function. That JSX is
+the `<li>` element with the todo text.
+
+<Callout>🐢 I know this is missing the `key` attribute. Next chapter!</Callout>
+
+This is how it renders:
+
+![Same rendering as before](/images/react/react-components-todos.png)
+
+### Reviewing the code
+
+```tsx
+const App = () => (
+  <ul>
+    {todos.map((todo) => (
+      <li>{todo.text}</li>
+    ))}
+  </ul>
+)
+```
+
+With `const App`, you define the component. There is nothing special about the
+name `App`; you can name it anything you want. Since it's a top-level component
+for the entire app, `App` is a good name.
+
+You define it with `const`, instead of JavaScript's `var` or `let`. This is
+because this variable will never change. You should always use `const` unless
+the variable needs to mutate. React's lifecycle will run each component every
+time it needs to be rendered. This means the variables won't change _inside_ a
+component. You can almost always use `const` for variable declarations.
+
+The capital `A` in `App` is important. React components either need to start
+with a capital letter, or have a `.` in the name. React considers anything
+starting with a lowercase letter to be an HTML element. HTML 5 allows for custom
+HTML elements. Therefore, React can't know what every HTML element would be; you
+can create new custom HTML elements. If you want to render HTML, make it
+lowercase. If it starts with an uppercase letter then React will treat it as a
+component.
+
+HTML elements have their own basic set of properties. Components can have custom
+properties. They also run your custom code to do whatever you want.
+
+Next,
+
+```tsx
+() => (...)
+```
+
+This is the function definition. The `App` is defined as a function with no
+parameters. It's an arrow function, which means if the function body is one line
+then it will be automatically returned without a `return` statement. JSX inside
+`( )` counts as a single statement, so the contents inside the `()` are
+automatically returned. And that is:
+
+```tsx
+<ul>
+  {todos.map((todo) => (
+    <li>{todo.text}</li>
+  ))}
+</ul>
+```
+
+It's important to use semantic HTML. This is an unordered list, `ul`, with list
+items, `li` inside it. Using the correct HTML elements as intended helps
+accessibility and screen readers. It's also good engineering!
+
+## Some design work
+
+Adding some CSS will make the app feel so much better. These details matter when
+convincing people to use your product. Good design is a competitive advantage.
+It helps with marketing. It helps with first impressions. Products that _feel_
+good are easier to sell.
+
+<Callout>
+  👨🏼‍💻 I know you came here looking to learn React. My philosophy is always to
+  create a shippable product. Build something **you** want to use. These details
+  matter.
+</Callout>
+
+There are lots of libraries to make CSS in React easier. Those will be covered
+in a different section. For now, simple CSS will suffice.
+
+Create a new file in the `src` directory named `App.css`.
+
+```tsx
+body {
+  font-family: sans-serif;
+  font-size: 1.125rem;
+}
+
+ul {
+  margin: 100px auto;
+  max-width: 500;
+  list-style: none;
+}
+
+li {
+  padding: 0.5rem;
+}
+
+li:not(:last-child) {
+  border-bottom: 1px solid #ccc;
+}
+```
+
+Then, in your `App.tsx` file, add:
+
+```tsx
+import './App.css'
+```
+
+## The power of components
+
+Congratulations! You've created a static list of to-do items. You can't enter
+new ones yet, but you'll be able to do that soon.
+
+Your entire app is currently one single component, `App`. As things get more
+complex, you will need to break apart the concerns into different components.
+
+To do that, your components need to **pass data** to each other.
+
+The first refactor will be to break apart the entire list (the `ul` element)
+from each item (`li`). The list has concerns such as the order of items, sorting
+items, and moving items. Each to-do itself has other concerns. They will display
+the text, due dates, priority, and more.
+
+You will make the **list** one component and the **list item** another. The list
+will need to pass each to-do item the information it needs to display.
+
+A `TodoItem` component:
+
+```tsx
+const TodoItem = ({ text }: Todo) => <li>{text}</li>
+```
+
+How does this work? Read on to find out!
