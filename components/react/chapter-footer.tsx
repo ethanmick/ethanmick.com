@@ -14,17 +14,19 @@ type Props = {
 
 export const ChapterFooter = ({ next, previous }: Props) => (
   <div className="grid grid-cols-1 grid-rows-2 md:grid-cols-2 md:grid-rows-1">
-    {previous && (
+    {previous ? (
       <Link href={previous.href || ''}>
         <a className="flex items-center">
           <ChevronLeftIcon className="ml-2 h-6 w-6" />
           {previous.title}
         </a>
       </Link>
+    ) : (
+      <div />
     )}
     {next?.href && (
       <Link href={next.href || ''}>
-        <a className="flex items-center">
+        <a className="flex items-center justify-end">
           {next.title}
           <ChevronRightIcon className="h-6 w-6" />
         </a>
