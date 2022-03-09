@@ -16,7 +16,9 @@ There are times when sharing a GIF is easier and more convenient than sharing
 a video file. With the right compression it often will be smaller too. You
 can easily use FFmpeg to convert a video file to a gif.
 
-    ffmpeg -i input.mp4 -vf "fps=15,scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 output.gif
+```bash
+ffmpeg -i input.mp4 -vf "fps=15,scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 output.gif
+```
 
 - `fps` sets the frame rate. I found about 15 to give a quality gif while keeping a small size.
 - `scale` will resize the output to the pixels wide and automatically determine the height while preserving the aspect ratio. 720 had good quality.

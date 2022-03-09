@@ -15,7 +15,9 @@ Just figured out a bug that was really annoying. I was running a shell
 command from Node, and it was working fine in some cases, but failed for
 my new test with the cryptic error:
 
-    spawn /bin/sh ENOENT
+```js
+spawn /bin/sh ENOENT
+```
 
 That was it. But of course `/bin/sh` exists, so what's going on?
 
