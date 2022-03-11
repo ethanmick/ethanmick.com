@@ -1,0 +1,402 @@
+import { Layout, ChapterFooter, Callout } from '../../components/react'
+import { AsciinemaPlayer, Browser } from '../../components'
+import { CodeFile } from '../../components/mdx'
+import { Routes } from '../../lib'
+
+export const meta = {
+  order: 4,
+  title: 'Passing data with properties',
+  author: 'Ethan Mick',
+  slug: 'properties',
+  excerpt: '',
+  createdAt: '2022-03-11T08:00:00.000Z',
+}
+
+export default ({ children }) => <Layout {...meta}>{children}</Layout>
+
+In the last section, you updated your `App` component to show off a list of
+hardcoded to-do items. This component now feels like it _does_ something. To
+bring it to the next level, it's time to start passing data around.
+
+You will build out two new components, a `List` and a `ListItem`. The list will
+hold all of the to-dos, and the item will be responsible for displaying the
+details about any single to-do. This will allow both to focus on their core
+responsibilities and pass the necessary data to the children.
+
+## Passing data down
+
+In React you will often pass data down to components that are _within_ your
+current component. These sub-components are called _children. These_ children,
+in turn, may have more children. This continues until you reach a component that
+has no further children. That's where the chain stops.
+
+React uses this _component tree_ to logically pass information down. Each
+component in the tree should only pass only the required information along to
+the children.
+
+For your app, the `List` will hold all the to-dos, and pass only the single item
+to the `ListItem` The ListItem, for now, won't have any children, so the chain
+will stop there.
+
+### Passing data with properties
+
+To pass data between components, React uses a syntax that works similarly to HTML.
+
+```tsx
+const ComponentA = (props: any) => {
+  return <div>{props.name}</div>
+}
+
+const ComponentB = (props: any) => {
+  return <ComponentA name="Ethan" />
+}
+```
+
+Every component in React accepts a single parameter. This can be named anything,
+but by convention, it's named `props`, which is short for _properties_.
+
+`props` value is a plain old JavaScript object. In TypeScript it can be given a
+type. This object has all the key-value pairs that are passed to it.
+
+Every time you pass a parameter you use the `key=value` syntax. This is true for
+native HTML elements like `<input type="text" />` or custom components like
+above.
+
+This works a lot better than having multiple function parameters. HTML elements
+can have _a lot_ of different parameters and many of them are optional. Imagine
+if you had to list them out:
+
+```tsx
+function img(src, alt, title, style, className, height, width, ...) {}
+```
+
+This breaks down for custom components since you could pass _any_ number of
+parameters. Instead of listing things out, React passes properties in an object.
+
+The child component (the one being called), can reference all of these key-value
+pairs by looking up the `key` on the `props` object. This can be done with dot
+notation, `props.key` or bracket notation, `props["key"]`.
+
+**Properties are read-only.**
+
+A very important core tenant of React is that the data passed into a component
+is _immutable._
+
+<Callout>
+  🐢 I wish JavaScript had better support for immutable objects! While you *can*
+  change these values you should **never** do so. It will result in very weird
+  bugs!
+</Callout>
+
+This includes things like strings and numbers, but also more complex data like
+objects and arrays. You can make a copy of these values and change _those_, but
+the actual values passed in should never be changed by your component. Props are
+immutable.
+
+### With types
+
+Because you're coding this with TypeScript, you can effortlessly add type
+checking to your components. Instead of using `any` like above, you can define
+and use a type:
+
+```tsx
+type Props = {
+  name: string
+}
+
+const ComponentA = (props: Props) => {
+  return <div>{props.name}</div>
+}
+
+const ComponentB = (props: any) => {
+  return <ComponentA name="Ethan" />
+}
+```
+
+Above, `ComponentA` defines the type for its `props`. By convention, if there is
+no need for a different name, the type name should be `Props`. Therefore, when
+`ComponentB` calls it below, if it does not pass a `name` that is a string, you
+will get a _compile-time error_. This allows you to code faster and write more
+correct code. You can use TypeScript's optional types to allow for powerful and
+flexible types.
+
+### With destructuring
+
+Lastly, when referencing the properties you want, it can be tiresome to
+reference `props.key` each time. JavaScript offers an elegant solution to
+_destructure_ the parameters in the function definition. The syntax is:
+
+```tsx
+({ key1, key2 }: TypeDefinition)
+```
+
+So the above example changes to:
+
+```tsx
+type Props = {
+  name: string
+}
+
+const ComponentA = ({ name }: Props) => {
+  return <div>{name}</div>
+}
+```
+
+This takes the `props` and _destructures_ them into the named key-value pairs.
+In this case, the props object will take `prop.name` and put the value into the
+`name` variable in the function definition. This allows you to reference the
+value you want with just the short name.
+
+You can read more about destructuring on [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment).
+
+## Building real components
+
+Now that you know how to pass data down to your components, you can build out
+some smarter components for your to-do app.
+
+The two responsible components in your app are the to-do list itself, and each
+item. As these grow with complexity it will be good to have them as separate
+entities.
+
+<Callout>
+  🐢 The entire time you are working on this, you should have your dev server
+  running. See the changes you are making as you make them!
+</Callout>
+
+## To-Do List
+
+It's often easier to think from the top of the tree to the bottom. That is,
+start with the big components and work your way through their children. If you
+know all the components you need upfront, you can also start with the smallest
+and work your way up.
+
+<Callout>
+  🐢 I like to often start small, so each parent component can immediately use
+  the child I just created.
+</Callout>
+
+To just get going, you'll start with the list itself. You can take your `App`
+component and copy it as the base:
+
+```tsx
+const TodoList = () => (
+  <ul>
+    {todos.map((todo) => (
+      <li>{todo.text}</li>
+    ))}
+  </ul>
+)
+```
+
+This just copies the `App` and renames it. Since you moved the logic out of
+`App`, go ahead and just have `App` call your new component:
+
+```tsx
+const App = () => <TodoList />
+```
+
+Great! Although the new component though is using a globally scoped `todos`
+reference. While that works, it's **not** ideal. A component can use global
+_constants_, but you want this list to change eventually. That `todos` array was
+just convenience, and you're beyond that now. No, instead, you should _pass_ the
+to-dos into this component as a property!
+
+Add a TypeScript definition for the props you expect. In this case, a list of
+`Todos`.
+
+```tsx
+interface TodoListProps {
+  todos: Todo[]
+}
+```
+
+Remember, even though you are only interested in a single property, the _props
+are passed as an object_. You cannot get a single property from them. Here, you
+are defining the object passed should have a single key, `todos`, with a value
+that is an array of `Todo`.
+
+Add the definition to the list:
+
+```tsx
+const TodoList = ({ todos }: TodoListProps) => (...)
+```
+
+And when you do that, you should have a TypeScript compiler error! The `App`
+component is not passing this new property yet. The default property object
+passed to a component is an empty object, `{}` so the error looks like this:
+
+```tsx
+Property 'todos' is missing in type '{}' but required in type 'TodoListProps'. ts(2741)
+```
+
+Alright, fair enough. We declared `todos` to be required in the interface and
+didn't pass it. Update the App component to pass it:
+
+```tsx
+const App = () => <TodoList todos={todos} />
+```
+
+<Callout>
+  🐢 You'll notice we're using the same name here. That's okay, JavaScript uses
+  the scope to pick up and use the closest value. If this doesn't sit right with
+  you, feel free to rename some variables.
+</Callout>
+
+With all this moving around of code, your app should look blissfully the same.
+
+## Adding the `TodoListItem`
+
+The `TodoList` above doesn't use a custom component, it just creates an `li`
+HTML element. You have big plans for this app, so a custom component is
+necessary. It's time to create the `TodoListItem`. This item will be responsible
+for displaying the `<li>` and the text. What data is going to be passed to this?
+Just the `text` of a Todo. The good news is you already have an interface that
+defines that exact thing, the `Todo` interface itself!
+
+You can reuse that and create:
+
+```tsx
+const TodoListItem = ({ text }: Todo) => <li>{text}</li>
+```
+
+This single line component takes in `text` and displays it in an `li`. You
+aren't calling it yet though, so return to your `TodoList` component and update
+it.
+
+Instead of:
+
+```tsx
+<ul>
+  {todos.map((todo) => (
+    <li>{todo.text}</li>
+  ))}
+</ul>
+```
+
+Replace it with:
+
+```tsx
+<ul>
+  {todos.map(({ text }, index) => (
+    <TodoListItem key={index} text={text} />
+  ))}
+</ul>
+```
+
+Boom! This destructures the `todo` in the `map` function call since there is
+just a single key to work with. It also pulls in the `index` param to use as the
+`key` below. It calls the new `TodoListItem` component and passes `key` and
+`text` to the item.
+
+So uh, what the heck is `key`.
+
+## Special props, `key`, and `children`.
+
+React has two magical properties. The first is `key`. The official docs explain
+it well:
+
+> Keys help React identify which items [in a list] have changed, are added, or
+> are removed. Keys should be given to the elements inside the array to give the
+> elements a stable identity.
+>
+> The best way to pick a key is to use a string that uniquely identifies a list
+> item among its siblings. Most often you would use IDs from your data as keys.
+> When you don't have stable IDs for rendered items, you may use the item index as
+> a key as a last resort:
+
+<Callout>
+  🐢 Using indexes as keys have problems, as explained
+  [here](https://robinpokorny.medium.com/index-as-a-key-is-an-anti-pattern-e0349aece318)
+  and
+  [here](https://reactjs.org/docs/reconciliation.html#recursing-on-children).
+</Callout>
+
+When creating any elements from a list you must give those elements a unique
+`key.`
+
+Here, you don't have anything other than the index to use. Any to-do may have
+the same text as another to-do. Since they are not unique, the index will have
+to do for now.
+
+### Children
+
+The other special property is `children`. This is used to access _children_
+elements that are passed to a component. For example, imagine a component whose
+responsibility is to be a card.
+
+```tsx
+const Card => ({ children }) => (
+  <div className="box-shadow rounded-corners background-white">
+    {children}
+  </div>
+)
+```
+
+This component wants to take _any_ content and wrap it in a card like diagram.
+It doesn't accept those children as regular props, the children _are the
+elements inside the card_. Called like this:
+
+```tsx
+<Card>
+  <div>
+    <h1>Title</h1>
+    <p>lots of text</p>
+  </div>
+</Card>
+```
+
+To refer to the `div` and elements passed _into_ the card, the special name
+`children` is used. The `Card` component then just “passes through” the children
+and renders them using `{children}`.
+
+This does bring up an interesting point of “what's correct?” Both of these are
+indentical:
+
+```tsx
+// Option A
+const TodoListItem = ({ text }: Todo) => <li>{text}</li>
+
+// Option B
+const TodoListItem = ({ children }: Todo) => <li>{children}</li>
+```
+
+However they are called differently:
+
+```tsx
+// Option A
+<TodoListItem text={text} />
+
+// Optionn B
+<TodoListItem>{text}</TodoListItem>
+```
+
+Which is correct? It mostly depends on the situation and the contents of _text_.
+If `text` ends up being a lot of DOM and other components, it's acting more like
+part of the DOM tree than just a string. If `text` is a simple string, then
+passing it as a property named `text` is simple.
+
+## Wrapping up
+
+You have refactored your to-do application to use more components. These
+components are separated by responsibility. They don't do a ton yet, but there
+is room for growth. Importantly these components can be reused and they separate
+concerns.
+
+You can now pass data down through your application. This lets you pass the
+to-dos down to the list item, which displays the information.
+
+Of course, it's still a static list. You can't change anything. While properties
+are read-only and immutable, _state_ is not. And to change up your list, you
+will need to remove the constant `todos` and step into the world of managing
+state, something that changes:
+
+```tsx
+const [todos, setTodos] = useState<Todo[]>([])
+```
+
+This will turn your demo into a fully functioning app. Ready to learn how?
+
+<ChapterFooter
+  previous={{ title: 'Components', href: Routes.ReactComponents }}
+  next={{ title: 'Managing State' }}
+/>

@@ -24,7 +24,12 @@ export default function PostPage({ metas }: Props) {
       </Link>
       <Link href={Routes.ReactComponents}>
         <a className="block py-2 text-blue-500 visited:text-indigo-700 hover:underline">
-          Components
+          Learning Components
+        </a>
+      </Link>
+      <Link href={Routes.ReactProperties}>
+        <a className="block py-2 text-blue-500 visited:text-indigo-700 hover:underline">
+          Passing data with properties
         </a>
       </Link>
       <h2 className="py-8 text-2xl">Other</h2>
