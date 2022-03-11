@@ -9,4 +9,5 @@ export enum Routes {
   ReactIntroduction = '/react/introduction',
   ReactGettingStarted = '/react/getting-started',
   ReactComponents = '/react/components',
+  ReactProperties = '/react/properties',
 }
