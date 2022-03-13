@@ -27,27 +27,22 @@ export const EmailSignup = () => {
   }
   return (
     <div className="text-center">
-      <h2 className="mb-4 text-4xl font-bold">
-        Be the best web developer you can be.
-      </h2>
+      <h2 className="mb-4 text-4xl font-bold">Be the best web developer you can be.</h2>
       <h3 className="text-xl text-slate-700">
-        A weekly email on Next.js, React, TypeScript, Tailwind CSS, and web
-        development.
+        A weekly email on Next.js, React, TypeScript, Tailwind CSS, and web development.
       </h3>
       <div className="py-4">
         {!success && (
           <>
-            <form
-              onSubmit={onSubmit}
-              className="relative mx-auto mb-2 max-w-[30rem]"
-            >
+            <form onSubmit={onSubmit} className="relative mx-auto mb-2 max-w-[30rem]">
               <input
                 aria-label="Email"
                 type="email"
                 placeholder="Your email address"
                 required
                 autoComplete="off"
-                className="w-full rounded border pl-2 leading-10 focus:outline-indigo-500"
+                // className="!focus:ring-0 w-full rounded border pl-2 leading-10 focus:outline-indigo-500"
+                className="w-full rounded !shadow-none !outline-none ring-inset focus:!border-indigo-500 focus:!ring-0"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -60,19 +55,11 @@ export const EmailSignup = () => {
                 {!loading && <>Subscribe</>}
               </button>
             </form>
-            {error && (
-              <div className="mb-2 bg-red-50 p-2 text-red-800">{error}</div>
-            )}
-            <div className="text-sm text-slate-500">
-              No spam. Unsubscribe any time.
-            </div>
+            {error && <div className="mb-2 bg-red-50 p-2 text-red-800">{error}</div>}
+            <div className="text-sm text-slate-500">No spam. Unsubscribe any time.</div>
           </>
         )}
-        {success && (
-          <div className="text-lg">
-            Thank you so much! You&apos;re all signed up.
-          </div>
-        )}
+        {success && <div className="text-lg">Thank you so much! You&apos;re all signed up.</div>}
       </div>
     </div>
   )

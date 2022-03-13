@@ -7,6 +7,8 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Router } from 'next/router'
 import React, { useEffect } from 'react'
+import { Slide, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import '../styles/globals.css'
 
 const components = {
@@ -51,6 +53,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <MDXProvider components={components}>
         <Component {...pageProps} />
       </MDXProvider>
+      <ToastContainer hideProgressBar newestOnTop transition={Slide} />
     </>
   )
 }
