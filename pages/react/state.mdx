@@ -1,0 +1,440 @@
+import { Layout, ChapterFooter, Callout } from '../../components/react'
+import { CodeFile } from '../../components/mdx'
+import { Routes } from '../../lib'
+
+export const meta = {
+  order: 5,
+  title: 'Managing State',
+  author: 'Ethan Mick',
+  slug: 'state',
+  excerpt: '',
+  createdAt: '2022-03-19T08:00:00.000Z',
+}
+
+export default ({ children }) => <Layout {...meta}>{children}</Layout>
+
+In the last section, you learned how to pass information to components with
+props. These props are read-only. They cannot change, which is a real bummer
+since you want to add to-dos to your application. While `props` are read-only,
+the _state_ is mutable.
+
+Modern React has its own way of handling state. This will bring you through a
+journey of learning about hooks and component lifecycle. There are third-party
+libraries you can use to help manage state, but they all use the same principles
+you will learn here.
+
+For now, the idea is to use the tools React provides to finally make the app
+mutable.
+
+Onward!
+
+## Hooks
+
+Hooks are new in React 16. A hook is a function that has some unique properties
+in the React lifecycle, depending on which hook you are using.
+
+The hook we will start with is `useState`, which creates a constant value
+representing the current value, and a setter to change it. The syntax for it is:
+
+```tsx
+import { useState } from 'react'
+
+const [name, setName] = useState<string>('')
+```
+
+The TypeScript type in `< >` defines the type. TypeScript can infer many types
+so it is not strictly necessary. However, you will find it useful when handling
+more complicated objects and arrays. The `const` defines these variables as
+constant, you cannot change them in the execution of the function. The function
+`useState` returns an array with two variables, the current value of the state
+and a function that will change that state. In modern JavaScript, you should
+always destructure these into their parts. Name them anything you want, such as
+`[user, setUser]`.
+
+### What's in a name?
+
+The function you call from React is `useState`, which really could have been
+named _anything_. There is nothing unique about the name except convention.
+React uses the prefix `use` to define a function as a hook. Hooks have unique
+properties and by following this prefix your linter and tools can help ensure
+your code follows those guidelines.
+
+### But why hooks?
+
+This might seem overly complicated. In class-based projects, you would have
+something more like:
+
+```tsx
+class MyComponent {
+  public name: string = ''
+}
+```
+
+And the DOM would use `value` in some way, perhaps changing it on a button click.
+
+```tsx
+<button onclick={() => (component.name = 'Ethan')}>Button</button>
+```
+
+This isn't how React works. The markup and state live in the same function, and
+that function is _stateless_. It doesn't have a `this` property or a way to keep
+any data around _after_ it returns. The function runs and returns the value. How
+do you add state to a stateless function?
+
+You do that with hooks. To understand hooks better, you need to understand the
+component lifecycle.
+
+## Component Lifecycle
+
+Modern React uses stateless components for everything. Using hooks, you can tap
+into the lifecycle methods you need to manage this lifecycle. You'll learn the
+details of these later, but it's important to understand the basics of the
+stateless lifecycle.
+
+Take the following example component:
+
+```tsx
+const ExampleComponent = ({ name }) => {
+  console.log('Rendered', new Date())
+  return <span>{name}</span>
+}
+```
+
+When the application starts, all components are _unmounted_ to start. They have
+never been rendered before.
+
+The first time the component is mounted, it will be rendered for the first time.
+This will be the first time `Rendered` is executed.
+
+Whenever the `name` prop changes, this component will re-render, executing
+`Rendered` again with the new time.
+
+When you add state to a component, you add another trigger to cause the
+component to re-render.
+
+```tsx
+const ExampleComponent = ({ label }) => {
+  const [name, setName] = useState('')
+  console.log('Rendered', new Date())
+  return (
+    <div>
+      <label>{label}</label>
+      <input value={name} onChange={(e) => setName(e.target.value)} />
+    </div>
+  )
+}
+```
+
+Anytime the `label` prop changes, this code will run again. Anytime the input
+changes it will update the `name`, this code will run again.
+
+The magic of `useState('')` is that the default value of `''` is only respected
+the first time this component is mounted. If the label were to change and the
+code ran again, the state would not revert to the empty string. It keeps
+whichever value it was last set to.
+
+Finally, when you no longer render the component then the component is
+unmounted.
+
+## Learning `useState`
+
+```tsx
+const [name, setName] = useState('')
+```
+
+Each time the component renders, the first parameter (`name`, above) will hold
+the _current value_ for the state. If you want to change it, you cannot simply
+do:
+
+```tsx
+name = 'Ethan'
+```
+
+1. The variables are declared as `const` above, and cannot be changed.
+2. Even if you changed the above to be `var` instead of `const` the changed
+   value won't stick around. When the function renders again, the value will be the
+   original value.
+
+Instead of changing the `name` directly, the second parameter returned by
+`useState` is the setter for the value. You call this function to _set_ the
+state. This will cause the component to re-render, and when it does, the state
+will have the new value.
+
+This is how, in an entirely stateless function, you can track state.
+
+### Other Hooks
+
+There are other hooks that you will learn about in future chapters. These hooks
+tie into the lifecycle of components. You can also build custom hooks that use
+hooks, allowing for complex behavior to be modeled simply.
+
+## State in the to-do app
+
+Anything that changes is state. In your to-do app, there will be two things that
+change.
+
+1. The user will input a string that will be for a new to-do. The user typing
+   the strings is tracked as state.
+2. The to-dos themselves. The user can add and complete (remove) to-dos.
+
+You'll start with the first and work toward the second.
+
+### User Input
+
+The user needs to enter a new to-do in a text field. A text field can be
+**controlled** or **uncontrolled** in React. Uncontrolled is any user input that
+is not wired up to React. This is the default, but it makes it very hard to get
+the value from the input.
+
+To make that easier, React lets you control the input.
+
+To do that with a text field, you will _pull_ the state out of the input and
+store it in an external place.
+
+```tsx
+// Uncontrolled, no way to know what the user typed
+<input type="text" />
+
+// Controlled, pull the state out.
+const [text, setText] = useState('')
+// In your JSX
+<input type="text" value={text} onChange={ (e) => setText(e.target.value) } />
+```
+
+This puts the value of the `input` in the state of `text`. Once you've done
+that, you can easily access the value and store it.
+
+To manage this state, it's a good idea to toss it into a new component.
+
+```tsx
+const AddTodo = () => {
+  const [text, setText] = useState('')
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+      <button>Add</button>
+    </div>
+  )
+}
+```
+
+This component set's up the `input` state and tracks it when the user types in
+the text box. Then, it has a button that when clicked should trigger the to-do
+to be added to the list.
+
+You can use this component in your to-do list component:
+
+```tsx
+const TodoList = ({ todos }: TodoListProps) => (
+  <div>
+    <AddTodo />
+    <ul>
+      {todos.map(({ text }, index) => (
+        <TodoListItem key={index} text={text} />
+      ))}
+    </ul>
+  </div>
+)
+```
+
+This will show the input and button at the top of the list. You can also put it
+at the bottom if you prefer.
+
+It's time to add state to the To-do list as well. Up until this point, you've
+been working on a hard-coded set of to-dos. This has let you test and build your
+application quickly, but it's not a real to-do app until you can add your own.
+
+<Callout>
+  👨🏼‍💻 Don't be afraid to hardcode things to test. It also can be useful for your
+  product! Almost all to-do apps have some default items when you first open the
+  app that acts as a tutorial. What you just build mimics that and is useful for
+  your product!
+</Callout>
+
+The state you need to add is the array of `Todo`s. Instead of passing those in
+as immutable props, the list will manage their to-dos. This makes sense from a
+product perspective because a user may have many different to-do lists.
+
+So instead of passing in the to-dos, you add state for them:
+
+```tsx
+const [todos, setTodos] = useState<Todo[]>([])
+```
+
+Since the array is empty to start (feel free to add defaults if you want),
+TypeScript doesn't know what the objects in the array will be. You solve that by
+adding the generic `<Todo[]>` code, which tells TypeScript this array will be of
+`Todo` objects.
+
+Then you can simply use them like the prop! The final component looks like:
+
+```tsx
+const TodoList = () => {
+  const [todos, setTodos] = useState<Todo[]>([])
+  return (
+    <div>
+      <AddTodo />
+      <ul>
+        {todos.map(({ text }, index) => (
+          <TodoListItem key={index} text={text} />
+        ))}
+      </ul>
+    </div>
+  )
+}
+```
+
+This is good, but you still can't add a new to-do to your list. To do that, you
+need to handle events.
+
+### The fallacy of state
+
+React provides simple primitives to manage state. The state of your application
+is simple to start but will grow more complex. A more complex state is harder to
+manage.
+
+Managing state is going to be the root of all your problems. React `props` are
+easy; they are immutable and don't change. If your application was _only_
+properties it would be very easy to reason about. It also would not be very
+interesting. Nothing would change. State brings power, but that power brings
+complexity.
+
+## Events
+
+Events are how your application can respond to incoming messages. An event may
+be a keypress, a button click, or incoming data. These events are handled with
+_event handlers_ or functions that you define to handle the event. React will
+pass the event to your handler and you can handle it.
+
+You've already used an event; the `onChange` event above on the `input` field.
+Every time the input changes, which happens when the user types, the `onChange`
+event triggers.
+
+```tsx
+;(e) => setText(e.target.value)
+```
+
+Your simple handler takes the event, gets the `target`, and gets the value of
+that target. The target is where the event came from. In this case, that is the
+`input` field itself. And the value, therefore, is the current value on that
+input field, or what the user just typed! You set that to your state with
+`setText`.
+
+React manages the event itself; that's a `React.Event` but the target attribute
+points to a regular HTML input field, and you can read about the various
+attributes on
+[MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input#attr-value).
+
+## Adding the to-do
+
+To tie this together, you want to add the to-do to your list when the user
+clicks the button. To handle button clicks, you want to implement an `onClick`
+handler.
+
+```tsx
+const AddTodo = ({}: AddTodoProps) => {
+  const onClick = () => {
+    onAddTodo(text)
+    setText('')
+  }
+  // Rest of the code ...
+}
+```
+
+When the user clicks `Add`, then you want to:
+
+1. Add the to-do to the list
+2. Set the input text to be blank again
+
+Setting the text is easy, you already know how to set the text! You just call
+`setText('')` and that will set it on the next render.
+
+<Callout>
+  🐢 React will not re-render the component immediately. When you change state
+  then React will re-render the component at its next earliest convenience.
+</Callout>
+
+This component doesn't have the list of to-dos though. The parent component
+does. How do you tell the parent “Hey, I have a to-do for you to add!”? With a
+custom event handler! Here, your event handler will function as a JavaScript
+callback. You'll pass the function into your component and wait for a to-do to
+be added. Then you'll call the function with that to-do!
+
+```tsx
+const TodoList = ({}: TodoListProps) => {
+  const [todos, setTodos] = useState<Todo[]>([])
+
+  const onAddTodo = (text: string) => {
+    setTodos((todos) => [...todos, { text }])
+  }
+
+  return (
+    <div className="container">
+      <AddTodo />
+      <ul>
+        {todos.map(({ text }, index) => (
+          <TodoListItem key={index} text={text} />
+        ))}
+      </ul>
+    </div>
+  )
+}
+```
+
+You define a regular function named `onAddTodo`, which expects a string
+parameter passed. When you set the state, you want to use the _previous_ state
+to set the new one. You want to add a to-do to your list. That's what
+`[...todos, { text }]` does. This uses a slightly different syntax for
+`setState`:
+
+```tsx
+setTodos([...todos, { text }])
+// vs
+setTodos((todos) => [...todos, { text }])
+```
+
+The first uses the `todos` that are defined above, with `useState`. This version
+may be stale though. So to ensure you are using the most updated list of to-dos,
+you should use the second syntax. This passes the current state value to a
+function, and you reference that instead.
+
+### Wire it up
+
+The only thing left to do is wire it up!
+
+```tsx
+const AddTodo = ({ onAddTodo }: AddTodoProps) => {
+  const onClick = () => {
+    onAddTodo(text)
+    setText('')
+  }
+}
+```
+
+```tsx
+<AddTodo onAddTodo={onAddTodo} />
+```
+
+You should try to keep the names the same if you can. Only change the names of
+handlers if you need to disambiguate.
+
+It should now work! You should be able to add to-dos to your list.
+
+## Mastering state and events
+
+Managing state and responding to events take your static site and turn it into a
+real web app. It brings it to life and lets you really use it. You should be
+able to take this app and bring it with you, writing down your to-dos.
+
+React provides simple primitives to manage state, which will take you very far.
+You'll learn how even these simple hooks let you manage complex state
+throughout your application.
+
+<ChapterFooter
+  previous={{ title: 'Properties', href: Routes.ReactProperties }}
+/>
