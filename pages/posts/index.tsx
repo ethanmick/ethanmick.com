@@ -32,6 +32,11 @@ export default function PostPage({ metas }: Props) {
           Passing data with properties
         </a>
       </Link>
+      <Link href={Routes.ReactState}>
+        <a className="block py-2 text-blue-500 visited:text-indigo-700 hover:underline">
+          Managing State
+        </a>
+      </Link>
       <h2 className="py-8 text-2xl">Other</h2>
       {metas.map(({ slug, title }) => (
         <Link href={`/posts/${slug}`} key={slug}>
