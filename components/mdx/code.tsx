@@ -4,18 +4,12 @@ import { pSBC } from 'lib'
 import Highlight, { defaultProps, Language } from 'prism-react-renderer'
 import theme from 'prism-react-renderer/themes/palenight'
 
-type CodeProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLElement>,
-  HTMLElement
->
+type CodeProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
 
-export const Code = ({ children, className }: CodeProps) => {
+export const Code = ({ children = '', className }: CodeProps) => {
   // We don't have every language, but the fallback is just no syntax
   // highlighting, and that is fine.
-  const language = (className || '').replace(
-    /language-/,
-    ''
-  ) as unknown as Language
+  const language = (className || '').replace(/language-/, '') as unknown as Language
   return (
     <Highlight
       {...defaultProps}
@@ -24,17 +18,11 @@ export const Code = ({ children, className }: CodeProps) => {
       language={language}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre
-          className={cx('rounded', className)}
-          style={{ ...style, padding: '20px' }}
-        >
+        <pre className={cx('rounded', className)} style={{ ...style, padding: '20px' }}>
           <div className="relative">
             <div className="line-numbers pointer-events-none absolute left-0 block w-8">
               {tokens.map((_, i) => (
-                <span
-                  key={i}
-                  className="block text-right text-slate-200 text-opacity-50"
-                />
+                <span key={i} className="block text-right text-slate-200 text-opacity-50" />
               ))}
             </div>
             <code className="relative block pl-14">
@@ -74,12 +62,7 @@ type CodeFileProps = {
 
 export const CodeFile = ({ children, language, file }: CodeFileProps) => {
   return (
-    <Highlight
-      {...defaultProps}
-      theme={theme}
-      code={children.trim()}
-      language={language}
-    >
+    <Highlight {...defaultProps} theme={theme} code={children.trim()} language={language}>
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <>
           <div
@@ -101,10 +84,7 @@ export const CodeFile = ({ children, language, file }: CodeFileProps) => {
             <div className="relative">
               <div className="line-numbers pointer-events-none absolute left-0 block w-8">
                 {tokens.map((_, i) => (
-                  <span
-                    key={i}
-                    className="block text-right text-slate-200 text-opacity-50"
-                  />
+                  <span key={i} className="block text-right text-slate-200 text-opacity-50" />
                 ))}
               </div>
               <code className="relative block pl-14">
