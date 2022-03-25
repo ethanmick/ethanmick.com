@@ -1,0 +1,376 @@
+import { Layout, ChapterFooter, Callout } from '../../components/react'
+import { AsciinemaPlayer, Browser } from '../../components'
+import { CodeFile } from '../../components/mdx'
+import { Routes } from '../../lib'
+
+export const meta = {
+  order: 4,
+  title: 'Local storage in React',
+  author: 'Ethan Mick',
+  slug: 'local-storage',
+  excerpt: '',
+  createdAt: '2022-03-24T08:00:00.000Z',
+}
+
+export default ({ children }) => <Layout {...meta}>{children}</Layout>
+
+Local storage is a browser API that lets you save simple data to the browser.
+This data is not available on a server, it can only be accessed client-side.
+Local storage is a fantastic place to keep simple application data. If a user
+closes or refreshes the tab then their data will be not be lost.
+
+[MDN documentation is available
+here.](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
+
+The local storage API can be accessed from the `window.localStorage` key. Since
+`window` is global in browsers, you will most often access it with
+`localStorage`.
+
+The API looks like this:
+
+```tsx
+// Returns the value given string 'key'. Null if no value is found.
+localStorage.getItem(key: string): string | null;
+
+// Set the string 'value' to 'key'.
+// Might throw an error if localStorage is not available
+localStorage.setItem(key: string, value: string): void;
+
+// Remove the value associated with string 'key'.
+localStorage.removeItem(key: string): void;
+
+// Remove all values for all keys
+localStorage.clear(): void;
+```
+
+## Start Simple
+
+There is nothing React specific in this API. However, wrapping the API with some
+logic to make it more *React*ful will have it work better in your applications.
+That's what this will cover.
+
+The simplest approach is to just invoke the API whenever you need to save or get
+something. I'll use the To-Do app as an example. You can grab the code used
+[here](https://github.com/ethanmick/react-04).
+
+The simplest way to start is to use the APIs above verbatim. The APIs only
+accept strings, which means saving complex data needs to be simplified to a
+string. The most common way to do this is to save your data as JSON, which is a
+string.
+
+```tsx
+const onAddTodo = (text: string) => {
+  // Save the to-dos as state, as normal.
+  setTodos([...todos, { text }])
+  // Also save the todos as JSON.
+  localStorage.setItem('todos', JSON.stringify([...todos, { text }]))
+}
+```
+
+The above code saves the Todos when they are changed. In your application,
+whenever the state changes you can call the `setItem` API to overwrite the
+previous value and save the data.
+
+Saving the data is only half the work though. You also need to _load_ the data.
+And this is a little more complicated.
+
+### Load, but only once
+
+When your application loads you want to load the data that you saved earlier.
+This will allow the user to refresh the page or close the tab. When the user
+comes back to your application and it loads for the first time, the data will
+load.
+
+The simplest (but not great) approach is to load the data when the component
+executes and put the result in the state. This will only run each time the
+component renders but only sets the state for the first time.
+
+```tsx
+const TodoList = ({ name }: TodoListProps) => {
+  const loaded = JSON.parse(localStorage.getItem('todos') || '[]')
+  const [todos, setTodos] = useState<Todo[]>(loaded)
+  return (...)
+}
+```
+
+This will `parse` the data stored in local storage under the key `todos`, or if
+no data is found, it will parse the string `'[]'`. This is because the
+`JSON.parse` API expects a value, and our default value for the state is an
+empty array. Another way of writing this would be:
+
+```tsx
+const loaded = localStorage.getItem('todos')
+  ? JSON.parse(localStorage.getItem('todos'))
+  : []
+```
+
+The first way duplicates less code but calls `JSON.parse` no matter what.
+
+Hurray! The Todo app now loads the list on startup and saves it whenever it
+changes. But there are a few issues.
+
+### Handling multiple lists
+
+The first issue is that all the Todo lists save using the same key. This will
+become an issue the moment a user has multiple lists.
+
+To fix this problem, the `key` that is used to save the data needs to be based
+on a unique attribute of the list. Ideally, this would be a unique primary key,
+but another attribute like `name` is close.
+
+<Callout>
+  👨🏼‍💻 I know the name is not unique, a user could have two lists with the same name. Creating a
+  unique ID would be better and save that.
+</Callout>
+
+How the name is assigned is outside the scope of this article, but if it were
+passed in you could do:
+
+```tsx
+interface TodoListProps {
+  name: string
+}
+
+const TodoList = ({ name }: TodoListProps) => {
+  // The key to save and load is now list specific
+  const key = `todo-list-${name}`
+  const loaded = JSON.parse(localStorage.getItem(key) || '[]')
+  const [todos, setTodos] = useState<Todo[]>(loaded)
+
+  const onAddTodo = (text: string) => {
+    setTodos([...todos, { text }])
+    localStorage.setItem(key, JSON.stringify([...todos, { text }]))
+  }
+
+  return (...)
+}
+
+const App = () => <TodoList name="Default" />
+```
+
+Awesome! Now the user can have multiple lists that all independently save their
+todos.
+
+This works, but it adds a lot of extra logic to the `TodoList` component just to
+manage the items. There are two big issues with this though:
+
+1. The logic of accessing local storage on a given key is duplicated.
+2. The loading of the data happens each time the component renders. The only time it _needs_ to load is the first time, but it currently runs each time.
+3. Every time the state is changed the local storage logic also needs to be added.
+
+Tackling the first one requires creating a custom hook.
+
+### Making it a hook
+
+Any JavaScript code can access `localStorage` and save or get values; there is
+nothing special about React here. But to make the API feel native, you can build
+it into a hook. This hook will accept the `key` as a string and scope the
+requests to that key. It will return an API to get, set, or remove that key.
+
+```ts
+type StorageOptions = {
+  json?: boolean
+}
+
+export const useStorage = <T = any>(key: string, { json }: StorageOptions = {}) => {
+  const get = (): T | null => {
+    const value = localStorage.getItem(key)
+    if (!value) {
+      return value as unknown as T
+    }
+    if (json) {
+      try {
+        return JSON.parse(value)
+      } catch {}
+    }
+    return value as unknown as T
+  }
+
+  const set = (value: T) => {
+    const saving = typeof value !== 'string' ? JSON.stringify(value) : value
+    localStorage.setItem(key, saving)
+  }
+
+  const remove = () => localStorage.removeItem(key)
+
+  return {
+    get,
+    set,
+    remove,
+  }
+}
+```
+
+This example expands the functionality by offering an optional `json` option.
+The Todo app above needed to serialize the complex objects to JSON to save them.
+But that's not always the case. If the user wants to just save a regular string
+then the JSON serialization is not necessary. This option lets the user toggle
+the JSON parsing.
+
+This works by encapsulating the `key` passed in and creating three functions.
+These functions are called by the user. They use a JavaScript closure to “hold
+onto” the key value the user originally passed in. This means the user doesn't
+need to pass the key each time - they can just pass the important value.
+
+```tsx
+const set = (value: T) => {
+  const saving = typeof value !== 'string' ? JSON.stringify(value) : value
+  localStorage.setItem(key, saving)
+}
+
+return { set }
+```
+
+This allows them to use the API in the following way:
+
+```tsx
+const { get, set } = useStorage(`todo-list-${name}`, { json: true })
+// gets the saved todos, or an empty array if none found
+const [todos, setTodos] = useState<Todo[]>(get() || [])
+
+const onAddTodo = (text: string) => {
+  setTodos([...todos, { text }])
+  // save to local storage
+  set([...todos, { text }])
+}
+```
+
+Pretty awesome!
+
+Now onto the next challenge, not loading it every time.
+
+### Using `useEffect` to trigger once
+
+The required logic is:
+
+> When the component loads for only the first time, load the saved todos.
+
+This is accomplished in React using the `useEffect` hook. You can read the
+details about the hook on the [official
+docs](https://reactjs.org/docs/hooks-effect.html). The usage here will be to
+only run something once.
+
+```tsx
+import { useEffect } from 'react'
+
+useEffect(() => {
+  // This is the code to run
+}, [])
+```
+
+The first parameter is the function you want to run. The second parameter tells
+React _when_ to run it. Since this usage is an empty array, it runs only when
+that array changes. The array never changes, so it only runs once when the
+component first loads.
+
+Loading the to-dos looks like:
+
+```tsx
+import { useEffect } from 'react'
+
+const TodoList = ({ name }: TodoListProps) => {
+  const { get, set } = useStorage(`todo-list-${name}`, { json: true })
+  // Always load empty array by default
+  const [todos, setTodos] = useState<Todo[]>([])
+
+  // On first load, get the Todos from local storage. If none found, set to empty array
+  useEffect(() => {
+    setTodos(get() || [])
+  }, [])
+
+  return (...)
+}
+```
+
+And now the loading code only fires when the component first loads! Combined
+with the above code for setting the Todos and things are starting to take shape.
+
+Finally, to round this out, there's another challenge. And this requires talking
+about some tradeoffs.
+
+## Designing APIs
+
+A large part of software engineering comes down to designing APIs. How do you
+_want_ your software to be used? In the above example, the local storage hook is
+in a good place. It works well, it's simple and performant. It's easy to reason
+about what each section is doing. Components can simply use the hook and not
+need to have `localStorage` used at all in their code.
+
+However, it begs another question.
+
+The `TodoList` component is managing _both_ the **state** and the **local
+storage**.
+
+**Does it make more sense to merge those?**
+
+Instead of managing the state and saving to local storage, what if... the local
+storage _was_ the state.
+
+The first question is about performance. When moving the save trigger outside of
+the user control it would write on each save. Would that make the application
+lag? A little searching around on the Internet and it looks like you could save
+[massive amounts of data in local
+storage](https://www.stevesouders.com/blog/2014/02/11/measuring-localstorage-performance/)
+before performance took a noticeable hit.
+
+The application doesn't need to save _and_ load from local storage on each
+change. That's a redundant action. So the logic can stay the same as in the
+component, but you can simply merge `useState` into `useStorage`.
+
+This is a pretty _different_ API though. The `useStorage` hook above is very
+generic. It can be used to quickly save any value. It has very little
+complexity. By adding in state management too, the hook responsibility grows.
+
+But if this is a common use case, it makes sense to build a hook that will do
+this. What's better, is this can be a new hook that uses both the others.
+
+## Merging the APIs
+
+To merge the State and Storage API, you can create a new hook which does both.
+
+```tsx
+import { useEffect, useState } from 'react'
+import { useStorage } from './storage-hook'
+
+export const useSavedState = <T>(
+  key: string,
+  initial: T
+): [T, React.Dispatch<React.SetStateAction<T>>] => {
+  const { get, set } = useStorage<T>(key, { json: true })
+  const [state, setState] = useState<T>(get() || initial)
+
+  useEffect(() => {
+    set(state)
+  }, [JSON.stringify(state)])
+
+  return [state, setState]
+}
+```
+
+This uses heavy use of TypeScript generics, which allows for the types to all
+remain correct. It also uses `useEffect` to save the state each time the state
+changes.
+
+The final usage looks like:
+
+```tsx
+const TodoList = ({ name }: TodoListProps) => {
+  const [todos, setTodos] = useSavedState<Todo[]>(`todo-list-${name}`, [])
+  return (...)
+}
+```
+
+Which is almost the same as the `useState` (on purpose), with the addition of
+which key to save the state to local storage whenever it changes.
+
+## Local Storage in React
+
+That's how you can work with local storage in React! The APIs for `localStorage`
+are very easy. A lot of it comes down to the API design and how you want to
+split responsibilities. The first hook built only manages local storage. The
+second also managed the state and automatically loaded or saved the state when
+it changed. This gives your application a lot of flexibility depending on what
+it needs to do.
+
+Software engineering is often about API design and understanding tradeoffs. With
+a good API design, you can get the best of both!

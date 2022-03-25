@@ -37,6 +37,11 @@ export default function PostPage({ metas }: Props) {
           Managing State
         </a>
       </Link>
+      <Link href={Routes.ReactLocalStorage}>
+        <a className="block py-2 text-blue-500 visited:text-indigo-700 hover:underline">
+          Local Storage
+        </a>
+      </Link>
       <h2 className="py-8 text-2xl">Other</h2>
       {metas.map(({ slug, title }) => (
         <Link href={`/posts/${slug}`} key={slug}>

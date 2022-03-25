@@ -11,4 +11,6 @@ export enum Routes {
   ReactComponents = '/react/components',
   ReactProperties = '/react/properties',
   ReactState = '/react/state',
+
+  ReactLocalStorage = '/react/local-storage',
 }
