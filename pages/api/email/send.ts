@@ -7,6 +7,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 const EMAIL_DOMAIN = process.env.EMAIL_DOMAIN || ''
 const EMAIL_TO = process.env.EMAIL_TO || ''
+const TEST_EMAIL_TO = process.env.TEST_EMAIL_TO || ''
 const from = process.env.EMAIL_FROM || ''
 
 export type Request = {
@@ -61,7 +62,7 @@ export default async function api(req: NextApiRequest, res: NextApiResponse<Resp
   })
 
   const suffix = randomBytes(4).toString('hex')
-  const [user, domain] = EMAIL_TO.split('@')
+  const [user, domain] = TEST_EMAIL_TO.split('@')
 
   const message = {
     from,

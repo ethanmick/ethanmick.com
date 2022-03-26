@@ -44,6 +44,7 @@ const StylesPerElement: any = {
   img: ['width', 'height', 'alt', ...commonStyles],
   pre: ['backgroundColor', 'overflowX', 'borderRadius', ...commonStyles],
   code: [...commonStyles],
+  aside: [...commonStyles, 'backgroundColor'],
 }
 
 const options: ToggleOptions[] = [
