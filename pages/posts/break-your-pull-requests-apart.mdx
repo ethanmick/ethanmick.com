@@ -1,0 +1,223 @@
+import { Post } from '../../components/post'
+import { Callout } from '../../components'
+
+export const meta = {
+  title: 'Please, for your fellow developers, break your pull requests apart',
+  author: 'Ethan Mick',
+  slug: 'break-your-pull-requests-apart',
+  excerpt:
+    'When a code change gets too large there are some useful techniques you can use to break it apart.',
+  createdAt: '2022-04-07T12:00:00.000Z',
+}
+
+export default ({ children }) => <Post {...meta}>{children}</Post>
+
+We've all been there. You sit down Monday morning, slightly hungover from that
+Sunday-brunch-that-didn't-really-end. You read the ticket your PM just assigned
+you. It's... pretty ambiguous.
+
+> Add a comments section
+
+What comments section? We don't have comments. You check the design. Ugh. Look
+at that. An entire forum discussion page has been added to your pet sitting app.
+You remember some vague conversation happening when you were still fogged over
+with Covid brain. Maybe an entire design session? Someone had looked at you
+during that meeting. You had kinda nodded. Was that permission to “OK” this?
+
+Shit, okay. Well, now you need to add a lot more than you bargained for. That's
+fine. It's fine. You have your design language down. A couple of components your
+staff engineer whipped together for this occasion. A vague reference to "design
+patterns" which you swear meant something different.
+
+You crack your knuckles and crank Taylor Swift. You'll need a big discography
+for this. You start your omo-pomo-doro-noro-doro timer (you saw it on TikTok),
+and go into the zone.
+
+It's time to code.
+
+```bash
+git checkout -b comments
+```
+
+---
+
+15 red bulls later and you lean back.
+
+You're done. It works. Mostly. A few bugs perhaps, but nothing you can't fix
+later. You've done the impossible once again.
+
+```bash
+git status
+
+68 files changed                                                 +68,188 -65
+```
+
+Hmmm. You don't _remember_ touching that many files. You only added new
+components, a better Markdown parser, and a new rendering engine for your _sick_
+`@mention` which you're pretty sure was implied in a conversation you had with
+the PM over drinks. You somehow have two `.lock` files now. And of course,
+comments to a bunch of pages that _certainly_ didn't need them.
+
+_Eh, fuck it._
+
+```bash
+git commit -a -m "Comments"
+git push origin comments
+gh pr create --fill && gh pr merge --auto
+```
+
+Should be fine.
+
+When this happens, I have a plea to you lovely developers:
+
+## Please, for the love of your team, break your pull request apart.
+
+There are lots of best practices when it comes to writing Git commits and
+keeping your changes small. There are guides for writing good commit messages
+and breaking down features so you can do those things.
+
+> A once of prevention is worth a pound of cure.
+
+Get into the habit of making small focused PRs and your teammates will thank
+you.
+
+But sometimes, things get away from you. It happens to everyone. When you go to
+look at your changes and realize you wrote too much code. What that limit is
+will be different for every team. Some teams have a higher tolerance for this.
+Others don't. As the author of your code, it is your responsibility to make it
+easy to understand and review.
+
+**It is your job to make reviewing code easy.**
+
+When a pull request gets to this point, it's fine. It's not uncommon to see a
+long string of commits as the developer worked their way through the problem. If
+pull requests are squashed and merged, these commits are thrown away anyway.
+
+But your teammates cannot review a 68,000 line change. Nor should they. It's
+impossible to get enough context, comb through it carefully enough, and provide
+the level of review that the code needs.
+
+**Feedback needs to be broken into smaller pieces**.
+
+Every pull request can be broken apart and applied in pieces. When looking at a
+massive pull request you should break it down into its fundamental pieces and
+make PRs for each of those.
+
+Here is a practical guide on how to break apart your pull request.
+
+## Understand how you can pull it apart
+
+Take a step back from your feature and understand how you can break it apart.
+You can:
+
+- Break it apart by layer. For example, the database layer, followed by the model layer, followed by the controller, and followed by the client.
+- Break it apart by component. Several individual pieces can each be a separate PR.
+- Pull out refactors and other unrelated changes to your main feature.
+- Break a larger feature into smaller end-to-end features.
+
+Whichever way you tackle this, your dependencies will need to be merged first,
+and then code that relies on it comes next.
+
+Once you understand how your feature can be broken apart, it's time to fire up
+your terminal and do it.
+
+## Use `git checkout` to pull out files
+
+You can use `git checkout` to pull _specific files_ out of a feature branch into
+a new one. It helps if your feature branch is up to date with `main`, if not,
+you'll need to resolve any merge conflicts each time you pull things out.
+
+```bash
+git checkout main # make sure you are main, git pull for latest
+git checkout -b feature-subset
+git checkout comments -- path/to/files other/paths
+git commit -m "Add subset of feature" # Then push, PR.
+```
+
+This method pulls out entire files. You can use:
+
+```bash
+git checkout --patch comments -- path/to/files
+```
+
+To use the `patch` interface to only apply parts of a file. This gives you a lot
+of control over which sections you want to pull out and move into separate pull
+requests.
+
+### Peer into changes with `git diff`
+
+If you want to see what the differences are you are about to pull out, you can
+use `git diff` between branches.
+
+```bash
+git diff feature-subset...ethanmick/big-pr-branch
+```
+
+You can use the same syntax as `git checkout` to only look at a subset of
+changes:
+
+```bash
+git diff feature-subset...ethanmick/big-pr-branch -- path/to/files other/paths
+```
+
+If you're in that deep and get the right subset of files, you can pipe it into
+`git apply` to apply the diff to your current branch.
+
+## Pull out commits
+
+If you were writing good commits the entire time you probably would not be
+reading this post. Asking a reviewer to step through your changes commit by
+commit is sometimes a reasonable ask, so it's clear how a large change has been
+built up.
+
+Another great use case for this is when making a large change you find a piece
+of code you want to refactor. If it isn't related to your larger change you can
+commit and put the refactor into a single commit. Then you can pull it out, make
+a separate PR for it, and rebase later.
+
+If you have some solid commits that you want to pull out you can cherry-pick the
+commit.
+
+## Cherry Pick a Commit
+
+Cherry-picking pulls a single commit
+
+The Git docs say:
+
+> Given one or more existing commits, apply the change each one introduces,
+> recording a new commit for each.
+
+```bash
+# On a feature branch
+git add files/in/refactor -m "Refactor a widget"
+
+# Later, back on main
+git checkout -b small-refactor
+git cherry-pick sha256
+```
+
+Using the Git hash of the commit containing the refactor.
+
+You can also commit or stash your current changes and create a new branch of
+`main` to do the refactor.
+
+### Be a good teammate
+
+It's frustrating to get to the end of a feature and have more work to get
+through the review process. When the feature works (mostly) and the code is good
+(mostly), it can feel like you are now jumping through hoops to get it merged
+in. It's very important to keep a project's code in good shape and that is
+everyone on the team's job. The reviewers want high-quality code _and so do the
+developers._ It benefits everyone to have a high standard of code and make sure
+it is kept there.
+
+When asked to break apart a larger PR, it's done to ensure the code is reviewed
+and understood thoroughly. It's a learning moment for everyone on the team.
+
+More frequent, smaller, pull requests are more efficient. The developers learn
+faster from smaller and more focused reviews. There is a feeling of velocity and
+movement when the code is merged in. Feature flags can be used to ensure
+unfinished sections are not shown to customers. It creates a better atmosphere
+for shipping code.
+
+Do your team a favor. Break apart your massive pull requests.
