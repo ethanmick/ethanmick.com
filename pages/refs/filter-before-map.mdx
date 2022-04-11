@@ -1,0 +1,48 @@
+import { Ref } from '../../components'
+
+export const meta = {
+  slug: 'filter-before-map',
+  title: 'filter() before map()',
+  description: 'Instead of returning falsey or empty values in map(), filter them out.',
+  image: {
+    url: 'images/filter-before-map.tsx.png',
+  },
+}
+
+export default ({ children }) => <Ref {...meta}>{children}</Ref>
+
+React offers several ways to hide values when rendering. In particular, when
+iterating over an array, is it tempting to manipulate this visibility in the
+`map()` function. A function that returns `false` or `null` will not render the
+element. You can write code like this:
+
+```tsx
+const Component = ({ links }) => (
+  <div className="sidebar">
+    {links.map((link, i) =>
+      link.hide ? null : (
+        <Link key={i} href={link.href}>
+          {link.text}
+        </Link>
+      )
+    )}
+  </div>
+)
+```
+
+Above, `null` values are not rendered. However, you should `filter` out those
+values instead. As a result, the code is more readable and declarative:
+
+```tsx
+const Component = ({ links }) => (
+  <div className="sidebar">
+    {links
+      .filter(({ hide }) => !hide) // When `hide` is `true`, filter it out
+      .map((link, i) => (
+        <Link key={i} href={link.href}>
+          {link.text}
+        </Link>
+      ))}
+  </div>
+)
+```
