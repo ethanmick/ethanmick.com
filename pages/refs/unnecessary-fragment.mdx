@@ -1,0 +1,43 @@
+import { Ref } from '../../components'
+
+export const meta = {
+  slug: 'unnecessary-fragment',
+  title: 'Remove unnecessary fragments',
+  description: 'Keep your DOM clean and simple by removing unnecessary fragments.',
+  image: {
+    url: 'images/remove-fragment.tsx.png',
+  },
+}
+
+export default ({ children }) => <Ref {...meta}>{children}</Ref>
+
+Keep your component structure simple by ensuring it is as flat as possible. For
+example, a fragment, `<> ... </>`, is only necessary when you have more than one
+child element and the function expects a single JSX element returned.
+
+For example, a fragment is required here:
+
+```tsx
+const Component = () => (
+  <>
+    <h1>Title</h1>
+    <h2>Subtitle</h2>
+  </>
+)
+```
+
+But not if you return a single element:
+
+```tsx
+const Component = () => (
+  <div>
+    <h1>Title</h1>
+    <h2>Subtitle</h2>
+  </div>
+)
+```
+
+This is also true for functions such as `map` in a component. If you are only
+returning a single element, then remove all fragments.
+
+[Read the official docs here.](https://reactjs.org/docs/fragments.html)
