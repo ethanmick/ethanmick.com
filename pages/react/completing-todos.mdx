@@ -1,0 +1,333 @@
+import { Layout, ChapterFooter, Callout } from '../../components/react'
+import { AsciinemaPlayer, Browser } from '../../components'
+import { CodeFile } from '../../components/mdx'
+import { Routes } from '../../lib'
+
+export const meta = {
+  order: 5,
+  title: 'Completing your Todos',
+  author: 'Ethan Mick',
+  slug: 'checking-off',
+  excerpt: '',
+  createdAt: '2022-04-15T08:00:00.000Z',
+}
+
+export default ({ children }) => <Layout {...meta}>{children}</Layout>
+
+In this guide, you will add some functionality to your to-do app. You will mark
+tasks as completed! This feature will allow you to dive into using your app and
+see what new features you may want to add.
+
+When thinking of a feature like this, it's essential to think through the
+requirements. For example, what are the user stories, and how should the feature
+function?
+
+For checking an item off, the user story is:
+
+> As a user, I want to mark an item as complete.
+
+You can detail the following requirements from that story:
+
+- Each list item should be complete or incomplete.
+- Each list item should display its status.
+- Each list item should have the functionality to mark it complete.
+
+A big question is the addition of a _second_ user story:
+
+> As a user, I want to mark an item as _incomplete_.
+
+That story changes the functionality _drastically_. Without the last point, you
+could _remove_ a list item from the list when completed. Poof! You don't need to
+track it anymore. However, you **double** the state you need to track with the
+second story. Can a user reorder completed items? Can they mark them as
+incomplete? Can they edit them?
+
+These are great questions to ask, especially when working with your team or a
+client. Take the time to understand how the scope will change with what seems
+like a simple task.
+
+So for this app? Of course, you'll do it! Exploding scope for everybody. That
+said, this section will only deal with _completing_ an item. You'll mark it as
+incomplete in the following guide.
+
+## How to complete an item?
+
+The next step is to consider how this will work. You need a way to mark an item
+as complete, and then later, incomplete. If you play with many To-Do apps, this
+is often either a gesture, swipe, or checkbox. To start, you'll do a simple
+check box.
+
+Upon being checked, the item will disappear from the to-do list. Here are two
+ways to accomplish this:
+
+1. Have two arrays to manage the state of a list. Have one array for
+   non-complete items and a second for complete list items.
+2. Have a property on the Todo object that tracks if the task has been completed
+   or not. Depending on what the user is viewing, filter the list accordingly.
+
+The first approach keeps the `Todo` object simple but complicates the state
+management at a higher level. For instance, a to-do list will
+need **two** internal lists to track all the items. This doubles the amount of
+work you will need to do to maintain your application! Be careful when these
+situations present themselves, and strive to keep your app simple.
+
+The second option is a more straightforward approach and what you'll do here.
+It's also what you accounted for in the
+[Components](https://ethanmick.com/react/components) section when you made the
+`Todo` an object with properties instead of just a string.
+
+First, add a new property to the `Todo` interface that will track if the item is
+done or not.
+
+```tsx
+interface Todo {
+  text: string
+  done?: boolean
+}
+```
+
+Making the property optional means you aren't forced to add it to every item.
+You won't need to set `done` explicitly; it's false when creating a new to-do.
+And since an undefined value is treated similarly to false in most instances,
+it's easy to infer the value for the missing key. Easier all around!
+
+Next, we can update the `TodoListItem` to have a checkbox that, upon clicking,
+will trigger the item to be marked done. So go ahead and add a checkbox to the
+`TodoListItem`:
+
+```tsx
+<input type="checkbox" />
+```
+
+In React, the _input type_ will change the properties it requires to show the
+value. Since this is a checkbox, the input needs to know if it is _checked_ or
+not, which is a boolean. When the input changes, the event it emits is also a
+boolean. The `checked` property is different from the input you are using for
+adding a new `Todo`, which takes and emits a string.
+
+So instead of `value`, you will use `checked` to set if it is complete. You will
+use the same `onChange` handler to watch for the user clicking the checkbox.
+
+When you use the done property on a `Todo` for checked, you still need an
+additional "hey, I changed" handler for when the user clicks the checkbox. This
+handler isn't a property of a `Todo`, so you need to augment the props for this
+component to add it in.
+
+```tsx
+type TodoListItemProps = {
+  onChange: () => void
+} & Todo
+```
+
+The above code creates a new type, `TodoListItemProps`, which _combines_ the
+`onChange` handler and the rest of the properties in the `Todo`. This is a
+simple way of extending Types without literally using extends with interfaces.
+You can read more about unions and
+intersections [here](https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html).
+
+With these new props, the updated `TodoListItem` looks like this:
+
+```tsx
+const TodoListItem = ({ text, done, onChange }: TodoListItemProps) => (
+  <li>
+    <input type="checkbox" checked={done} onChange={(e) => onChange()} />
+    <span>{text}</span>
+  </li>
+)
+```
+
+Now that you've made these types required, you will need to update the parent to
+fix the build.
+
+## Checking off an item
+
+The parent `TodoList` now needs to pass additional properties to the list item.
+The first, `done`, is handled for you in the `Todo` interface. But since you
+haven't added `done: true` to anything, all of the items are marked as not done.
+So you need to add the `onChange` handler to trigger the logic: "When a user
+clicks the checkbox, mark it as done and stop displaying it to the user."
+
+Start by creating the handler in the `TodoList` component:
+
+```tsx
+const onComplete = () => {}
+```
+
+The above code will change the state, so you need to use `setTodos`.
+Unfortunately, you can't just change the to-do value by doing `todos[0].done = true`.
+While that may look like it will work, you're changing the state without
+telling React about it. That will lead to bugs and unexpected behavior.
+
+The challenge here is to know _which_ `Todo` the user just completed. Do this in
+a few ways:
+
+1. The handler passes in `Todo` object itself and uses object equality to find the to-do in the array.
+2. The handler passes the array index and looks up the to-do by index.
+3. The handler passes in a unique identifier (ID) and looks up the to-do by ID.
+
+The first is fragile because you rely on the object reference not to change.
+That might not be the case if you save things to local storage, make a network
+request, or update the internal state and return a new object. So, in general,
+this is a bad idea.
+
+Using the array index is sometimes applicable, but you're going to run into
+issues here. Mutating an array and using the index as keys will cause trouble.
+[This
+article](https://robinpokorny.medium.com/index-as-a-key-is-an-anti-pattern-e0349aece318)
+covers why it is a bad idea to use indexes as keys.
+
+So instead, you're going to take a different tack.
+
+## Add a unique ID
+
+You should add a unique ID to each `Todo` that simulates the ID it would get
+from a database. It's a unique ID **not** tied to the index in the array, so
+React can better track the differences.
+
+There are great [packages](https://www.npmjs.com/package/uuid) you can install
+to get unique IDs, but that's a little overkill for what you need here. So
+instead of adding to your dependencies, you can use a small function that will
+generate a UUID with no external dependencies:
+
+```tsx
+const UUID = () =>
+  'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0
+    const v = c == 'x' ? r : (r & 0x3) | 0x8
+    return v.toString(16)
+  })
+```
+
+([StackOverflow](https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid))
+
+This will generate a string like `a60694f8-7e85-46c0-ad7c-7e14a8a22a6e`. To use
+this, add a new `id` property to the `Todo` interface. Since it needs to be on
+each `Todo`, it can't be optional.
+
+```tsx
+interface Todo {
+  id: string
+  text: string
+  done?: boolean
+}
+```
+
+Then, when you create a new Todo, give it an ID:
+
+```tsx
+const onAddTodo = (text: string) => {
+  setTodos([...todos, { text, id: uuid() }])
+}
+```
+
+Great! Now you change up the map to use the ID instead of the index for the key:
+
+```tsx
+<ul>
+  {todos
+    .map((todo) => (
+      <TodoListItem
+        key={todo.id}
+        onChange={() => onComplete()}
+        {...todo}
+      />
+    ))}
+</ul>
+```
+
+Okay, but back to checking the list items off. Now you have a better way to
+mutate the array but no way to _actually_ mutate it?
+
+Except you do! You just added it. Since each ID is unique, you can look up the
+triggered Todo with the ID. Working backward, update the onComplete handler to
+account for this:
+
+```tsx
+const onComplete = (id: string) => {
+  setTodos((todos) => {
+    const i = todos.findIndex((todo) => todo.id === id)
+    todos[i] = {
+      ...todos[i],
+      done: !todos[i].done
+    }
+    return [...todos]
+  })
+}
+```
+
+The above code uses the _function_ version of a setter in React. When calling
+setState and passing a function instead of a value, the function takes
+the _current state_ as the parameter and returns the new state.
+
+**Function state changes are required when the new state depends on the old state.**
+
+You need to set the new to-dos _based_ on the current to-dos. This situation
+means you should use the function version of the setter. In this function, first
+lookup the index, `i`, and then mark the `Todo` at that index as done.
+
+<Callout>
+  👨🏼‍💻 Short variable names can be wrong, but when using standard conventions, it's okay. Here, the
+  variable's short lifetime means there is little difference between `i` and `index`. I prefer short
+  names in these cases.
+</Callout>
+
+Finally, you need to trigger the function when a user clicks the check box to
+tie this all together.
+
+```tsx
+<TodoListItem
+  key={todo.id}
+  onChange={() => onComplete(todo.id)}
+  {...todo}
+/>
+```
+
+And now, when you click the checkbox, it... checks and unchecks the box. Time to
+filter those out!
+
+### Filter out the done results
+
+The last step is to hide the completed list items. You can do this with a simple
+filter before mapping the list items to the DOM. Add in this line before the
+`.map` line:
+
+```tsx
+.filter(({ done }) => !done)
+```
+
+This code destructures the to-do and pulls out the done attribute. You want only
+to show items that are _not_ done, so true list items should be removed. Use the
+`!` (not) operator to inverse the boolean and filter those out.
+
+And there you have it! When you click on a checkbox to complete an item, it will
+disappear and be removed from the list!
+
+### Finishing up with style
+
+Your list might not look great with the checkbox. You can add some CSS to clean
+things up and get it to look great.
+
+```css
+ul li {
+  padding: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+}
+```
+
+The above code will use flex to get all the items aligned together.
+
+```css
+ul li span {
+  margin-left: 0.5rem;
+}
+```
+
+The above CSS will give your text some breathing room from the checkbox.
+
+And there you have it! Your to-do app now can add and complete items! Combined
+with the local storage additions, you can start to use this on a device to track
+and manage to-dos! But, of course, there is much more to add to make this
+full-featured and even more helpful.
+
+<ChapterFooter previous={{ title: 'Managing State', href: Routes.ReactState }} />
