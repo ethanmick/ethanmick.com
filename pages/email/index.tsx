@@ -6,7 +6,7 @@ import { Callout } from 'components/react'
 import { Request } from 'pages/api/email/send'
 import React, { useRef, useState } from 'react'
 import { toast } from 'react-toastify'
-import * as reactRuntime from 'react/jsx-runtime.js'
+import * as runtime from 'react/jsx-runtime'
 
 const components = {}
 
@@ -186,7 +186,7 @@ export default function EmailPage() {
   try {
     const { default: content } = evaluateSync(markdown, {
       ...reactProvider,
-      ...reactRuntime,
+      ...runtime,
     })
     Email = content
   } catch {}
@@ -251,43 +251,45 @@ export default function EmailPage() {
                   cellPadding="0"
                   cellSpacing="0"
                 >
-                  <tr>
-                    <td width="100%" style={{ textAlign: 'left' }}>
-                      <p>Hi there 👋,</p>
-                      <p>
-                        To each of you who subscribed, I want to say thank you. It means so much to
-                        me that you support me in this small way. If you have any feedback, please
-                        let me know!
-                      </p>
-                      <p>
-                        You&apos;re getting this email because you subscribed to my weekly
-                        newsletter. I write about React, Next.js, TypeScript, web development, and
-                        ways to become a better engineer.
-                      </p>
-                      <p>Enjoy!</p>
-                      <p style={{ textAlign: 'center' }}>
-                        <a href={url}>View Online →</a>
-                      </p>
-                      <hr className="my-8" />
-                      {Email && <Email />}
-                      <hr className="my-8" />
-                      <p>
-                        If you&apos;re not getting value out of these posts, please consider
-                        unsubscribing. No hard feelings!
-                      </p>
-                      <p>
-                        However, if you are enjoying this newsletter, the best compliment is to
-                        share my <a href="https://ethanmick.com">website</a> or follow me on{' '}
-                        <a href="https://twitter.com/ethan_mick">Twitter.</a>
-                      </p>
-                      <p>
-                        <a href="%unsubscribe_url%" target="_blank">
-                          Unsubscribe
-                        </a>
-                        &nbsp;| Sent by Ethan Mick
-                      </p>
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr>
+                      <td width="100%" style={{ textAlign: 'left' }}>
+                        <p>Hi there 👋,</p>
+                        <p>
+                          To each of you who subscribed, I want to say thank you. It means so much
+                          to me that you support me in this small way. If you have any feedback,
+                          please let me know!
+                        </p>
+                        <p>
+                          You&apos;re getting this email because you subscribed to my weekly
+                          newsletter. I write about React, Next.js, TypeScript, web development, and
+                          ways to become a better engineer.
+                        </p>
+                        <p>Enjoy!</p>
+                        <p style={{ textAlign: 'center' }}>
+                          <a href={url}>View Online →</a>
+                        </p>
+                        <hr className="my-8" />
+                        {Email && <Email />}
+                        <hr className="my-8" />
+                        <p>
+                          If you&apos;re not getting value out of these posts, please consider
+                          unsubscribing. No hard feelings!
+                        </p>
+                        <p>
+                          However, if you are enjoying this newsletter, the best compliment is to
+                          share my <a href="https://ethanmick.com">website</a> or follow me on{' '}
+                          <a href="https://twitter.com/ethan_mick">Twitter.</a>
+                        </p>
+                        <p>
+                          <a href="%unsubscribe_url%" target="_blank">
+                            Unsubscribe
+                          </a>
+                          &nbsp;| Sent by Ethan Mick
+                        </p>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </center>
             </article>
