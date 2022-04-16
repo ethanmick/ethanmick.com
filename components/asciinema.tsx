@@ -18,18 +18,18 @@ type AsciinemaPlayerProps = {
   // END asciinemaOptions
 }
 
-export const AsciinemaPlayer = ({
-  src,
-  ...asciinemaOptions
-}: AsciinemaPlayerProps) => {
+export const AsciinemaPlayer = ({ src, ...asciinemaOptions }: AsciinemaPlayerProps) => {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     ;(async function () {
-      const AsciinemaPlayerLibrary = await import('asciinema-player')
-      AsciinemaPlayerLibrary.create(src, ref.current, asciinemaOptions)
+      if (ref?.current) {
+        ref.current.innerHTML = ''
+        const AsciinemaPlayerLibrary = await import('asciinema-player')
+        AsciinemaPlayerLibrary.create(src, ref.current, asciinemaOptions)
+      }
     })()
-  }, [src])
+  }, [src, asciinemaOptions])
 
   return <div ref={ref} />
 }
