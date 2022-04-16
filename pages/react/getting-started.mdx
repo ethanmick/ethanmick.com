@@ -173,9 +173,8 @@ This comes with live reloading, so you can go into a file, change it, and see
 the changes.
 
 <Callout>
-  🐢 Software Engineering is about making changes and validating them as quickly
-  as possible. If you're spending your time <em>waiting</em> for something, ask
-  yourself, "is there a faster way?"
+  🐢 Software Engineering is about making changes and validating them as quickly as possible. If
+  you're spending your time _waiting_ for something, ask yourself, "is there a faster way?"
 </Callout>
 
 ## Demystifying the magic
@@ -314,9 +313,8 @@ Please delete the entire file and replace it with:
 (For the sharp eyes, this is on line 31 of the file).
 
 <Callout>
-  🐢 The <strong>div</strong> part of this isn't important. React looks{' '}
-  <strong>any</strong> tag up with that id. And the specific tag isn't important
-  either.
+  🐢 The **div** part of this isn't important. React looks **any** tag up with that id. And the
+  specific tag isn't important either.
 </Callout>
 
 Save the file. Stop and restart the development server.
@@ -406,7 +404,7 @@ Clear out the file for the following:
 <CodeFile language="tsx" file="App.tsx">
   {`
 function App() {
-  return <>Hello World</>
+  return <span>Hello World</span>
 }\n
 export default App
 `}
@@ -424,28 +422,25 @@ export default App
   `import NameHere from './file'`.
 
 <Callout>
-  🐢 You no longer need to <strong>import React from 'react'</strong> in your
-  files with React 17.{' '}
-  <a href="https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html">
-    Details here.
-  </a>
+  🐢 You no longer need to `import React from 'react'` in your files with React 17 or higher.
+  [Details here.](https://github.com/ethanmick/ethanmick.com/pull/66/files)
 </Callout>
 
 And that's the file! You can trim it down some more with ES 6 syntax:
 
 <CodeFile language="tsx" file="App.tsx">
   {`
-export default () => <>Hello World</>
+export default () => <span>Hello World</span>
 `}
 </CodeFile>
 
 This is as small and simple as it can get. It exports a default function that
 has **no** name. That function is a component, and it returns the JSX element of
-`<>Hello World</>`.
+`<span>Hello World</span>`.
 
 A React component needs to return JSX element, it can't return just a regular
 string. This is why you can't return the literal `'Hello World`. You need to
-wrap it with the `<> ... </>`.
+wrap it with the a tag, `span` in this instance.
 
 When you trim this down, it will look like this:
 
@@ -458,9 +453,9 @@ When you trim this down, it will look like this:
 (Not very exciting yet. But simple!)
 
 <Callout>
-  🐢 Your linter may not like that single line. I know. It **isn't** good code.
-  But it's short and simple, and you can explain every character. You will build
-  it back up and understand the steps along the way.
+  🐢 Your linter may not like that single line. I know. It **isn't** good code. But it's short and
+  simple, and you can explain every character. You will build it back up and understand the steps
+  along the way.
 </Callout>
 
 Moving on.
@@ -559,7 +554,7 @@ Go back to `App.tsx` and change the content to:
 
 <CodeFile language="tsx" file="App.tsx">
   {`
-const App = () => <>Hello World</>
+const App = () => <span>Hello World</span>
 export default App
 `}
 </CodeFile>
