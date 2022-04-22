@@ -1,0 +1,396 @@
+import { Layout, ChapterFooter, Callout } from '../../components/react'
+import { AsciinemaPlayer, Browser } from '../../components'
+import { CodeFile } from '../../components/mdx'
+import { Routes } from '../../lib'
+
+export const meta = {
+  order: 6,
+  title: 'Editing and un-completing your to-dos',
+  author: 'Ethan Mick',
+  slug: 'uncompleting-and-editing',
+  excerpt: '',
+  createdAt: '2022-04-22T08:00:00.000Z',
+}
+
+export default ({ children }) => <Layout {...meta}>{children}</Layout>
+
+[In the last section](https://ethanmick-git-ethanmick-react-06-ethanmick.vercel.app/react/completing-todos), you learned how to check items off your to-do list. When
+going over the requirements, there was an option:
+
+> As a user, I want to mark un-complete items that are incomplete.
+
+The above requirement changed the scope considerably. Before that requirement,
+you could delete a completed item from the list. However, once a user wants to
+see historical items, edit them, or mark them as incomplete, you need to track
+them forever.
+
+But, of course, that's the better thing to do. That will make your product
+better, even if it's more work. Creating a product isn't always easy. So let's
+jump in and get into the nitty-gritty!
+
+## Un-completing items
+
+This turns out to be pretty straightforward. There are two things you will need
+to do to get this working. The first is to show the user those completed items.
+The second is to reverse the "complete" function to mark them as done.
+
+Showing the items is easy. Duplicate the code for displaying the items, but
+instead of filtering out the things that are not _done_, filter out the ones
+that _are_ done. It looks like this.
+
+```tsx
+<ul>
+  {
+    todos
+      .filter(({ done }) => done)
+      .map((todo) => (
+        <TodoListItem key={todo.id} onComplete={onComplete} {...todo} />
+      ))
+  }
+</ul>
+```
+
+The function `onComplete` still works here because of a tricky line of code you
+entered earlier: `done: !todos[i].done`. That line doesn't set `done` to false
+at all times. Instead, it flips the bit from true to false or vice versa. That
+allows you to call the same function and have it change the to-do from done to
+not done.
+
+Great job! You can now mark items as not complete. To add more distinction
+between the two lists, you can add a header to mark the items that have been
+finished:
+
+```tsx
+<h2>Complete</h2>
+```
+
+Put that right before your second ul to note the items below have been
+completed.
+
+## All Complete!
+
+Congrats! Now your users can mark items not complete if they accidentally tap
+the button. They can correct their mistakes which is always an important
+function. The user can fix their errors.
+
+Right?
+
+_All_ their mistakes...
+
+Hmm, what if they mistyped a to-do in the first place? Do the users want to
+_edit_ a to-do?
+
+Just have them complete it and enter it again!
+
+No? They didn't like that response?
+
+Fine.
+
+Time to add editing.
+
+## Editing a to-do
+
+Alright, well, this starts getting tricky. Editing a to-do changes the
+interaction paradigm a user has with their to-dos. There are also multiple ways
+to do this, so feel free to diverge a little and tackle it another way.
+
+A user will most likely want to view and complete a to-do. Editing is a less
+common interaction, and it should not be the primary mode of interaction. You
+might want to make every to-do list item just an input field so the user can
+always edit it, but that's not the best idea. If you do that, the user will
+accidentally trigger editing items when they don't want to.
+
+Instead, a better option is to break up the modes. One mode for viewing and
+completing (the primary way) and then a button flips the user into _edit_ mode,
+where all they can do is edit the to-do.
+
+With this approach, you can break the code into two distinct modes, viewing and
+editing. Then, the components can match the mode with an "Edit this to-do list
+item" and "view this to-do list item" component. The list itself doesn't need to
+know what mode any individual row is in; it just needs to know when one of them
+changes.
+
+Let's work from what you have and move down. Update the component `TodoListItem`
+so that it tracks the _mode._ It is either in edit mode or not, and the user can
+change that. It sounds like a new state! Add it:
+
+```tsx
+const [isEditMode, setEditMode] = useState(false)
+```
+
+The user will not start in edit mode, which is most common. So what happens with
+that state? The user toggles the state, and the app shows different
+functionality based on the view.
+
+That's a lot to fit into a single component, and those are two different
+behaviors. When you come to points like this... make more components! Create two
+new components, one for each mode:
+
+```tsx
+const ViewTodoListItem = () => null
+
+const EditTodoListItem = () => null
+```
+
+You'll fill out the contents of those later. But you can now finish the stub of
+`TodoListItem` by calling those:
+
+```tsx
+return (
+  <li>
+    {isEditMode ? (
+      <EditTodoListItem {...todo} />
+    ) : (
+      <ViewTodoListItem {...todo} />
+    )}
+  </li>
+)
+```
+
+If `isEditMode` is true, return the edit mode. Otherwise, return the view mode.
+Now, `TodoListItem` _used_ to be view-only mode, so you mostly have that done. So
+jump there and finish up that component.
+
+## View mode of a list item
+
+Copying the [old
+code](https://github.com/ethanmick/react-05/blob/main/src/App.tsx#L34-L43) from
+`TodoListItem` gives you a component that looks like this.
+
+```tsx
+type TodoListItemProps = {
+  onChange: () => void
+} & Todo
+
+const ViewTodoListItem = ({ text, done, onChange }: TodoListItemProps) => (
+  <li>
+    <input type="checkbox" checked={done} onChange={(e) => onChange()} />
+    <span>{text}</span>
+  </li>
+)
+```
+
+After adding that, change the props to be named `ViewTodoProps`. You'll come back
+to `onChange`; it can just stay there for now. The last thing is a new addition.
+
+The list item will show this component when _not_ in edit mode. How does the
+user _enter_ edit mode? A user interaction will change the state. To make it
+easy and obvious, you'll add a button.
+
+```tsx
+<button>Edit</button>
+```
+
+Toss that button after the `span` element. Then, when the user clicks it, you need
+to trigger a callback to tell the parent to update its mode.
+
+```tsx
+type ViewTodoProps = {
+  onComplete: () => void
+  onEdit: () => void // Add this line
+} & Todo
+
+// Lower, update this line
+<button onClick={onEdit}>Edit</button>
+```
+
+Back in TodoListItem, it needs to pass in the callback that will change the
+mode.
+
+```tsx
+<ViewTodoListItem
+  onEdit={() => setEditMode((e) => !e)}
+  {...todo}
+/>
+```
+
+The above code uses the function setter to set `isEditMode` according to the
+previous value. When you press the edit button, it will hide the
+`ViewTodoListItem` and show... nothing! Time to work on editing.
+
+## Edit mode of a list item
+
+The edit mode is simple, a text box with a button to save. Very similar to
+adding an item. You also need to _handle_ passing that data back up to the list
+so it can set the state of the to-do. Just like marking an item as complete goes
+up, so needs changing the text of an item.
+
+Editing a to-do will look like this:
+
+```tsx
+type EditTodoProps = {} & Todo
+
+const EditTodoListItem = ({ ...todo }: EditTodoProps) => {
+  const [text, setText] = useState(todo.text)
+  return (
+    <>
+      <input
+        type="text"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+      <button>Save</button>
+    </>
+  )
+}
+```
+
+There should not be anything too surprising about this. The most interesting
+line is the `useState` line. Instead of setting the default state to `''`, which
+you've done before, you set it to the _text of the to-do item_. This means the
+text field will start with that text instead of being blank. When the input
+changes, you update the state. Lastly, a save button that does nothing yet.
+
+When the user clicks save, it needs to call a function letting the parent know
+the user wants to save _this_ to-do. The parent is no longer the list; it is the
+`TodoListItem`. So _that_ component needs to call a callback to let the `TodoList`
+itself know something changed.
+
+Phew.
+
+Luckily, you can structure our code so passing these through is pretty painless.
+You do that by structuring the functions to have the same function signature.
+
+Working backward, when a user clicks "save" to save an edited to-do, you need to
+call a function saying that to-do had the text changed, and here is the new
+text. This could be done by just passing the text to a function, but if you pass
+the entire `Todo` object, it will make things a lot easier. You'll see why in a
+moment.
+
+So, add a new callback for saving:
+
+```tsx
+type EditTodoProps = {
+  onUpdate: (todo: Todo) => void // Added
+} & Todo
+
+const EditTodoListItem = ({ onUpdate, ...todo }: EditTodoProps) => {
+  const [text, setText] = useState(todo.text)
+
+  // This line is new
+  const update = () => onUpdate({ ...todo, text })
+
+  return (
+    <>
+      <input
+        type="text"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+
+      /* This line is updated */
+      <button onClick={update}>Save</button>
+    </>
+  )
+}
+```
+
+The onUpdate function requires the entire `Todo` passed in. You call that with
+`update` in your component that passes _back_ the `Todo` passed to you with the
+updated text. Now you need to update the parent `TodoListItem`.
+
+```tsx
+type TodoListItemProps = {
+  onEdit: (todo: Todo) => void
+} & Todo
+
+// Below, in the JSX update this line
+<EditTodoListItem onUpdate={onEdit} {...todo} />
+```
+
+You add a new property, `onEdit,` which will tell the `TodoList` when a to-do
+has been edited. Then you pass that function to `EditTodoListItem`.
+
+Because the function signature is the same, you don't need to invoke it with:
+
+```tsx
+onUpdate={(todo) => onEdit(todo)}
+```
+
+The above is redundant and not necessary. You can just pass it through because
+the function is called with the same parameters. Easy!
+
+Now backing up once again to the `TodoList` you can write onEdit.
+
+```tsx
+const onEdit = (todo: Todo) => {
+  setTodos((todos) => {
+  const i = todos.findIndex(({ id }) => todo.id === id)
+  todos[i] = todo
+  return [...todos]
+})
+}
+```
+
+The above code is a little simpler than `onComplete` because instead of changing
+the `Todo` to flip the done value, you just trust that the to-do passed in is the
+one that should be set. Then, the code looks up that index and overrides the
+entire to-do.
+
+Since you're overriding the `Todo`, this means the done value is also set.
+
+It means that this function can do the same thing as `onComplete` but easier. So
+you can actually _remove_ `onComplete` and update that functionality.
+
+```tsx
+<ViewTodoListItem
+  onComplete={() => onEdit({ ...todo, done: !todo.done })}
+  onEdit={() => setEditMode((e) => !e)}
+  {...todo}
+/>
+```
+
+Instead of calling a unique `onComplete` method now, when the user taps
+`onComplete`, set the value of done to be the opposite of what was there before.
+Then call `onEdit`, which is your function above, setting the `Todo`. The same
+function handles both completing a to-do and editing one!
+
+And now the user can do both of those actions! Once a user enters edit mode,
+you'll notice that they don't get out when they click save. You can update the
+`TodoListItem` code to kick them out when they save:
+
+```tsx
+const onUpdate = (todo: Todo) => {
+  setEditMode(false)
+  onEdit(todo)
+}
+
+// Later
+<EditTodoListItem onUpdate={onUpdate} {...todo} />
+```
+
+## Finishing with style
+
+The app is getting to the point where manually editing CSS is a pain. It's in a
+different file, and the DOM doesn't have classes or IDs. While you can add
+those, there are better ways to handle CSS in React. For example, instead of
+adding CSS in a file, a shortcut is to add _inline_ CSS right in the JSX.
+
+To start, that `<h2>Complete</h2>` you added earlier can be a little nicer.
+
+```tsx
+<h2 style={{ textAlign: 'center', fontSize: 14 }}>Complete</h2>
+```
+
+React inline styles are an object, not a string. The CSS properties are
+camel-cased, and some can be numbers instead of strings where it makes sense.
+Above, the `font-size` is 14 pixels.
+
+Since you already have some CSS for the following, go and open `App.css` and
+update:
+
+```css
+ul li div {
+  padding: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+ul li span {
+  margin-left: 0.5rem;
+  flex-grow: 1;
+}
+```
+
+And your app will look nicer. Not great, but nicer. It's about time to really up
+the ante in making an app.

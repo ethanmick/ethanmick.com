@@ -44,7 +44,12 @@ export default function PostPage({ metas }: Props) {
       </Link>
       <Link href={Routes.ReactCompletingTodos}>
         <a className="block py-2 text-blue-500 visited:text-indigo-700 hover:underline">
-          Completing Todos
+          Completing to-dos
+        </a>
+      </Link>
+      <Link href={Routes.ReactEditingTodos}>
+        <a className="block py-2 text-blue-500 visited:text-indigo-700 hover:underline">
+          Marking to-dos as incomplete and editing
         </a>
       </Link>
       <h2 className="py-8 text-2xl">Other</h2>
