@@ -1,12 +1,11 @@
 import { Post } from '../../components/post'
+import { Tags } from '../../lib'
 
 export const meta = {
-  type: 'POST',
-  title: 'Book: Elon Musk',
   author: 'Ethan Mick',
-  slug: 'book-elon-musk',
-  excerpt: '',
   createdAt: '2017-01-01T08:00:00.000Z',
+  tags: [Tags.Book],
+  title: 'Book: Elon Musk',
 }
 
 export default ({ children }) => <Post {...meta}>{children}</Post>

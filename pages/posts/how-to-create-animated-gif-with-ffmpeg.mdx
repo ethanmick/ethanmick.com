@@ -1,13 +1,11 @@
 import { Post } from '../../components/post'
+import { Tags } from '../../lib'
 
 export const meta = {
-  type: 'POST',
-  title: 'How To Create Animated GIFs With FFmpeg',
   author: 'Ethan Mick',
-  slug: 'how-to-create-animated-gif-with-ffmpeg',
-  excerpt:
-    'There are times when sharing a GIF is easier, more convenient, and faster than sharing a video file. FFmpeg is the perfect tool to quickly convert the video into a quality GIF.',
   createdAt: '2020-04-01T08:00:00.000Z',
+  tags: [],
+  title: 'How To Create Animated GIFs With FFmpeg',
 }
 
 export default ({ children }) => <Post {...meta}>{children}</Post>

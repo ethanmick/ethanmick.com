@@ -1,12 +1,11 @@
 import { Post } from '../../components/post'
+import { Tags } from '../../lib'
 
 export const meta = {
-  type: 'POST',
-  title: 'Why I like Hapi more than Express',
   author: 'Ethan Mick',
-  slug: 'why-i-like-hapi-more-than-express',
-  excerpt: '',
   createdAt: '2016-06-06T08:00:00.000Z',
+  tags: [],
+  title: 'Why I like Hapi more than Express',
 }
 
 export default ({ children }) => <Post {...meta}>{children}</Post>

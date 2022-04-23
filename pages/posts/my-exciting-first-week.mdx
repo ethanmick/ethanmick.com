@@ -1,13 +1,11 @@
 import { Post } from '../../components/post'
+import { Tags } from '../../lib'
 
 export const meta = {
-  type: 'POST',
-  title: 'Hello, welcome to the internet, and my exciting first week',
   author: 'Ethan Mick',
-  slug: 'my-exciting-first-week',
-  excerpt:
-    'One week ago I decided to dust off my old blog and write some content. My first week has taught me a lot already. I am switching to less frequent and deeper posts.',
   createdAt: '2022-02-05T12:00:00.000Z',
+  tags: [],
+  title: 'Hello, welcome to the internet, and my exciting first week',
 }
 
 export default ({ children }) => <Post {...meta}>{children}</Post>

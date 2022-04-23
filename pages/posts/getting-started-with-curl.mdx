@@ -1,12 +1,11 @@
 import { Post } from '../../components/post'
+import { Tags } from '../../lib'
 
 export const meta = {
-  type: 'POST',
-  title: 'Getting Started with cURL',
   author: 'Ethan Mick',
-  slug: 'getting-started-with-curl',
-  excerpt: '',
   createdAt: '2018-02-02T21:04:04.997Z',
+  tags: [Tags.Guide],
+  title: 'Getting Started with cURL',
 }
 
 export default ({ children }) => <Post {...meta}>{children}</Post>

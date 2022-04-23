@@ -1,13 +1,11 @@
 import { Post } from '../../components/post'
+import { Tags } from '../../lib'
 
 export const meta = {
-  type: 'POST',
-  title: 'Knowing the Formula',
   author: 'Ethan Mick',
-  slug: 'knowing-the-formula',
-  excerpt:
-    'Understand how your body reacts to food and exercise to meet your weight goals.',
   createdAt: '2016-09-01T08:00:00.000Z',
+  tags: [],
+  title: 'Knowing the Formula',
 }
 
 export default ({ children }) => <Post {...meta}>{children}</Post>

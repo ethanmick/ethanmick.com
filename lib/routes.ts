@@ -6,15 +6,14 @@ export enum Routes {
 
   // React
   React = '/react',
-  ReactIntroduction = '/react/introduction',
-  ReactGettingStarted = '/react/getting-started',
-  ReactComponents = '/react/components',
-  ReactProperties = '/react/properties',
-  ReactState = '/react/state',
-  ReactCompletingTodos = '/react/completing-todos',
-  ReactEditingTodos = '/react/uncompleting-and-editing',
-  ReactAddTailwind = '/react/add-tailwind',
-  ReactMigrateToTailwind = '/react/migrate-to-tailwind',
-
-  ReactLocalStorage = '/react/local-storage',
+  ReactIntroduction = '/posts/introduction',
+  ReactGettingStarted = '/posts/getting-started',
+  ReactComponents = '/posts/components',
+  ReactProperties = '/posts/properties',
+  ReactState = '/posts/state',
+  ReactCompletingTodos = '/posts/completing-todos',
+  ReactEditingTodos = '/posts/uncompleting-and-editing',
+  ReactAddTailwind = '/posts/add-tailwind',
+  ReactMigrateToTailwind = '/posts/migrate-to-tailwind',
+  ReactLocalStorage = '/posts/local-storage',
 }

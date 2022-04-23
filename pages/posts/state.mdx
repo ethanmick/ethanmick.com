@@ -1,14 +1,12 @@
 import { Layout, ChapterFooter, Callout } from '../../components/react'
 import { CodeFile } from '../../components/mdx'
-import { Routes } from '../../lib'
+import { Tags, Routes } from '../../lib'
 
 export const meta = {
-  order: 5,
-  title: 'Managing State',
   author: 'Ethan Mick',
-  slug: 'state',
-  excerpt: '',
   createdAt: '2022-03-19T08:00:00.000Z',
+  tags: [Tags.React],
+  title: 'Managing State',
 }
 
 export default ({ children }) => <Layout {...meta}>{children}</Layout>
@@ -212,11 +210,7 @@ const AddTodo = () => {
 
   return (
     <div>
-      <input
-        type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
+      <input type="text" value={text} onChange={(e) => setText(e.target.value)} />
       <button>Add</button>
     </div>
   )

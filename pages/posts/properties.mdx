@@ -1,15 +1,13 @@
 import { Layout, ChapterFooter, Callout } from '../../components/react'
 import { AsciinemaPlayer, Browser } from '../../components'
 import { CodeFile } from '../../components/mdx'
-import { Routes } from '../../lib'
+import { Tags, Routes } from '../../lib'
 
 export const meta = {
-  order: 4,
-  title: 'Passing data with properties',
   author: 'Ethan Mick',
-  slug: 'properties',
-  excerpt: '',
   createdAt: '2022-03-11T08:00:00.000Z',
+  tags: [Tags.React],
+  title: 'Passing data with properties',
 }
 
 export default ({ children }) => <Layout {...meta}>{children}</Layout>
@@ -83,9 +81,8 @@ A very important core tenant of React is that the data passed into a component
 is _immutable._
 
 <Callout>
-  🐢 I wish JavaScript had better support for immutable objects! While you *can*
-  change these values you should **never** do so. It will result in very weird
-  bugs!
+  🐢 I wish JavaScript had better support for immutable objects! While you *can* change these values
+  you should **never** do so. It will result in very weird bugs!
 </Callout>
 
 This includes things like strings and numbers, but also more complex data like
@@ -159,8 +156,8 @@ item. As these grow with complexity it will be good to have them as separate
 entities.
 
 <Callout>
-  🐢 The entire time you are working on this, you should have your dev server
-  running. See the changes you are making as you make them!
+  🐢 The entire time you are working on this, you should have your dev server running. See the
+  changes you are making as you make them!
 </Callout>
 
 ## To-Do List
@@ -171,8 +168,8 @@ know all the components you need upfront, you can also start with the smallest
 and work your way up.
 
 <Callout>
-  🐢 I like to often start small, so each parent component can immediately use
-  the child I just created.
+  🐢 I like to often start small, so each parent component can immediately use the child I just
+  created.
 </Callout>
 
 To just get going, you'll start with the list itself. You can take your `App`
@@ -237,9 +234,8 @@ const App = () => <TodoList todos={todos} />
 ```
 
 <Callout>
-  🐢 You'll notice we're using the same name here. That's okay, JavaScript uses
-  the scope to pick up and use the closest value. If this doesn't sit right with
-  you, feel free to rename some variables.
+  🐢 You'll notice we're using the same name here. That's okay, JavaScript uses the scope to pick up
+  and use the closest value. If this doesn't sit right with you, feel free to rename some variables.
 </Callout>
 
 With all this moving around of code, your app should look blissfully the same.
@@ -306,8 +302,7 @@ it well:
 
 <Callout>
   🐢 Using indexes as keys have problems, as explained
-  [here](https://robinpokorny.medium.com/index-as-a-key-is-an-anti-pattern-e0349aece318)
-  and
+  [here](https://robinpokorny.medium.com/index-as-a-key-is-an-anti-pattern-e0349aece318) and
   [here](https://reactjs.org/docs/reconciliation.html#recursing-on-children).
 </Callout>
 
