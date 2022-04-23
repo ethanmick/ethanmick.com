@@ -8,6 +8,7 @@ export type PostMeta = {
   slug: string
   excerpt: string
   createdAt: string
+  tags: string[]
 }
 
 const postsDirectory = join(process.cwd(), 'pages/posts')
