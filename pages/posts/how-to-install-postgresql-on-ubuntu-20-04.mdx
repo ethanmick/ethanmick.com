@@ -1,0 +1,114 @@
+import { Post } from '../../components/post'
+
+export const meta = {
+  type: 'POST',
+  title: 'How to install PostgreSQL 14 on Ubuntu 20.04',
+  author: 'Ethan Mick',
+  slug: 'how-to-install-postgresql-on-ubuntu-20-04',
+  excerpt: 'Learn how to set up PostgreSQL on Ubuntu 20.04.',
+  createdAt: '2022-04-29T12:00:00.000Z',
+}
+
+export default ({ children }) => <Post {...meta}>{children}</Post>
+
+When building a web app, you will often find yourself in need of a database.
+There are several to choose from and many places to host them, but one of the
+best and cheapest is running [PostgreSQL](https://www.postgresql.org/) on a
+virtual private server (VPS). It's a low effort way to add persistence to your
+application and works effectively
+with apps running on the server.
+
+The steps to install PostgreSQL and get it running are pretty straightforward.
+You will need root access to the server to install the database. The first step
+is to add the PostgreSQL repo to the machine so you can install different
+versions. The default Ubuntu package is often out of date, and it is best to
+install the latest version.
+
+```bash
+# Create the file repository configuration:
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+
+# Import the repository signing key:
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+
+# Update the package lists:
+sudo apt-get update
+
+# Install the latest version of PostgreSQL.
+# If you want a specific version, use 'postgresql-12' or similar instead of 'postgresql':
+sudo apt-get -y install postgresql-14
+```
+
+Congratulations! You now have PostgreSQL running on Ubuntu. When you change a
+configuration, you will need to restart the service.
+
+```bash
+# Restart
+service postgresql restart
+
+# Stop
+service postgresql stop
+
+# Start
+service postgresql start
+```
+
+You can find the configuration files in this directory when you need to make
+changes:
+
+```bash
+/etc/postgresql/14/main/
+```
+
+## Setting up a Database
+
+After setting up a database, a common next step is to create credentials for
+your application. You don't want to use the default postgres user for this.
+Instead, you should create a new user, a database, and grant permission to
+access it. You can do that with the following commands:
+
+```sql
+CREATE DATABASE name_of_database;
+CREATE USER name_of_user WITH ENCRYPTED PASSWORD 'secret_password_here';
+GRANT ALL PRIVILEGES ON DATABASE name_of_database TO name_of_user;
+```
+
+The above commands will create a database and a user. Then, it will grant the
+user the permissions it needs to work with that database. The last line gives
+all permissions, but you can
+[grant](https://www.postgresql.org/docs/14/sql-grant.html) a subset.
+
+The new user will not be able to log in because PostgreSQL limits the
+connections to a Unix socket by default. Your application most likely will need
+to connect with a regular password, so you should update the connection method:
+
+Open `/etc/postgresql/14/main/pg_hba.conf` and change the last line marked here:
+
+```conf
+# DO NOT DISABLE!
+# If you change this first entry you will need to make sure that the
+# database superuser can access the database using some other method.
+# Noninteractive access to all databases is required during automatic
+# maintenance (custom daily cronjobs, replication, and similar tasks).
+#
+# Database administrative login by Unix domain socket
+local   all             postgres                                peer
+
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+# "local" is for Unix domain socket connections only
+# THIS IS THE LINE YOU WANT TO CHANGE TO BE THE FOLLOWING:
+local   all             all                                     md5
+```
+
+Then restart the service: `service postgresql restart`.
+
+Now you can test the connection:
+
+```bash
+root@hostname:~# psql -U name_of_user -d name_of_database
+Password for user name_of_user:
+```
+
+Congratulations! You have set up PostgreSQL on your Ubuntu system, created a
+user and database for your application, and can connect to it. So, wire up your
+app and keep coding!
