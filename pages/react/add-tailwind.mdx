@@ -1,0 +1,112 @@
+import { Layout, ChapterFooter, Callout } from '../../components/react'
+import { CodeFile } from '../../components/mdx'
+import { Routes } from '../../lib'
+
+export const meta = {
+  order: 7,
+  title: 'Add Tailwind CSS',
+  author: 'Ethan Mick',
+  slug: 'add-tailwind',
+  excerpt: '',
+  createdAt: '2022-05-06T08:00:00.000Z',
+}
+
+export default ({ children }) => <Layout {...meta}>{children}</Layout>
+
+It's time to get serious about building out the functionality of your app. To do
+that, you're going to want to add some additional libraries that make creating a
+well-designed app easier. One of the best current CSS libraries is Tailwind, a
+set of utility CSS classes that you can mix and match to make your app unique.
+
+## Why Tailwind CSS?
+
+One of the great things about using Tailwind is it is a CSS framework, not a
+React library. Therefore, using Tailwind means the time spent learning it will
+transfer to another project even if that project is not written in React. For
+example, Tailwind does a great job of building simple web pages and beautiful
+landing pages besides full web apps.
+
+Another great thing about Tailwind is it's very close to the underlying CSS. So
+each of the classes maps to the CSS property that it manages, and it is
+straightforward to peek under the hood and read the documentation to know what
+Tailwind is doing.
+
+## Setup
+
+To set up Tailwind in Create React App, install the following dependencies.
+
+```bash
+npm install -D tailwindcss postcss autoprefixer
+```
+
+Then, create the new configuration file for Tailwind.
+
+```bash
+npx tailwindcss init -p
+```
+
+### Why is a configuration file needed?
+
+Tailwind is **more** than _just_ a CSS Framework. Tailwind has several built-in
+features that make it more useful than a simple utility library.
+
+**Auto prefixing** is a timesaving feature that allows you not to worry about
+*all of the unique prefixes for browser compatibility. Tailwind will take care
+*of that for you.
+
+**Auto pruning** will automatically take out all of the CSS not being used in
+*your application. This process will result in a smaller application bundle and
+*better load times.
+
+**Plugins** can be added to the configuration file, allowing you to access extra
+functionality not included in the core.
+
+**Just in time** compiling allows for you to write custom Tailwind classes and
+have it compile those classes to the correct underlying CSS.
+
+These features are possible because Tailwind monitors and watches your code as
+you write and compile, allowing it to be efficient about what is included in the
+final bundle.
+
+Since you are already using TypeScript and React, there is already a build
+process to get the code as written to a compiled version the browser
+understands. Adding in Tailwind hooks into that process and doesn't require
+additional steps.
+
+Add your paths to the default configuration for where Tailwind will find your
+source code:
+
+```js
+module.exports = {
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+Remember way back in the [getting
+started](https://ethanmick.com/react/getting-started) blog post when you removed
+the `index.css` file because you weren't using it? Now you want to use it.
+Tailwind reads the source files of all your code and examines which classes are
+used. Then, it creates a unique CSS file for your application and includes it in
+the bundle. To include this custom bundle and have it available on every page,
+the CSS needs to be available at the root application level. That's what the
+`index.css` file is for, so recreate it and add in the following new Tailwind
+directives:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+And then, since we removed it earlier, add it back into the `index.tsx` file.
+
+```ts
+import './index.css'
+```
+
+Now you can start the application, and you will have the power of Tailwind! Time
+to start using it.

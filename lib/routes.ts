@@ -13,6 +13,7 @@ export enum Routes {
   ReactState = '/react/state',
   ReactCompletingTodos = '/react/completing-todos',
   ReactEditingTodos = '/react/uncompleting-and-editing',
+  ReactAddTailwind = '/react/add-tailwind',
 
   ReactLocalStorage = '/react/local-storage',
 }

@@ -45,6 +45,11 @@ const ReactLinks = [
     label: 'Marking to-dos as incomplete and editing',
     createdAt: '2022-04-22T12:00:00.000Z',
   },
+  {
+    href: Routes.ReactAddTailwind,
+    label: 'Add Tailwind CSS',
+    createdAt: '2022-05-06T12:00:00.000Z',
+  },
 ]
 
 type Props = {
