@@ -50,6 +50,11 @@ const ReactLinks = [
     label: 'Add Tailwind CSS',
     createdAt: '2022-05-06T12:00:00.000Z',
   },
+  {
+    href: Routes.ReactMigrateToTailwind,
+    label: 'Migrate components to Tailwind CSS',
+    createdAt: '2022-05-20T12:00:00.000Z',
+  },
 ]
 
 type Props = {

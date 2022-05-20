@@ -1,0 +1,136 @@
+import { Layout, ChapterFooter, Callout } from '../../components/react'
+import { CodeFile } from '../../components/mdx'
+import { Routes } from '../../lib'
+
+export const meta = {
+  order: 8,
+  title: 'Migrate components to Tailwind CSS',
+  author: 'Ethan Mick',
+  slug: 'migrate-to-tailwind',
+  excerpt: '',
+  createdAt: '2022-05-20T08:00:00.000Z',
+}
+
+export default ({ children }) => <Layout {...meta}>{children}</Layout>
+
+Now it is time to migrate your code to use [Tailwind](https://tailwindcss.com).
+You will do this by looking at how each of these components looks and migrating
+the CSS that you wrote to the new Tailwind classes. While you go through and
+rewrite the code, consider adding in additional classes to make your app look
+fantastic with minimal effort.
+
+Keep in mind that your design might be very different than what is written here.
+Everybody has a personal flair, and Tailwind is a low-level library that allows
+you to express yourself. Experiment and see what feels the best.
+
+If you have any questions about what the classes do, you should look up the
+[documentation on the Tailwind website](https://tailwindcss.com/docs). It
+provides excellent examples and documentation for each of the classes.
+
+To tackle this systematically, you can work from the **parent** DOM elements
+down to the **children's** elements. That will ensure that the outer elements,
+like layouts, are finished before moving on to the more detailed work.
+
+The top-level page only has a single list, so you can dive one level deeper and
+look at the list. You want it to be centered, not too wide, and have some space
+at the top to keep a similar look to the previous CSS.
+
+```tsx
+<div className="mx-auto max-w-screen-sm mt-12">
+  ...
+</div>
+```
+
+Next, the key is to add a divider between the items for the list itself. Again,
+Tailwind does this simply with `divide`:
+
+```tsx
+<ul className="divide-y">...</ul>
+```
+
+Tailwind uses `x` and `y` to differentiate horizontal and vertical directions.
+You'll see this pattern across the classes. Adding some padding for vertical
+spacing might look good too.
+
+The second list of done items should have the same treatment:
+
+```tsx
+<ul className="divide-y">...</ul>
+```
+
+Next up, down a level, is updating the **add a todo input**.
+
+```tsx
+<input className="w-full rounded border text-lg leading-8" />
+```
+
+The above classes add some basic styling for the input to make it stand out.
+
+The next component to update is the `ViewTodoListItem`:
+
+```tsx
+const ViewTodoListItem = ({
+  onComplete,
+  onEdit,
+  text,
+  done,
+}: ViewTodoProps) => {
+  return (
+    <div className="flex items-center">
+      <input type="checkbox" checked={done} onChange={onComplete} />
+      <span className="ml-2">{text}</span>
+      <span className="flex-grow" />
+      <button
+        className="bg-gray-100 p-1 rounded hover:shadow focus:bg-gray-200"
+        onClick={onEdit}
+      >
+        Edit
+      </button>
+    </div>
+  )
+}
+```
+
+The above code uses **flex** to line up the items straight. You want the
+elements in the row centered with each other. The `span` elements gain some
+spacing classes. Lastly, the button gets some simple styling to make it more
+button-like. The `hover:` and `focus:` varients only apply the following class
+when a user interacts with the component.
+
+And then the edit:
+
+```tsx
+const EditTodoListItem = ({ onUpdate, ...todo }: EditTodoProps) => {
+	const [text, setText] = useState(todo.text)
+	const update = () => onUpdate({ ...todo, text })
+	return (
+		<div className="flex items-center gap-2">
+			<input
+				className="w-full border rounded text-lg leading-8 px-2"
+				type="text"
+				value={text}
+				onChange={(e) => setText(e.target.value)}
+			/>
+			<button
+				className="bg-gray-100 p-1 rounded hover:shadow focus:bg-gray-200"
+				onClick={update}
+			>
+				Save
+			</button>
+		</div>
+	)
+}
+```
+
+For this component, it was necessary to update the DOM a little. The outermost
+layer was a Fragment, and you cannot add classes to a Fragment — it's not
+anything that appears in the DOM. So instead, you should turn it into a div and
+add your classes to it.
+
+You can now delete the `App.css` file and the `import` into the code with these
+changes.
+
+And there you have it! Your application no longer uses the built using CSS and
+now instead uses Tailwind. You can use Tailwind in any project, and it allows
+you to create responsive and interactive UIs quickly. Lastly, you can stay in a
+single file and write code faster using Tailwind.
