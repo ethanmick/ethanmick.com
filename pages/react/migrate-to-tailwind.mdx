@@ -101,24 +101,24 @@ And then the edit:
 
 ```tsx
 const EditTodoListItem = ({ onUpdate, ...todo }: EditTodoProps) => {
-	const [text, setText] = useState(todo.text)
-	const update = () => onUpdate({ ...todo, text })
-	return (
-		<div className="flex items-center gap-2">
-			<input
-				className="w-full border rounded text-lg leading-8 px-2"
-				type="text"
-				value={text}
-				onChange={(e) => setText(e.target.value)}
-			/>
-			<button
-				className="bg-gray-100 p-1 rounded hover:shadow focus:bg-gray-200"
-				onClick={update}
-			>
-				Save
-			</button>
-		</div>
-	)
+  const [text, setText] = useState(todo.text)
+  const update = () => onUpdate({ ...todo, text })
+  return (
+    <div className="flex items-center gap-2">
+      <input
+        className="w-full border rounded text-lg leading-8 px-2"
+        type="text"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+      <button
+        className="bg-gray-100 p-1 rounded hover:shadow focus:bg-gray-200"
+        onClick={update}
+      >
+        Save
+      </button>
+    </div>
+  )
 }
 ```
 
