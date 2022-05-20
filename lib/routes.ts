@@ -14,6 +14,7 @@ export enum Routes {
   ReactCompletingTodos = '/react/completing-todos',
   ReactEditingTodos = '/react/uncompleting-and-editing',
   ReactAddTailwind = '/react/add-tailwind',
+  ReactMigrateToTailwind = '/react/migrate-to-tailwind',
 
   ReactLocalStorage = '/react/local-storage',
 }
