@@ -109,12 +109,44 @@ root@hostname:~# psql -U name_of_user -d name_of_database
 Password for user name_of_user:
 ```
 
-### Other Notes
+### Configuration
+
+You can view the important directories from the configuraton file:
+
+```
+/etc/postgresql/14/main/postgresql.conf
+```
 
 The database data directory by default is:
 
 ```
 /var/lib/postgresql/14/main
+```
+
+Further, you should update the password mode from `md5` to `scram-sha-256`.
+
+```
+password_encryption = 'scram-sha-256'
+```
+
+Set in `postgresql.conf`. If you have set any passwords, you will need to reset
+them.
+
+### External Ports
+
+If you want Postgres to listen on the open Internet, you can change the
+`listen_address = *` in `postgresql.conf`. While generally not a good idea if
+you can avoid it, a strong passwords and TLS connections will be secure.
+
+Also keep the database up to date.
+
+### Connecting via SSL
+
+Postgres has SSL enabled by default. To connect with it, add the following
+parameter to your connection string:
+
+```
+?sslmode=require
 ```
 
 Congratulations! You have set up PostgreSQL on your Ubuntu system, created a
