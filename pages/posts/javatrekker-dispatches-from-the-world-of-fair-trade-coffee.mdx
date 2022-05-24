@@ -1,12 +1,11 @@
 import { Post } from '../../components/post'
+import { Tags } from '../../lib'
 
 export const meta = {
-  type: 'POST',
-  title: 'Book: Javatrekker - Dispatches from the World of Fair Trade Coffee',
   author: 'Ethan Mick',
-  slug: 'javatrekker-dispatches-from-the-world-of-fair-trade-coffee',
-  excerpt: '',
   createdAt: '2017-01-01T08:00:00.000Z',
+  tags: [Tags.Book],
+  title: 'Book: Javatrekker - Dispatches from the World of Fair Trade Coffee',
 }
 
 export default ({ children }) => <Post {...meta}>{children}</Post>

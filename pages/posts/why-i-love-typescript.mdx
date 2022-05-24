@@ -1,13 +1,11 @@
 import { Post } from '../../components/post'
+import { Tags } from '../../lib'
 
 export const meta = {
-  type: 'POST',
-  title: 'Why I Love TypeScript',
   author: 'Ethan Mick',
-  slug: 'why-i-love-typescript',
-  excerpt:
-    'TypeScript adds incredibly useful features to JavaScript with a powerful compiler, interfaces, enums, decorators, and more. With great community support and fantastic releases, TypeScript should be your go to for writing complex JavaScript.',
   createdAt: '2019-12-01T08:00:00.000Z',
+  tags: [],
+  title: 'Why I Love TypeScript',
 }
 
 export default ({ children }) => <Post {...meta}>{children}</Post>

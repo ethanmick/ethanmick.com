@@ -1,12 +1,10 @@
 import { promises as fs } from 'node:fs'
-import { join } from 'path'
+import { join, parse } from 'path'
 
 export type PostMeta = {
-  type: string
-  title: string
   author: string
   slug: string
-  excerpt: string
+  title: string
   createdAt: string
   tags: string[]
 }
@@ -20,7 +18,11 @@ export const getPostSlugs = async (): Promise<string[]> => {
 
 export const getPostMetaBySlug = async (slug: string): Promise<PostMeta> => {
   const { meta } = await import(`../../pages/posts/${slug}`)
-  return meta
+  const { dir, name } = parse(slug)
+  return {
+    ...meta,
+    slug: join(dir, name),
+  }
 }
 
 export const getAllPosts = async (): Promise<PostMeta[]> => {

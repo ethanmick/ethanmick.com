@@ -1,12 +1,11 @@
 import { Post } from '../../components/post'
+import { Tags } from '../../lib'
 
 export const meta = {
-  type: 'POST',
-  title: "Debugging Node's spawn ENOENT",
   author: 'Ethan Mick',
-  slug: 'debugging-nodes-spawn-enoent',
-  excerpt: '',
   createdAt: '2017-03-10T08:00:00.000Z',
+  tags: [],
+  title: "Debugging Node's spawn ENOENT",
 }
 
 export default ({ children }) => <Post {...meta}>{children}</Post>

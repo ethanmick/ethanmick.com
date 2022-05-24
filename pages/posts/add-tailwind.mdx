@@ -1,14 +1,12 @@
 import { Layout, ChapterFooter, Callout } from '../../components/react'
 import { CodeFile } from '../../components/mdx'
-import { Routes } from '../../lib'
+import { Tags, Routes } from '../../lib'
 
 export const meta = {
-  order: 7,
-  title: 'Add Tailwind CSS',
   author: 'Ethan Mick',
-  slug: 'add-tailwind',
-  excerpt: '',
   createdAt: '2022-05-06T08:00:00.000Z',
+  tags: [Tags.React],
+  title: 'Add Tailwind CSS',
 }
 
 export default ({ children }) => <Layout {...meta}>{children}</Layout>

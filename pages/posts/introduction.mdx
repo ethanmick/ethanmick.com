@@ -1,13 +1,11 @@
 import { Layout, ChapterFooter } from '../../components/react'
-import { Routes } from '../../lib'
+import { Tags, Routes } from '../../lib'
 
 export const meta = {
-  order: 0,
-  title: 'Introduction to React',
   author: 'Ethan Mick',
-  slug: 'introduction',
-  excerpt: '',
   createdAt: '2022-02-16T08:00:00.000Z',
+  tags: [Tags.React],
+  title: 'Introduction to React',
 }
 
 export default ({ children }) => <Layout {...meta}>{children}</Layout>
@@ -97,6 +95,4 @@ engineer?
 
 Let's learn React!
 
-<ChapterFooter
-  next={{ title: 'Getting Started', href: Routes.ReactGettingStarted }}
-/>
+<ChapterFooter next={{ title: 'Getting Started', href: Routes.ReactGettingStarted }} />

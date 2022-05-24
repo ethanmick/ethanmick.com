@@ -1,14 +1,12 @@
 import { Layout, ChapterFooter, Callout } from '../../components/react'
 import { CodeFile } from '../../components/mdx'
-import { Routes } from '../../lib'
+import { Tags, Routes } from '../../lib'
 
 export const meta = {
-  order: 8,
-  title: 'Migrate components to Tailwind CSS',
   author: 'Ethan Mick',
-  slug: 'migrate-to-tailwind',
-  excerpt: '',
   createdAt: '2022-05-20T08:00:00.000Z',
+  tags: [Tags.React],
+  title: 'Migrate components to Tailwind CSS',
 }
 
 export default ({ children }) => <Layout {...meta}>{children}</Layout>
@@ -36,9 +34,7 @@ look at the list. You want it to be centered, not too wide, and have some space
 at the top to keep a similar look to the previous CSS.
 
 ```tsx
-<div className="mx-auto max-w-screen-sm mt-12">
-  ...
-</div>
+<div className="mx-auto mt-12 max-w-screen-sm">...</div>
 ```
 
 Next, the key is to add a divider between the items for the list itself. Again,
@@ -69,21 +65,13 @@ The above classes add some basic styling for the input to make it stand out.
 The next component to update is the `ViewTodoListItem`:
 
 ```tsx
-const ViewTodoListItem = ({
-  onComplete,
-  onEdit,
-  text,
-  done,
-}: ViewTodoProps) => {
+const ViewTodoListItem = ({ onComplete, onEdit, text, done }: ViewTodoProps) => {
   return (
     <div className="flex items-center">
       <input type="checkbox" checked={done} onChange={onComplete} />
       <span className="ml-2">{text}</span>
       <span className="flex-grow" />
-      <button
-        className="bg-gray-100 p-1 rounded hover:shadow focus:bg-gray-200"
-        onClick={onEdit}
-      >
+      <button className="rounded bg-gray-100 p-1 hover:shadow focus:bg-gray-200" onClick={onEdit}>
         Edit
       </button>
     </div>
@@ -106,15 +94,12 @@ const EditTodoListItem = ({ onUpdate, ...todo }: EditTodoProps) => {
   return (
     <div className="flex items-center gap-2">
       <input
-        className="w-full border rounded text-lg leading-8 px-2"
+        className="w-full rounded border px-2 text-lg leading-8"
         type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
-      <button
-        className="bg-gray-100 p-1 rounded hover:shadow focus:bg-gray-200"
-        onClick={update}
-      >
+      <button className="rounded bg-gray-100 p-1 hover:shadow focus:bg-gray-200" onClick={update}>
         Save
       </button>
     </div>

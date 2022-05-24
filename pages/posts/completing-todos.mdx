@@ -1,15 +1,13 @@
 import { Layout, ChapterFooter, Callout } from '../../components/react'
 import { AsciinemaPlayer, Browser } from '../../components'
 import { CodeFile } from '../../components/mdx'
-import { Routes } from '../../lib'
+import { Tags, Routes } from '../../lib'
 
 export const meta = {
-  order: 5,
-  title: 'Completing your Todos',
   author: 'Ethan Mick',
-  slug: 'checking-off',
-  excerpt: '',
   createdAt: '2022-04-15T08:00:00.000Z',
+  tags: [Tags.React],
+  title: 'Completing your Todos',
 }
 
 export default ({ children }) => <Layout {...meta}>{children}</Layout>
@@ -224,14 +222,9 @@ Great! Now you change up the map to use the ID instead of the index for the key:
 
 ```tsx
 <ul>
-  {todos
-    .map((todo) => (
-      <TodoListItem
-        key={todo.id}
-        onChange={() => onComplete()}
-        {...todo}
-      />
-    ))}
+  {todos.map((todo) => (
+    <TodoListItem key={todo.id} onChange={() => onComplete()} {...todo} />
+  ))}
 </ul>
 ```
 
@@ -248,7 +241,7 @@ const onComplete = (id: string) => {
     const i = todos.findIndex((todo) => todo.id === id)
     todos[i] = {
       ...todos[i],
-      done: !todos[i].done
+      done: !todos[i].done,
     }
     return [...todos]
   })
@@ -275,11 +268,7 @@ Finally, you need to trigger the function when a user clicks the check box to
 tie this all together.
 
 ```tsx
-<TodoListItem
-  key={todo.id}
-  onChange={() => onComplete(todo.id)}
-  {...todo}
-/>
+<TodoListItem key={todo.id} onChange={() => onComplete(todo.id)} {...todo} />
 ```
 
 And now, when you click the checkbox, it... checks and unchecks the box. Time to

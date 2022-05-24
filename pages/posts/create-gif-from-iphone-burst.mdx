@@ -1,13 +1,11 @@
 import { Post } from '../../components/post'
+import { Tags } from '../../lib'
 
 export const meta = {
-  type: 'POST',
-  title: 'Create GIF From iPhone Burst Mode',
   author: 'Ethan Mick',
-  slug: 'create-gif-from-iphone-burst',
-  excerpt:
-    'I recently wanted to create a GIF from some burst images and already had FFmpeg installed on my Mac. Surely the audacious tool can create a GIF from the images. Turns out, it can!',
   createdAt: '2018-05-16T21:04:04.997Z',
+  tags: [],
+  title: 'Create GIF From iPhone Burst Mode',
 }
 
 export default ({ children }) => <Post {...meta}>{children}</Post>

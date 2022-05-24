@@ -1,15 +1,13 @@
 import { Layout, ChapterFooter, Callout } from '../../components/react'
 import { AsciinemaPlayer, Browser } from '../../components'
 import { CodeFile } from '../../components/mdx'
-import { Routes } from '../../lib'
+import { Tags, Routes } from '../../lib'
 
 export const meta = {
-  order: 6,
-  title: 'Editing and un-completing your to-dos',
   author: 'Ethan Mick',
-  slug: 'uncompleting-and-editing',
-  excerpt: '',
   createdAt: '2022-04-22T08:00:00.000Z',
+  tags: [],
+  title: 'Editing and un-completing your to-dos',
 }
 
 export default ({ children }) => <Layout {...meta}>{children}</Layout>
@@ -40,13 +38,11 @@ that _are_ done. It looks like this.
 
 ```tsx
 <ul>
-  {
-    todos
-      .filter(({ done }) => done)
-      .map((todo) => (
-        <TodoListItem key={todo.id} onComplete={onComplete} {...todo} />
-      ))
-  }
+  {todos
+    .filter(({ done }) => done)
+    .map((todo) => (
+      <TodoListItem key={todo.id} onComplete={onComplete} {...todo} />
+    ))}
 </ul>
 ```
 
@@ -136,15 +132,7 @@ You'll fill out the contents of those later. But you can now finish the stub of
 `TodoListItem` by calling those:
 
 ```tsx
-return (
-  <li>
-    {isEditMode ? (
-      <EditTodoListItem {...todo} />
-    ) : (
-      <ViewTodoListItem {...todo} />
-    )}
-  </li>
-)
+return <li>{isEditMode ? <EditTodoListItem {...todo} /> : <ViewTodoListItem {...todo} />}</li>
 ```
 
 If `isEditMode` is true, return the edit mode. Otherwise, return the view mode.
@@ -191,17 +179,14 @@ type ViewTodoProps = {
 } & Todo
 
 // Lower, update this line
-<button onClick={onEdit}>Edit</button>
+;<button onClick={onEdit}>Edit</button>
 ```
 
 Back in TodoListItem, it needs to pass in the callback that will change the
 mode.
 
 ```tsx
-<ViewTodoListItem
-  onEdit={() => setEditMode((e) => !e)}
-  {...todo}
-/>
+<ViewTodoListItem onEdit={() => setEditMode((e) => !e)} {...todo} />
 ```
 
 The above code uses the function setter to set `isEditMode` according to the
@@ -224,11 +209,7 @@ const EditTodoListItem = ({ ...todo }: EditTodoProps) => {
   const [text, setText] = useState(todo.text)
   return (
     <>
-      <input
-        type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
+      <input type="text" value={text} onChange={(e) => setText(e.target.value)} />
       <button>Save</button>
     </>
   )
@@ -272,12 +253,7 @@ const EditTodoListItem = ({ onUpdate, ...todo }: EditTodoProps) => {
 
   return (
     <>
-      <input
-        type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
-
+      <input type="text" value={text} onChange={(e) => setText(e.target.value)} />
       /* This line is updated */
       <button onClick={update}>Save</button>
     </>
@@ -295,7 +271,7 @@ type TodoListItemProps = {
 } & Todo
 
 // Below, in the JSX update this line
-<EditTodoListItem onUpdate={onEdit} {...todo} />
+;<EditTodoListItem onUpdate={onEdit} {...todo} />
 ```
 
 You add a new property, `onEdit,` which will tell the `TodoList` when a to-do
@@ -315,10 +291,10 @@ Now backing up once again to the `TodoList` you can write onEdit.
 ```tsx
 const onEdit = (todo: Todo) => {
   setTodos((todos) => {
-  const i = todos.findIndex(({ id }) => todo.id === id)
-  todos[i] = todo
-  return [...todos]
-})
+    const i = todos.findIndex(({ id }) => todo.id === id)
+    todos[i] = todo
+    return [...todos]
+  })
 }
 ```
 
@@ -356,7 +332,7 @@ const onUpdate = (todo: Todo) => {
 }
 
 // Later
-<EditTodoListItem onUpdate={onUpdate} {...todo} />
+;<EditTodoListItem onUpdate={onUpdate} {...todo} />
 ```
 
 ## Finishing with style

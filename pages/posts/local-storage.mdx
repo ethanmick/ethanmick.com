@@ -1,15 +1,13 @@
 import { Layout, ChapterFooter, Callout } from '../../components/react'
 import { AsciinemaPlayer, Browser } from '../../components'
 import { CodeFile } from '../../components/mdx'
-import { Routes } from '../../lib'
+import { Tags, Routes } from '../../lib'
 
 export const meta = {
-  order: 4,
-  title: 'Local storage in React',
   author: 'Ethan Mick',
-  slug: 'local-storage',
-  excerpt: '',
   createdAt: '2022-03-24T08:00:00.000Z',
+  tags: [Tags.React],
+  title: 'Local storage in React',
 }
 
 export default ({ children }) => <Layout {...meta}>{children}</Layout>
@@ -99,9 +97,7 @@ no data is found, it will parse the string `'[]'`. This is because the
 empty array. Another way of writing this would be:
 
 ```tsx
-const loaded = localStorage.getItem('todos')
-  ? JSON.parse(localStorage.getItem('todos'))
-  : []
+const loaded = localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : []
 ```
 
 The first way duplicates less code but calls `JSON.parse` no matter what.
@@ -332,7 +328,7 @@ To merge the State and Storage API, you can create a new hook which does both.
 import { useEffect, useState } from 'react'
 import { useStorage } from './storage-hook'
 
-export const useSavedState = <T>(
+export const useSavedState = <T,>(
   key: string,
   initial: T
 ): [T, React.Dispatch<React.SetStateAction<T>>] => {

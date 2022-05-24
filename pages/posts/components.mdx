@@ -1,15 +1,13 @@
 import { Layout, ChapterFooter, Callout } from '../../components/react'
 import { AsciinemaPlayer, Browser } from '../../components'
 import { CodeFile } from '../../components/mdx'
-import { Routes } from '../../lib'
+import { Tags, Routes } from '../../lib'
 
 export const meta = {
-  order: 1,
-  title: 'Components',
   author: 'Ethan Mick',
-  slug: 'components',
-  excerpt: '',
   createdAt: '2022-03-04T08:00:00.000Z',
+  tags: [Tags.React],
+  title: 'Components',
 }
 
 export default ({ children }) => <Layout {...meta}>{children}</Layout>
@@ -71,8 +69,7 @@ responsibility. What a chunk of code _does._ Logical pieces of the user
 interface will form the components.
 
 <Callout>
-  🐢 Other frameworks (looking at you, Angular), separate things by technology
-  as well.
+  🐢 Other frameworks (looking at you, Angular), separate things by technology as well.
 </Callout>
 
 ### TypeScript and JSX
@@ -160,8 +157,8 @@ React implements the JSX interface. At runtime, these elements are turned into
 DOM and rendered by the browser.
 
 <Callout>
-  🐢 Do you need to write React with JSX? The answer is no, you don't need to.
-  But you should. See here:{' '}
+  🐢 Do you need to write React with JSX? The answer is no, you don't need to. But you should. See
+  here:{' '}
   <a href="https://reactjs.org/docs/react-without-jsx.html">
     https://reactjs.org/docs/react-without-jsx.html
   </a>
@@ -182,8 +179,8 @@ used to structure your code better. At the end of the day, it's up to you (and
 your team) on where it makes the most sense to draw these boundaries.
 
 <Callout>
-  🧑‍💻 I will make suggestions on component structure and where to break things
-  apart. Feel free to change things around though!
+  🧑‍💻 I will make suggestions on component structure and where to break things apart. Feel free to
+  change things around though!
 </Callout>
 
 ## Building components
@@ -344,8 +341,8 @@ way, you won't be able to _dynamically_ change the to-dos. HTML is static, but
 React will let you trivially make it dynamic.
 
 <Callout>
-  🐢 This is why using React to write a static site might be overkill. If
-  nothing is dynamic, the power of React isn't really being used.
+  🐢 This is why using React to write a static site might be overkill. If nothing is dynamic, the
+  power of React isn't really being used.
 </Callout>
 
 You're going to rewrite this component, but in a smarter way.
@@ -467,10 +464,9 @@ it's not written as modern _React_. The code above is imperative, and React
 wants a more declarative approach; functional.
 
 <Callout>
-  🐢 Every library, framework, and language will have favored approaches.
-  React's is to be functional and declarative. It allows for elegant and simple
-  code. If this is foreign to you, I highly recommend you continue with it. It
-  may take a while before it "clicks".
+  🐢 Every library, framework, and language will have favored approaches. React's is to be
+  functional and declarative. It allows for elegant and simple code. If this is foreign to you, I
+  highly recommend you continue with it. It may take a while before it "clicks".
 </Callout>
 
 The same explanation from above:
@@ -569,9 +565,8 @@ It helps with marketing. It helps with first impressions. Products that _feel_
 good are easier to sell.
 
 <Callout>
-  👨🏼‍💻 I know you came here looking to learn React. My philosophy is always to
-  create a shippable product. Build something <strong>you</strong> want to use.
-  These details matter.
+  👨🏼‍💻 I know you came here looking to learn React. My philosophy is always to create a shippable
+  product. Build something <strong>you</strong> want to use. These details matter.
 </Callout>
 
 There are lots of libraries to make CSS in React easier. Those will be covered

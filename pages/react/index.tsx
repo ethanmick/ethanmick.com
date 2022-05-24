@@ -37,9 +37,8 @@ const WhyReact = () => (
       Learn
     </h2>
     <h3 className="pl-2 pb-4 pt-2 font-semibold text-slate-700">
-      The{' '}
-      <span className="underline decoration-pink-500 decoration-2">best</span>{' '}
-      framework for app development.
+      The <span className="underline decoration-pink-500 decoration-2">best</span> framework for app
+      development.
     </h3>
     <ul className="-m-[1px] border-l pl-2">
       {whyLearn.map((item, i) => (
@@ -49,10 +48,7 @@ const WhyReact = () => (
       ))}
     </ul>
     <h3 className="pl-2 pb-4 pt-8 font-semibold text-slate-700">
-      Extend React to go{' '}
-      <span className="underline decoration-pink-500 decoration-2">
-        further
-      </span>
+      Extend React to go <span className="underline decoration-pink-500 decoration-2">further</span>
       .
     </h3>
     <ul className="-m-[1px] border-l pl-2">
@@ -78,9 +74,7 @@ const BuildProduct = () => (
       Build
     </h2>
     <h3 className="pl-2 pb-4 pt-2 font-semibold text-slate-700">
-      Ship{' '}
-      <span className="underline decoration-amber-500 decoration-2">real</span>{' '}
-      product.
+      Ship <span className="underline decoration-amber-500 decoration-2">real</span> product.
     </h3>
     <ul className="-m-[1px] border-l pl-2">
       {build.map((item, i) => (
@@ -105,8 +99,7 @@ const WhyEngineer = () => (
       Engineer
     </h2>
     <h3 className="pl-2 pb-4 pt-2 font-semibold text-slate-700">
-      Master your{' '}
-      <span className="underline decoration-sky-500 decoration-2">craft</span>.
+      Master your <span className="underline decoration-sky-500 decoration-2">craft</span>.
     </h3>
     <ul className="-m-[1px] border-l pl-2">
       {engineer.map((item, i) => (
