@@ -1,0 +1,177 @@
+import { Post } from '../../components'
+import { Tags, Routes } from '../../lib'
+
+export const meta = {
+  author: 'Ethan Mick',
+  createdAt: '2022-05-27T08:00:00.000Z',
+  tags: [Tags.Next],
+  title: 'How to set up NextAuth.js for your SaaS',
+}
+
+export default ({ children }) => <Post {...meta}>{children}</Post>
+
+When building a Software as a Service product, one of the first pieces to make
+is the authentication flow. It's essential to get the user to sign in to use the
+product so you can save data between sessions. It also provides a good
+understanding of how interested a person is in your product. Authentication
+provides a little friction and is an integral part of the funnel.
+
+In the past years, authentication has gotten easier as frameworks have matured
+and solid libraries have been created.
+
+My current favorite stack for building SaaS is [Next.js](https://nextjs.org/).
+It has fantastic TypeScript support and a great community. This community has
+created many useful libraries. When making a product, you should stick to what
+you know to limit how much you need to learn. Building something people want is
+hard enough without learning a bunch of new tech on top.
+
+The best library for authentication with Next.js is
+[NextAuth.js](https://next-auth.js.org/). It provides a simple way to get
+started and quickly get a secure session with your web app.
+
+NextAuth.js can use database sessions or JWT tokens. A database session stores
+information in the database and each request is checked against the saved
+session. A JWT is an encrypted token that the server reads, protecting
+information there. Because it's quicker to get started, this guide uses a JWT.
+
+In your [Next.js app](https://nextjs.org/docs/getting-started), start with
+installing the packages:
+
+```bash
+yarn add -SE next-auth
+```
+
+Next, create an API route that will handle the authentication calls. Create a
+file at:
+
+```bash
+pages/api/auth/[...nextauth].ts
+```
+
+The filename is important here; it's what NextAuth.js expects the variable to be
+named. This file is a regular API route for Next, but you will pass off most of
+the logic to the NextAuth.js library. It has handlers to handle logging in,
+logging out, showing the correct pages, etc. So instead of exporting a default
+handler, we export the libraries handler.
+
+```ts
+import NextAuth from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
+
+export default NextAuth({
+  session: {
+    strategy: 'jwt',
+  },
+  providers: [
+    CredentialsProvider({
+      name: 'Sign in',
+      credentials: {
+        username: { label: 'Username', type: 'text', placeholder: 'username' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials) {
+        // Handle Auth!
+        const user = { id: 1, username: 'Ethan', email: 'test@test.com' }
+        return user
+      },
+    }),
+  ],
+})
+```
+
+This code does all the heavy lifting for creating your full authentication flow.
+The only provider you are using is the `CredentialsProvider`, which allows you to
+customize the authentication method. The login page will ask for a username and
+password, and those will be available in the credentials object passed to
+authorize.
+
+You could look up the user in a database and compare the passwords using the
+library [bcrypt](https://www.npmjs.com/package/bcrypt).
+
+If you return `null` in `authorize`, the user will get an invalid credential
+message. Likewise, if you throw an error, the user will be sent to the error
+page. To test the sign-in, go to [http://localhost:3000/api/auth/signin](http://localhost:3000/api/auth/signin)! Since
+we don't validate the username and password in the above code, anything will log
+the user in.
+
+## Using the Session
+
+Once the user has logged in, using the session client-side is done with a hook.
+
+```tsx
+import { useSession } from 'next-auth/react'
+
+export const Component = () => {
+  const { data: session } = useSession()
+  return <></>
+}
+```
+
+The session variable will hold the details of the user.
+
+```json
+{
+  "expires": "2022-06-26T13:07:18.887Z",
+  "user": {
+    "email": "test@test.com"
+  }
+}
+```
+
+## Customizing the JWT
+
+The only other part of this flow I found very frustrating was once the user was
+logged in, I wanted some critical information stored in the JWT. By default,
+that is:
+
+- `name: string`
+- `email: string`
+- `image: string`
+
+Okay... but I need a primary key for the user. When using the session
+client-side, I want to be able to fetch "All resources for the user with ID X,"
+not by email.
+
+You can add a configuration option to NextAuth.js function way above that allows
+you to configure the session JWT:
+
+```ts
+callbacks: {
+  async session({ session, token }) {
+    return {
+      ...session,
+      user: {
+        ...session.user,
+        id: parseInt(token.sub || '', 10),
+      },
+    }
+  },
+},
+```
+
+The `token.sub` is the User ID from the `authorize` method above as a string. If
+your primary key is a UUID then that will work fine. Otherwise, change it back
+to a number.
+
+## Set the Environment Variables
+
+Lastly, you should set two environment variables that NextAuth.js uses:
+
+```
+# This is used to encrypt the JWT
+NEXTAUTH_SECRET=secret_phrase_here
+
+# This is the root URL to your application
+NEXTAUTH_URL=http://localhost:3000
+```
+
+To generate the secret, run:
+
+```bash
+OpenSSL rand -hex 32
+```
+
+Congrats! Now you have a fully functioning authentication flow! You can use
+helper methods to create your login page that fits your design better.
+Registering users is out of scope for NextAuth.js, but a simple form can pass the
+information to your backend.
