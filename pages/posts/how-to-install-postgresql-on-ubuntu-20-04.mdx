@@ -5,7 +5,7 @@ export const meta = {
   author: 'Ethan Mick',
   createdAt: '2022-04-29T12:00:00.000Z',
   tags: [Tags.Postgres],
-  title: 'How to install PostgreSQL 14 on Ubuntu 20.04',
+  title: 'How to install and Setup PostgreSQL 14 on Ubuntu 20.04',
 }
 
 export default ({ children }) => <Post {...meta}>{children}</Post>
@@ -65,6 +65,10 @@ After setting up a database, a common next step is to create credentials for
 your application. You don't want to use the default postgres user for this.
 Instead, you should create a new user, a database, and grant permission to
 access it. You can do that with the following commands:
+
+```bash
+sudo -u postgres psql
+```
 
 ```sql
 CREATE DATABASE name_of_database;
